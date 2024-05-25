@@ -1,11 +1,19 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Optional } from "sequelize";
 import { BelongsTo, Column, DataType, Default, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
 import Region from "./region.model";
+
+interface UserAttributes {
+  id: number;
+  firstName: string;
+  lastName: string;
+}
+
+export interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
 
 @Table({
   timestamps: true,
 })
-export default class User extends Model {
+export default class User extends Model<UserAttributes, UserCreationAttributes> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column({ type: DataTypes.UUID })
@@ -18,7 +26,7 @@ export default class User extends Model {
   lastName: string;
 
   @ForeignKey(() => Region)
-  @Column({ allowNull: false, type: DataTypes.UUID })
+  @Column({ allowNull: true, type: DataTypes.UUID })
   regionId: string;
 
   @BelongsTo(() => Region)
