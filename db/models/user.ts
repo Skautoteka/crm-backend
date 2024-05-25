@@ -1,24 +1,25 @@
-import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../db";
+import { DataTypes, Sequelize } from "sequelize";
+import { sequelize } from "../sequelize";
 
 interface User {
   firstName: string;
   lastName: string;
 }
 
-export const User = sequelize.define("User", {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
-  },
-  firstName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  lastName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-});
-
-const user = User.build({ firstName: "Damian", lastName: "Kowalski" });
+const User = (sequelize: Sequelize) => {
+  sequelize.define("User", {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  });
+};
