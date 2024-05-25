@@ -1,9 +1,24 @@
+import { Dialect } from "sequelize";
 import { Sequelize } from "sequelize-typescript";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      DB: string;
+      DB_DIALECT: Dialect;
+      DB_USER: string;
+      DB_PW: string;
+    }
+  }
+}
 
 export const sequelize = new Sequelize({
-  database: "skautoteka",
-  dialect: "mysql",
-  username: "root",
-  password: "t4jn3h4slo",
+  database: process.env.DB,
+  dialect: process.env.DB_DIALECT,
+  username: process.env.DB_USER,
+  password: process.env.DB_PW,
   models: [__dirname + "/models"],
 });
