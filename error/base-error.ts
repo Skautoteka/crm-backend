@@ -1,5 +1,5 @@
 export class BaseError extends Error {
-  systemMessage = "GENERIC_JSHUB_ERROR";
+  systemMessage = "GENERIC_SKT_ERROR";
   status = 500;
 
   constructor(message: string) {
