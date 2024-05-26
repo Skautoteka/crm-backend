@@ -3,7 +3,7 @@ import { BelongsTo, Column, DataType, Default, ForeignKey, Model, PrimaryKey, Ta
 import User from "./user.model";
 
 @Table({
-  timestamps: true
+  timestamps: true,
 })
 export default class Report extends Model {
   @PrimaryKey
@@ -15,7 +15,7 @@ export default class Report extends Model {
   name: string;
 
   @ForeignKey(() => User)
-  @Column
+  @Column({ allowNull: true, type: DataTypes.UUID })
   userId: string;
 
   @BelongsTo(() => User)
