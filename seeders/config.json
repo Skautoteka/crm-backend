@@ -1,0 +1,9 @@
+{
+    "development": {
+    "username": "root",
+    "password": "t4jn3h4slo",
+    "database": "skautoteka",
+    "host": "localhost",
+    "dialect": "mysql"
+  }
+}
