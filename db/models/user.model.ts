@@ -1,7 +1,8 @@
 import { DataTypes, Optional } from "sequelize";
-import { BelongsTo, Column, DataType, Default, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, Default, ForeignKey, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
 import Region from "./region.model";
 import Role from "./role.model";
+import Report from "./report.model";
 
 interface UserAttributes {
   id: number;
@@ -39,4 +40,7 @@ export default class User extends Model<UserAttributes, UserCreationAttributes> 
 
   @BelongsTo(() => Role)
   role: Role;
+
+  @HasMany(() => Report)
+  reports: Report[];
 }

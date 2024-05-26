@@ -1,11 +1,11 @@
 import { DataTypes } from "sequelize";
-import { Column, DataType, Default, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, Default, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
 import User from "./user.model";
 
 @Table({
   timestamps: true
 })
-export default class Region extends Model {
+export default class Report extends Model {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column({ type: DataTypes.UUID })
@@ -14,6 +14,10 @@ export default class Region extends Model {
   @Column({ allowNull: false, type: DataTypes.TEXT })
   name: string;
 
-  @HasMany(() => User)
-  user: User[];
+  @ForeignKey(() => User)
+  @Column
+  userId: string;
+
+  @BelongsTo(() => User)
+  user: User;
 }
