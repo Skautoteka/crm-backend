@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/all", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const users = await User.findAll();
+    const users = await userController.getAll();
     return res.json(users);
   } catch (err) {
     return next(err);

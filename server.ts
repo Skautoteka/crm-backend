@@ -14,7 +14,7 @@ app.use("/api/user", userRouter);
 
 const port = process.env.PORT;
 (async () => {
-  await sequelize.sync({ force: true });
+  await sequelize.sync({ alter: true });
 
   app.listen(port, () => {
     console.log(`Listening on port: ${port}`);

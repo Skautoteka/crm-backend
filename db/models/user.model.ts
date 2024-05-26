@@ -1,5 +1,15 @@
 import { DataTypes, Optional } from "sequelize";
-import { BelongsTo, Column, DataType, Default, ForeignKey, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  Default,
+  ForeignKey,
+  HasMany,
+  Model,
+  PrimaryKey,
+  Table,
+} from "sequelize-typescript";
 import Region from "./region.model";
 import Role from "./role.model";
 import Report from "./report.model";
@@ -35,7 +45,7 @@ export default class User extends Model<UserAttributes, UserCreationAttributes> 
   region: Region;
 
   @ForeignKey(() => Role)
-  @Column({ allowNull: true, type: DataTypes.UUID })
+  @Column({ allowNull: false, type: DataTypes.UUID })
   roleId: string;
 
   @BelongsTo(() => Role)
