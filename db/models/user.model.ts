@@ -1,6 +1,7 @@
 import { DataTypes, Optional } from "sequelize";
 import { BelongsTo, Column, DataType, Default, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
 import Region from "./region.model";
+import Role from "./role.model";
 
 interface UserAttributes {
   id: number;
@@ -31,4 +32,11 @@ export default class User extends Model<UserAttributes, UserCreationAttributes> 
 
   @BelongsTo(() => Region)
   region: Region;
+
+  @ForeignKey(() => Role)
+  @Column({ allowNull: true, type: DataTypes.UUID })
+  roleId: string;
+
+  @BelongsTo(() => Role)
+  role: Role;
 }
