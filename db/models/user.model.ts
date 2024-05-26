@@ -45,7 +45,7 @@ export default class User extends Model<UserAttributes, UserCreationAttributes> 
   region: Region;
 
   @ForeignKey(() => Role)
-  @Column({ allowNull: false, type: DataTypes.UUID })
+  @Column({ type: DataTypes.UUID })
   roleId: string;
 
   @BelongsTo(() => Role)
