@@ -12,6 +12,12 @@ export default class Task extends Model {
   id: string;
 
   @Column({ allowNull: false, type: DataTypes.TEXT })
+  status: string;
+
+  @Column({ allowNull: false, type: DataTypes.TEXT })
+  type: string;
+
+  @Column({ allowNull: false, type: DataTypes.TEXT })
   hostTeam: string;
 
   @Column({ allowNull: false, type: DataTypes.TEXT })
