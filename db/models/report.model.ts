@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
-import { BelongsTo, Column, DataType, Default, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
-import User from "./user.model";
+import { Column, DataType, Default, Model, PrimaryKey, Table } from "sequelize-typescript";
 
 @Table({
   timestamps: true,
@@ -13,11 +12,4 @@ export default class Report extends Model {
 
   @Column({ allowNull: false, type: DataTypes.TEXT })
   name: string;
-
-  @ForeignKey(() => User)
-  @Column({ allowNull: true, type: DataTypes.UUID })
-  userId: string;
-
-  @BelongsTo(() => User)
-  user: User;
 }
