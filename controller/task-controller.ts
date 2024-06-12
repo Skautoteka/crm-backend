@@ -7,8 +7,9 @@ import { ISingleInputConfig } from "../interface";
  */
 export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
   return [
-    { name: "email", label: "Email", isRequired: true, placeholder: "Wpisz swój email", type: "TEXT" },
-    { name: "firstName", label: "Imię", isRequired: true, placeholder: "Wpisz swoje imię", type: "TEXT" },
-    { name: "lastName", label: "Nazwisko", isRequired: true, placeholder: "Wpisz swoje nazwisko", type: "TEXT" },
+    { name: "host", label: "Drużyna gości", isRequired: true, placeholder: "Wpisz nazwę drużyny", type: "TEXT" },
+    { name: "guest", label: "Drużyna gospodarzy", isRequired: true, placeholder: "Wpisz nazwę drużyny", type: "TEXT" },
+    { name: "address", label: "Adres", isRequired: true, placeholder: "Wpisz adres zadania", type: "TEXT" },
+    // { name: "date", label: "Data wykonania zadania", isRequired: true, placeholder: "Wpisz datę", type: "TEXT" },
   ];
 };

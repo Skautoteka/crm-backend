@@ -5,11 +5,13 @@ import { sequelize } from "./db/sequelize";
 import { errorHandler } from "./middleware/error-middleware";
 import { userRouter } from "./routes/user-route";
 import { taskRouter } from "./routes/task-route";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 app.use(json({ limit: "5mb" }));
+app.use(cors());
 
 app.use("/api/user", userRouter);
 app.use("/api/task", taskRouter);
