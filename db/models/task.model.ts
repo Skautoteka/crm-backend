@@ -11,7 +11,9 @@ import {
 } from 'sequelize-typescript'
 import User from './user.model'
 
-interface TaskAttributes {}
+interface TaskAttributes {
+    id: string
+}
 
 export interface TaskCreationAttributes
     extends Optional<TaskAttributes, 'id'> {}

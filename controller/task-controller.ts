@@ -1,4 +1,4 @@
-import Task, { TaskCreationAttributes } from '../db/models/task.model'
+import Task from '../db/models/task.model'
 import { ModelValidationError } from '../error/model-validation'
 import { ISingleInputConfig } from '../interface'
 
