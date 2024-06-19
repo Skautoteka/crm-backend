@@ -13,6 +13,18 @@ router.get('/all', async (req: Request, res: Response, next: NextFunction) => {
     }
 })
 
+router.delete(
+    '/:id',
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params
+        try {
+            return await teamController.remove(id)
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { name, city, country } = req.body

@@ -29,8 +29,7 @@ router.delete(
     async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params
         try {
-            const users = await taskController.remove(id)
-            return res.json(users)
+            return await taskController.remove(id)
         } catch (err) {
             return next(err)
         }
