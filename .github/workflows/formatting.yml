@@ -1,0 +1,25 @@
+name: Code Formatting
+
+on:
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: 20
+            - run: npm ci
+            - run: npm install -g prettier@2.8.3
+
+            - name: Run Lint
+              run: npm run lint:check
+
+            - name: Run Prettier Apps
+              run: npm run format:check
