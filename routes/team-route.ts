@@ -13,6 +13,16 @@ router.get('/all', async (req: Request, res: Response, next: NextFunction) => {
     }
 })
 
+router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { name, city, country } = req.body
+        const team = await teamController.add({ name, city, country })
+        res.json({ success: true, added: team })
+    } catch (err) {
+        return next(err)
+    }
+})
+
 router.get(
     '/search',
     async (req: Request, res: Response, next: NextFunction) => {
