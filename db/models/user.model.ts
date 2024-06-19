@@ -12,7 +12,7 @@ import {
 } from "sequelize-typescript";
 import Region from "./region.model";
 import Role from "./role.model";
-import Report from "./report.model";
+import Task from "./task.model";
 
 interface UserAttributes {
   id: number;
@@ -51,6 +51,6 @@ export default class User extends Model<UserAttributes, UserCreationAttributes> 
   @BelongsTo(() => Role)
   role: Role;
 
-  @HasMany(() => Report)
-  reports: Report[];
+  @HasMany(() => Task)
+  tasks: Task[];
 }
