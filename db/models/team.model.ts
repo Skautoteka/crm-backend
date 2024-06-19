@@ -1,12 +1,17 @@
-import { Optional } from 'sequelize'
+import { DataTypes, Optional } from 'sequelize'
 import {
+    Column,
+    DataType,
+    Default,
     Model,
+    PrimaryKey,
     Table,
 } from 'sequelize-typescript'
 
 interface TeamAttributes {
     id: string
-    name: string
+    city: string,
+    country: string
 }
 
 export interface TeamCreationAttributes
@@ -18,5 +23,15 @@ export interface TeamCreationAttributes
 export default class Team extends Model<
     TeamAttributes,
     TeamCreationAttributes
-> {
+    > {
+    @PrimaryKey
+    @Default(DataType.UUIDV4)
+    @Column({ type: DataTypes.UUID })
+    id: string
+
+    @Column({ allowNull: false, type: DataTypes.TEXT })
+    city: string
+
+    @Column({ allowNull: false, type: DataTypes.TEXT })
+    country: string
 }
