@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "build": "npx tsc",
+        "dev:migrate": "npm run unseed:all && npm run seed:all && tsx watch index.ts",
         "dev": "tsx watch index.ts",
         "seed:all": "npx sequelize-cli db:seed:all --config seeders/config.json",
         "unseed:all": "npx sequelize-cli db:seed:undo:all --config seeders/config.json",
