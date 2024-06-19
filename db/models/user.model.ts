@@ -1,56 +1,60 @@
-import { DataTypes, Optional } from "sequelize";
+import { DataTypes, Optional } from 'sequelize'
 import {
-  BelongsTo,
-  Column,
-  DataType,
-  Default,
-  ForeignKey,
-  HasMany,
-  Model,
-  PrimaryKey,
-  Table,
-} from "sequelize-typescript";
-import Region from "./region.model";
-import Role from "./role.model";
-import Task from "./task.model";
+    BelongsTo,
+    Column,
+    DataType,
+    Default,
+    ForeignKey,
+    HasMany,
+    Model,
+    PrimaryKey,
+    Table,
+} from 'sequelize-typescript'
+import Region from './region.model'
+import Role from './role.model'
+import Task from './task.model'
 
 interface UserAttributes {
-  id: number;
-  firstName: string;
-  lastName: string;
+    id: number
+    firstName: string
+    lastName: string
 }
 
-export interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
+export interface UserCreationAttributes
+    extends Optional<UserAttributes, 'id'> {}
 
 @Table({
-  timestamps: true,
+    timestamps: true,
 })
-export default class User extends Model<UserAttributes, UserCreationAttributes> {
-  @PrimaryKey
-  @Default(DataType.UUIDV4)
-  @Column({ type: DataTypes.UUID })
-  id: string;
+export default class User extends Model<
+    UserAttributes,
+    UserCreationAttributes
+> {
+    @PrimaryKey
+    @Default(DataType.UUIDV4)
+    @Column({ type: DataTypes.UUID })
+    id: string
 
-  @Column({ allowNull: false, type: DataTypes.TEXT })
-  firstName: string;
+    @Column({ allowNull: false, type: DataTypes.TEXT })
+    firstName: string
 
-  @Column({ allowNull: false, type: DataTypes.TEXT })
-  lastName: string;
+    @Column({ allowNull: false, type: DataTypes.TEXT })
+    lastName: string
 
-  @ForeignKey(() => Region)
-  @Column({ allowNull: true, type: DataTypes.UUID })
-  regionId: string;
+    @ForeignKey(() => Region)
+    @Column({ allowNull: true, type: DataTypes.UUID })
+    regionId: string
 
-  @BelongsTo(() => Region)
-  region: Region;
+    @BelongsTo(() => Region)
+    region: Region
 
-  @ForeignKey(() => Role)
-  @Column({ type: DataTypes.UUID })
-  roleId: string;
+    @ForeignKey(() => Role)
+    @Column({ type: DataTypes.UUID })
+    roleId: string
 
-  @BelongsTo(() => Role)
-  role: Role;
+    @BelongsTo(() => Role)
+    role: Role
 
-  @HasMany(() => Task)
-  tasks: Task[];
+    @HasMany(() => Task)
+    tasks: Task[]
 }
