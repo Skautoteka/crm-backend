@@ -1,5 +1,6 @@
 import Role from '../db/models/role.model'
 import User, { UserCreationAttributes } from '../db/models/user.model'
+import { InvalidPayloadError } from '../error/invalid-payload'
 import { ModelValidationError } from '../error/model-validation'
 import * as roleController from './role-controller'
 
@@ -23,7 +24,9 @@ export const add = async ({
     lastName,
 }: UserCreationAttributes): Promise<User> => {
     if (!firstName || !lastName) {
-        throw new Error()
+        throw new InvalidPayloadError(
+            'Either firstName or lastName was not provided'
+        )
     }
 
     try {

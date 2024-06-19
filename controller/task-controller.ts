@@ -65,6 +65,6 @@ export const remove = async (id: string): Promise<void> => {
     const task = await Task.findOne({ where: { id } })
 
     if (task) {
-        await task.destroy()
+        return await task.destroy()
     }
 }

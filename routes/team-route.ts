@@ -4,6 +4,15 @@ import { InvalidPayloadError } from '../error/invalid-payload'
 
 const router = express.Router()
 
+router.get('/all', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const teams = await teamController.getAll()
+        return res.json(teams)
+    } catch (err) {
+        return next(err)
+    }
+})
+
 router.get(
     '/search',
     async (req: Request, res: Response, next: NextFunction) => {
@@ -17,7 +26,7 @@ router.get(
                 throw new InvalidPayloadError('Invalid type of search or size')
             }
 
-            const teams = await teamController.queryTeams(Number(size), search)
+            const teams = await teamController.queryTeams(search, Number(size))
             return res.json(teams)
         } catch (err) {
             return next(err)
