@@ -33,7 +33,7 @@ module.exports = {
                 name: 'Chelsea',
                 createdAt: new Date(Date.now()),
                 updatedAt: new Date(Date.now()),
-            }
+            },
         ])
     },
 
