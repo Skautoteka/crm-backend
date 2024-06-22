@@ -4,6 +4,18 @@ import { InvalidPayloadError } from '../error/invalid-payload'
 
 const router = express.Router()
 
+router.get(
+    '/create-fields',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const fields = await teamController.getTeamCreateFields()
+            return res.json(fields)
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
 router.get('/all', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const teams = await teamController.getAll()

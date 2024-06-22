@@ -3,6 +3,20 @@ import Team from '../db/models/team.model'
 import { TeamCreationAttributes } from '../db/models/team.model'
 import { InvalidPayloadError } from '../error/invalid-payload'
 import { ModelValidationError } from '../error/model-validation'
+import { ISingleInputConfig } from '../interface'
+
+/**
+ * Returns the model for the team creation.
+ * 
+ * @returns 
+ */
+export const getTeamCreateFields = async (): Promise<ISingleInputConfig[]> => {
+    return [
+        { name: 'name', isRequired: true, label: 'Nazwa drużyny', placeholder: 'Wpisz nazwę drużyny', type: 'TEXT' },
+        { name: 'city', isRequired: false, label: 'Miejscowość', placeholder: 'Wpisz nazwę miejscowości', type: 'TEXT' },
+        { name: 'country', isRequired: false, label: 'Kraj', placeholder: 'Wpisz kraj', type: 'TEXT' }
+    ]
+}
 
 /**
  * Queries teams based on the search query and the maximum
