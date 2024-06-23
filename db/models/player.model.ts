@@ -1,12 +1,15 @@
 import { DataTypes, Optional } from 'sequelize'
 import {
+    BelongsTo,
     Column,
     DataType,
     Default,
+    ForeignKey,
     Model,
     PrimaryKey,
     Table,
 } from 'sequelize-typescript'
+import Team from './team.model'
 
 interface PlayerAttributes {
     id: string
@@ -42,4 +45,11 @@ export default class Player extends Model<
 
     @Column({ allowNull: false, type: DataTypes.INTEGER })
     age: number;
+
+    @ForeignKey(() => Team)
+    @Column({ allowNull: true, type: DataTypes.UUID })
+    teamId: string
+
+    @BelongsTo(() => Team)
+    team: Team
 }
