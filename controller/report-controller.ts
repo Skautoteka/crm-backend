@@ -52,7 +52,7 @@ export const add = async ({
 
     try {
         const report = new Report({ name })
-        report.status = 'in_progress'
+        report.status = getDefaultReportStatus()
         return await report.save()
     } catch (err) {
         throw new ModelValidationError(err.message)
@@ -66,4 +66,8 @@ export const add = async ({
  */
 export const getAll = async (): Promise<Report[]> => {
     return await Report.findAll()
+}
+
+const getDefaultReportStatus = (): 'in_progress' | 'finished' => {
+    return 'in_progress'
 }
