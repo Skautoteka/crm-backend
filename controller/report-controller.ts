@@ -52,6 +52,7 @@ export const add = async ({
 
     try {
         const report = new Report({ name })
+        report.status = 'in_progress'
         return await report.save()
     } catch (err) {
         throw new ModelValidationError(err.message)

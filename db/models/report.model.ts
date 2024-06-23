@@ -11,10 +11,11 @@ import {
 interface ReportAttributes {
     id: string
     name: string
+    status: 'in_progress' | 'finished'
 }
 
 export interface ReportCreationAttributes
-    extends Optional<ReportAttributes, 'id'> {}
+    extends Optional<ReportAttributes, 'id' | 'status'> {}
 
 @Table({
     timestamps: true,
@@ -30,4 +31,7 @@ export default class Report extends Model<
 
     @Column({ allowNull: false, type: DataTypes.TEXT })
     name: string
+
+    @Column({ allowNull: false, type: DataType.TEXT })
+    status: 'in_progress' | 'finished'
 }
