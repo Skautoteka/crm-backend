@@ -7,14 +7,39 @@ import { ISingleInputConfig } from '../interface'
 
 /**
  * Returns the model for the team creation.
- * 
- * @returns 
+ *
+ * @returns
  */
 export const getTeamCreateFields = async (): Promise<ISingleInputConfig[]> => {
     return [
-        { name: 'name', isRequired: true, label: 'Nazwa drużyny', placeholder: 'Wpisz nazwę drużyny', type: 'TEXT' },
-        { name: 'city', isRequired: false, label: 'Miejscowość', placeholder: 'Wpisz nazwę miejscowości', type: 'TEXT' },
-        { name: 'country', isRequired: false, label: 'Kraj', placeholder: 'Wpisz kraj', type: 'TEXT' }
+        {
+            name: 'name',
+            isRequired: true,
+            label: 'Nazwa drużyny',
+            placeholder: 'Wpisz nazwę drużyny',
+            type: 'TEXT',
+        },
+        {
+            name: 'city',
+            isRequired: false,
+            label: 'Miejscowość',
+            placeholder: 'Wpisz nazwę miejscowości',
+            type: 'TEXT',
+        },
+        {
+            name: 'country',
+            isRequired: false,
+            label: 'Kraj',
+            placeholder: 'Wpisz kraj',
+            type: 'TEXT',
+        },
+        {
+            name: 'league',
+            isRequired: false,
+            label: 'Liga',
+            placeholder: 'Wpisz ligę',
+            type: 'TEXT',
+        },
     ]
 }
 
@@ -58,13 +83,14 @@ export const add = async ({
     name,
     city,
     country,
+    league,
 }: TeamCreationAttributes): Promise<Team> => {
     if (!name) {
         throw new InvalidPayloadError('No name was provided')
     }
 
     try {
-        const team = new Team({ name, city, country })
+        const team = new Team({ name, city, country, league })
         return await team.save()
     } catch (err) {
         throw new ModelValidationError(err.message)

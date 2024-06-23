@@ -40,8 +40,8 @@ router.delete(
 
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { name, city, country } = req.body
-        const team = await teamController.add({ name, city, country })
+        const { name, city, country, league } = req.body
+        const team = await teamController.add({ name, city, country, league })
         res.json({ success: true, added: team })
     } catch (err) {
         return next(err)

@@ -13,6 +13,7 @@ interface TeamAttributes {
     name: string
     city: string
     country: string
+    league: string
 }
 
 export interface TeamCreationAttributes
@@ -32,6 +33,9 @@ export default class Team extends Model<
 
     @Column({ allowNull: false, type: DataTypes.TEXT })
     name: string
+
+    @Column({ allowNull: true, type: DataTypes.TEXT })
+    league: string
 
     @Column({ allowNull: true, type: DataTypes.TEXT })
     city: string
