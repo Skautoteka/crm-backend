@@ -12,3 +12,35 @@ router.get('/all', async (req: Request, res: Response, next: NextFunction) => {
     }
 })
 
+router.delete(
+    '/:id',
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params
+        try {
+            return await playerController.remove(id)
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
+router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = await playerController.add(req.body)
+        res.json({ success: true, added: user })
+    } catch (err) {
+        return next(err)
+    }
+})
+
+router.get(
+    '/create-fields',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const fields = await playerController.getTaskCreateFields()
+            return res.json(fields)
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
