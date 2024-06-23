@@ -1,4 +1,8 @@
+import Report from '../db/models/report.model'
 import { ISingleInputConfig } from '../interface'
+import { ReportCreationAttributes } from '../db/models/report.model'
+import { InvalidPayloadError } from '../error/invalid-payload'
+import { ModelValidationError } from '../error/model-validation'
 
 /**
  * Gets the model for the task model creation.
@@ -10,46 +14,55 @@ export const getReportCreateFields = async (): Promise<
 > => {
     return [
         {
-            name: 'host',
-            label: 'Drużyna gości',
+            name: 'name',
+            label: 'Nazwa',
             isRequired: true,
-            placeholder: 'Wpisz nazwę drużyny',
+            placeholder: 'Wpisz nazwę raportu',
             type: 'TEXT',
-        },
-        {
-            name: 'guest',
-            label: 'Drużyna gospodarzy',
-            isRequired: true,
-            placeholder: 'Wpisz nazwę drużyny',
-            type: 'TEXT',
-        },
-        {
-            name: 'address',
-            label: 'Adres',
-            isRequired: true,
-            placeholder: 'Wpisz adres zadania',
-            type: 'TEXT',
-        },
-        {
-            name: 'date',
-            label: 'Data meczu',
-            isRequired: true,
-            type: 'DATE',
-            placeholder: 'Wpisz date',
-        },
-        {
-            name: 'finished',
-            label: 'Zakończony',
-            type: 'TEXT',
-            isRequired: false,
-            placeholder: 'Wpisz czy jest zakonczone',
-        },
-        {
-            name: 'rating',
-            label: 'Ocena',
-            isRequired: false,
-            type: 'NUMBER',
-            placeholder: 'Wpisz adres zadania',
         },
     ]
+}
+
+/**
+ * Removes a report from the database.
+ *
+ * @param id
+ * @returns
+ */
+export const remove = async (id: string): Promise<void> => {
+    const report = await Report.findOne({ where: { id } })
+
+    if (report) {
+        return await report.destroy()
+    }
+}
+
+/**
+ * Adds a report to the database
+ *
+ * @param param0
+ * @returns
+ */
+export const add = async ({
+    name,
+}: ReportCreationAttributes): Promise<Report> => {
+    if (!name) {
+        throw new InvalidPayloadError('No name was provided')
+    }
+
+    try {
+        const report = new Report({ name })
+        return await report.save()
+    } catch (err) {
+        throw new ModelValidationError(err.message)
+    }
+}
+
+/**
+ * Returns all reports.
+ *
+ * @returns
+ */
+export const getAll = async (): Promise<Report[]> => {
+    return await Report.findAll()
 }
