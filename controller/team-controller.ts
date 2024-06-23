@@ -35,7 +35,7 @@ export const queryTeams = async (
 }
 
 /**
- * Added removing endpoint for the team.
+ * Removes a team from a database.
  *
  * @param id
  * @returns

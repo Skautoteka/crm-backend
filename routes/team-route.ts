@@ -30,7 +30,8 @@ router.delete(
     async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params
         try {
-            return await teamController.remove(id)
+            await teamController.remove(id)
+            return res.json({ success: true })
         } catch (err) {
             return next(err)
         }
