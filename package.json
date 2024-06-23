@@ -1,11 +1,11 @@
 {
-    
     "name": "crm-backend",
     "version": "1.0.0",
     "description": "Backend project for crm-skautoteka-backend",
     "main": "index.js",
     "scripts": {
         "build": "npx tsc",
+        "dev:migrate": "npm run unseed:all && npm run seed:all && tsx watch index.ts",
         "dev": "tsx watch index.ts",
         "seed:all": "npx sequelize-cli db:seed:all --config seeders/config.json",
         "unseed:all": "npx sequelize-cli db:seed:undo:all --config seeders/config.json",
@@ -21,7 +21,7 @@
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
         "express": "^4.19.2",
-        "mysql2": "^3.9.7",
+        "mysql2": "^3.9.8",
         "nodemon": "^3.1.0",
         "sequelize": "^6.37.3",
         "sequelize-typescript": "^2.1.6"

@@ -15,4 +15,36 @@ router.get(
     }
 )
 
+router.get('/all', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const teams = await reportController.getAll()
+        return res.json(teams)
+    } catch (err) {
+        return next(err)
+    }
+})
+
+router.delete(
+    '/:id',
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params
+        try {
+            await reportController.remove(id)
+            return res.json({ success: true })
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
+router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { name } = req.body
+        const team = await reportController.add({ name })
+        res.json({ success: true, added: team })
+    } catch (err) {
+        return next(err)
+    }
+})
+
 export { router as reportRouter }
