@@ -29,8 +29,7 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
             isRequired: true,
             placeholder: 'Wpisz adres zadania',
             type: 'TEXT',
-        },
-        // { name: "date", label: "Data wykonania zadania", isRequired: true, placeholder: "Wpisz datę", type: "TEXT" },
+        }
     ]
 }
 
