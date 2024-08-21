@@ -10,6 +10,7 @@ import { userRouter } from './routes/user-route'
 import { taskRouter } from './routes/task-route'
 import { reportRouter } from './routes/report-route'
 import { teamRouter } from './routes/team-route'
+import { playerRouter } from './routes/player-route'
 
 dotenv.config()
 
@@ -21,6 +22,7 @@ app.use('/api/user', userRouter)
 app.use('/api/task', taskRouter)
 app.use('/api/report', reportRouter)
 app.use('/api/team', teamRouter)
+app.use('/api/player', playerRouter)
 
 const port = process.env.PORT
 ;(async () => {
