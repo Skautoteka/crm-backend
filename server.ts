@@ -11,6 +11,7 @@ import { taskRouter } from './routes/task-route'
 import { reportRouter } from './routes/report-route'
 import { teamRouter } from './routes/team-route'
 import { playerRouter } from './routes/player-route'
+import { authRouter } from './routes/auth-route'
 
 dotenv.config()
 
@@ -23,6 +24,7 @@ app.use('/api/task', taskRouter)
 app.use('/api/report', reportRouter)
 app.use('/api/team', teamRouter)
 app.use('/api/player', playerRouter)
+app.use('/api/auth', authRouter)
 
 const port = process.env.PORT
 ;(async () => {
