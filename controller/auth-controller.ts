@@ -48,7 +48,6 @@ export const createUser = async (firstName: string, lastName: string, email: str
 export const login = async (email: string, password: string): Promise<Tokens> => {
     const user = await User.findOne({ where: { email } });
 
-    console.log(password)
     if(!user) {
         throw new NotFoundError(`User of email ${email} was not found`);
     }

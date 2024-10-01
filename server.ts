@@ -11,6 +11,7 @@ import { reportRouter } from './routes/report-route'
 import { teamRouter } from './routes/team-route'
 import { playerRouter } from './routes/player-route'
 import { authRouter } from './routes/auth-route'
+import { authMiddleware } from './middleware/auth-middleware'
 
 dotenv.config()
 
@@ -18,10 +19,10 @@ const app = express()
 app.use(json({ limit: '5mb' }))
 app.use(cors())
 
-app.use('/api/task', taskRouter)
-app.use('/api/report', reportRouter)
-app.use('/api/team', teamRouter)
-app.use('/api/player', playerRouter)
+app.use('/api/task', authMiddleware, taskRouter)
+app.use('/api/report', authMiddleware, reportRouter)
+app.use('/api/team', authMiddleware, teamRouter)
+app.use('/api/player', authMiddleware, playerRouter)
 app.use('/api/auth', authRouter)
 
 const port = process.env.PORT
