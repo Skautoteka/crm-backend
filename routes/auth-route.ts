@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import * as authController from '../controller/auth-controller';
+import { InvalidPayloadError } from '../error/invalid-payload';
 
 const router = express.Router();
 
@@ -16,10 +17,24 @@ router.post('/register', async (req: Request, res: Response, next: NextFunction)
 router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { email, password } = req.body;
-        const result = await authController.login(email, password);
-        res.json(result);
+        const tokens = await authController.login(email, password);
+        res.json(tokens);
     } catch (err) {
         return next(err)
+    }
+})
+
+router.post('/refresh-token', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { token } = req.body;
+        if(!token) {
+            throw new InvalidPayloadError('Refresh token was not provided');
+        }
+
+        const tokens = await authController.refreshToken(token);
+        res.json(tokens);
+    } catch (err) {
+        return next(err);
     }
 })
 

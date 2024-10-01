@@ -5,9 +5,40 @@ import { ModelValidationError } from "../error/model-validation";
 import { NotFoundError } from "../error/not-found";
 import dotenv from 'dotenv'
 import { ForbiddenError } from "../error/forbidden";
-import { Tokens } from "../interface/iauth";
+import { AccessToken, Tokens } from "../interface/iauth";
+import { InvalidPayloadError } from "../error/invalid-payload";
 
 dotenv.config()
+
+/**
+ * Returns the secret used to sign jwt.
+ * 
+ * @param type 
+ * @returns 
+ */
+const _getSecret = (type: 'refresh' | 'access'): string => {
+    const secret = type === 'refresh' ? process.env.REFRESH_TOKEN_SECRET : process.env.ACCESS_TOKEN_SECRET;
+
+    if(!secret) {
+        throw new NotFoundError('Could not find access/refresh token secret');
+    }
+
+    return secret;
+}
+
+/**
+ * Returns an access token.
+ */
+const _getAccessToken = (email: string): string => {
+    return jwt.sign({ email }, _getSecret('access'), { expiresIn: '10s' });
+}
+
+/**
+ * Returns refresh token
+ */
+const _getRefreshToken = (email: string): string => {
+    return jwt.sign({ email }, _getSecret('refresh'));
+}
 
 /**
  * Generates hashed password from a password given as argument.
@@ -57,11 +88,19 @@ export const login = async (email: string, password: string): Promise<Tokens> =>
         throw new ForbiddenError('Password is invalid');
     }
 
-    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
-    if(!accessTokenSecret) {
-        throw new NotFoundError('Could not find access token secret');
+    return { accessToken: _getAccessToken(user.email), refreshToken: _getRefreshToken(user.email) }
+}
+
+/**
+ * Refreshes the tokens based on the refresh token provided as argument and returns a fresh
+ * pair of tokens.
+ */
+export const refreshToken = async (refreshToken: string): Promise<AccessToken> => {
+    const email = await jwt.verify(refreshToken, _getSecret('refresh'));
+
+    if(typeof email !== 'string') {
+        throw new InvalidPayloadError('Email signed with token is invalid');
     }
 
-    const accessToken = jwt.sign(user.email, accessTokenSecret);
-    return { accessToken, refreshToken: '' }
+    return { accessToken: _getAccessToken(email) };
 }
