@@ -10,17 +10,20 @@ dotenv.config()
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const accessToken = req.cookies['sktka-access-token'];
 
-    if(!accessToken) {
-        throw new ForbiddenError('Unknown user with tokens');
+    try {
+        if(!accessToken) {
+            throw new ForbiddenError('Unknown user with tokens');
+        }
+    
+        const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+        if(!accessTokenSecret) {
+            throw new NotFoundError('Could not find access token secret');
+        }
+
+        await jwt.verify(accessToken, accessTokenSecret);
+        return next();
+    } catch {
+        return next(new ForbiddenError('Could not authenticate user'));
     }
 
-    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
-    if(!accessTokenSecret) {
-        throw new NotFoundError('Could not find access token secret');
-    }
-
-    const payload = await jwt.verify(accessToken, accessTokenSecret);
-    // @ts-expect-error request does not have userEmail field
-    req.userEmail = payload.email as string;
-    next();
 }
