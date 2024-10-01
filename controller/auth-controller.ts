@@ -1,6 +1,26 @@
 import User from "../db/models/user.model";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { ModelValidationError } from "../error/model-validation";
+import { NotFoundError } from "../error/not-found";
+import dotenv from 'dotenv'
+import { ForbiddenError } from "../error/forbidden";
+import { Tokens } from "../interface/iauth";
+
+dotenv.config()
+
+/**
+ * Generates hashed password from a password given as argument.
+ * 
+ * @param password 
+ * @returns 
+ */
+const _getHashedPassword = async (password: string): Promise<string> => {
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    return await bcrypt.hash(password, salt);
+}
+
 
 /**
  * Creates the user to the database.
@@ -11,10 +31,7 @@ import { ModelValidationError } from "../error/model-validation";
  */
 export const createUser = async (firstName: string, lastName: string, email: string, password: string): Promise<User> => {
     try {
-        const saltRound = 10;
-        const salt = await bcrypt.genSalt(saltRound)
-        const hashedPassword = await bcrypt.hash(password, salt);
-
+        const hashedPassword = await _getHashedPassword(password);
         const user = new User({ firstName, lastName, email, password: hashedPassword });
         return await user.save();
     } catch(err) {
@@ -23,14 +40,28 @@ export const createUser = async (firstName: string, lastName: string, email: str
 }
 
 /**
- * Tries to log in the user to the system.
+ * Tries to log in the user to the system. The value returned is a string representing
  * 
  * @param email 
  * @param password 
  */
-export const login = async (email: string, password: string): Promise<boolean> => {
+export const login = async (email: string, password: string): Promise<Tokens> => {
     const user = await User.findOne({ where: { email } });
-    console.log(user, password);
 
-    return false;
+    if(!user) {
+        throw new NotFoundError(`User of email ${email} was not found`);
+    }
+
+    const hashedPassword = await _getHashedPassword(password);
+    if(hashedPassword !== user.password) {
+        throw new ForbiddenError('Password is invalid');
+    }
+
+    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+    if(!accessTokenSecret) {
+        throw new NotFoundError('Could not find access token secret');
+    }
+
+    const accessToken = jwt.sign(user.email, accessTokenSecret);
+    return { accessToken, refreshToken: '' }
 }

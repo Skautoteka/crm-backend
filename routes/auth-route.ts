@@ -17,7 +17,7 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
     try {
         const { email, password } = req.body;
         const result = await authController.login(email, password);
-        console.log(result)
+        console.log(result) 
         res.json({ success: true });
     } catch (err) {
         return next(err)
