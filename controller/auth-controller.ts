@@ -30,7 +30,7 @@ const _getSecret = (type: 'refresh' | 'access'): string => {
  * Returns an access token.
  */
 const _getAccessToken = (email: string): string => {
-    return jwt.sign({ email }, _getSecret('access'), { expiresIn: '10s' });
+    return jwt.sign({ email }, _getSecret('access'), { expiresIn: '10m' });
 }
 
 /**
