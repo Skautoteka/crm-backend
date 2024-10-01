@@ -24,7 +24,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction):
         throw new NotFoundError('Could not find access token secret');
     }
 
-    jwt.verify(accessTokenSecret, accessTokenSecret, (err, email) => {
+    jwt.verify(token, accessTokenSecret, (err, email) => {
         if(err) {
             throw new ForbiddenError('Could not be verified with the given token');
         }
