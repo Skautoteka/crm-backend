@@ -48,12 +48,13 @@ export const createUser = async (firstName: string, lastName: string, email: str
 export const login = async (email: string, password: string): Promise<Tokens> => {
     const user = await User.findOne({ where: { email } });
 
+    console.log(password)
     if(!user) {
         throw new NotFoundError(`User of email ${email} was not found`);
     }
 
-    const hashedPassword = await _getHashedPassword(password);
-    if(hashedPassword !== user.password) {
+    const compareResult = await bcrypt.compare(password, user.password);
+    if(!compareResult) {
         throw new ForbiddenError('Password is invalid');
     }
 
