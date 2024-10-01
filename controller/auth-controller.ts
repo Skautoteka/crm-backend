@@ -96,7 +96,9 @@ export const login = async (email: string, password: string): Promise<Tokens> =>
  * pair of tokens.
  */
 export const refreshToken = async (refreshToken: string): Promise<AccessToken> => {
-    const email = await jwt.verify(refreshToken, _getSecret('refresh'));
+    const payload = await jwt.verify(refreshToken, _getSecret('refresh'));
+    // @ts-expect-error email exists on payload
+    const email = payload.email;
 
     if(typeof email !== 'string') {
         throw new InvalidPayloadError('Email signed with token is invalid');

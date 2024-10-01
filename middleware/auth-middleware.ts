@@ -24,13 +24,13 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction):
         throw new NotFoundError('Could not find access token secret');
     }
 
-    jwt.verify(token, accessTokenSecret, (err, email) => {
+    jwt.verify(token, accessTokenSecret, (err, payload) => {
         if(err) {
             throw new ForbiddenError('Could not be verified with the given token');
         }
         
         // @ts-expect-error request does not have userEmail field
-        req.userEmail = email as string;
+        req.userEmail = payload.email as string;
         next();
     });
 }
