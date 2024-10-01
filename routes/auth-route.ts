@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import * as authController from '../controller/auth-controller';
 import { InvalidPayloadError } from '../error/invalid-payload';
+import { authMiddleware } from '../middleware/auth-middleware';
 
 const router = express.Router();
 
@@ -40,6 +41,10 @@ router.post('/refresh-token', async (req: Request, res: Response, next: NextFunc
     } catch (err) {
         return next(err);
     }
+})
+
+router.get('/get-user', authMiddleware, async (req: Request, res: Response) => {
+    res.json({ email: 'asd' })
 })
 
 export { router as authRouter };
