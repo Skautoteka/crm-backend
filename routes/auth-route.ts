@@ -18,6 +18,8 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
     try {
         const { email, password } = req.body;
         const tokens = await authController.login(email, password);
+
+        res.cookie('sktka-access-token', tokens.accessToken);
         res.json(tokens);
     } catch (err) {
         return next(err)
@@ -31,8 +33,10 @@ router.post('/refresh-token', async (req: Request, res: Response, next: NextFunc
             throw new InvalidPayloadError('Refresh token was not provided');
         }
 
-        const tokens = await authController.refreshToken(token);
-        res.json(tokens);
+        const accessToken = await authController.refreshToken(token);
+
+        res.cookie('sktka-access-token', accessToken);
+        res.json({ success: true });
     } catch (err) {
         return next(err);
     }

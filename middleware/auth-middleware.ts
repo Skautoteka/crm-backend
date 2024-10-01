@@ -7,30 +7,20 @@ import jwt from 'jsonwebtoken';
 dotenv.config()
 
 // eslint-disable-next-line
-export const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-    const authHeader = req.headers['authorization'];
-    if(!authHeader) {
-        throw new ForbiddenError('Unknown user with no token as bearer token');
+export const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const accessToken = req.cookies['sktka-access-token'];
+
+    if(!accessToken) {
+        throw new ForbiddenError('Unknown user with tokens');
     }
 
-    const [, token] = authHeader.split(' ');
     const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
-
-    if(!token) {
-        throw new ForbiddenError('Unknown user with no token as bearer token');
-    }
-
     if(!accessTokenSecret) {
         throw new NotFoundError('Could not find access token secret');
     }
 
-    jwt.verify(token, accessTokenSecret, (err, payload) => {
-        if(err) {
-            throw new ForbiddenError('Could not be verified with the given token');
-        }
-        
-        // @ts-expect-error request does not have userEmail field
-        req.userEmail = payload.email as string;
-        next();
-    });
+    const payload = await jwt.verify(accessToken, accessTokenSecret);
+    // @ts-expect-error request does not have userEmail field
+    req.userEmail = payload.email as string;
+    next();
 }

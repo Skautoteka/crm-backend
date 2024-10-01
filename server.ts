@@ -12,12 +12,14 @@ import { teamRouter } from './routes/team-route'
 import { playerRouter } from './routes/player-route'
 import { authRouter } from './routes/auth-route'
 import { authMiddleware } from './middleware/auth-middleware'
+import cookieParser from 'cookie-parser';
 
 dotenv.config()
 
 const app = express()
 app.use(json({ limit: '5mb' }))
 app.use(cors())
+app.use(cookieParser())
 
 app.use('/api/task', authMiddleware, taskRouter)
 app.use('/api/report', authMiddleware, reportRouter)
