@@ -22,6 +22,8 @@ export const getAll = async (): Promise<User[]> => {
 export const add = async ({
     firstName,
     lastName,
+    email,
+    password
 }: UserCreationAttributes): Promise<User> => {
     if (!firstName || !lastName) {
         throw new InvalidPayloadError(
@@ -33,6 +35,8 @@ export const add = async ({
         const user = new User({
             firstName,
             lastName,
+            email,
+            password
         })
 
         const role = await roleController.getBasicRole()
