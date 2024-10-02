@@ -27,6 +27,16 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
     }
 })
 
+router.get('/logout', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        res.clearCookie('sktka-access-token');
+        res.clearCookie('sktka-refresh-token');
+        res.json({ success: true })
+    } catch (err) {
+        return next(err)
+    }
+})
+
 router.post('/refresh-token', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { token } = req.body;

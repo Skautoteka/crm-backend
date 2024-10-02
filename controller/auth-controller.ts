@@ -80,7 +80,7 @@ export const login = async (email: string, password: string): Promise<Tokens> =>
     const user = await User.findOne({ where: { email } });
 
     if(!user) {
-        throw new NotFoundError(`User of email ${email} was not found`);
+        throw new ForbiddenError('Password is invalid');
     }
 
     const compareResult = await bcrypt.compare(password, user.password);
