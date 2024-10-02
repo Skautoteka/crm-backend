@@ -15,9 +15,11 @@ import Role from './role.model'
 import Task from './task.model'
 
 interface UserAttributes {
-    id: number
-    firstName: string
-    lastName: string
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
 }
 
 export interface UserCreationAttributes
@@ -40,6 +42,12 @@ export default class User extends Model<
 
     @Column({ allowNull: false, type: DataTypes.TEXT })
     lastName: string
+
+    @Column({ allowNull: false, unique: true, type: DataTypes.STRING(200) })
+    email: string;
+
+    @Column({ allowNull: false, type: DataTypes.STRING(64) })
+    password: string;
 
     @ForeignKey(() => Region)
     @Column({ allowNull: true, type: DataTypes.UUID })

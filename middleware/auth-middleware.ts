@@ -1,0 +1,29 @@
+import { Request, Response, NextFunction } from 'express'
+import { ForbiddenError } from '../error/forbidden';
+import dotenv from 'dotenv'
+import { NotFoundError } from '../error/not-found';
+import jwt from 'jsonwebtoken';
+
+dotenv.config()
+
+// eslint-disable-next-line
+export const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const accessToken = req.cookies['sktka-access-token'];
+
+    try {
+        if(!accessToken) {
+            throw new ForbiddenError('Unknown user with tokens');
+        }
+    
+        const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+        if(!accessTokenSecret) {
+            throw new NotFoundError('Could not find access token secret');
+        }
+
+        await jwt.verify(accessToken, accessTokenSecret);
+        return next();
+    } catch {
+        return next(new ForbiddenError('Could not authenticate user'));
+    }
+
+}
