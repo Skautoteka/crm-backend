@@ -5,8 +5,9 @@ import { ModelValidationError } from "../error/model-validation";
 import { NotFoundError } from "../error/not-found";
 import dotenv from 'dotenv'
 import { ForbiddenError } from "../error/forbidden";
-import { AccessToken, Tokens } from "../interface/iauth";
+import { Tokens } from "../interface/iauth";
 import { InvalidPayloadError } from "../error/invalid-payload";
+import { Request } from 'express';
 
 dotenv.config()
 
@@ -30,7 +31,7 @@ const _getSecret = (type: 'refresh' | 'access'): string => {
  * Returns an access token.
  */
 const _getAccessToken = (email: string): string => {
-    return jwt.sign({ email }, _getSecret('access'), { expiresIn: '10m' });
+    return jwt.sign({ email }, _getSecret('access'), { expiresIn: '10s' });
 }
 
 /**
@@ -52,6 +53,18 @@ const _getHashedPassword = async (password: string): Promise<string> => {
     return await bcrypt.hash(password, salt);
 }
 
+export const getReqUser = async (req: Request): Promise<User> => {
+    // @ts-expect-error getting req
+    const { email } = req;
+
+    const user = await User.findOne({ where: { email } })
+
+    if(!user) {
+        throw new NotFoundError('Did not find user in the database');
+    }
+
+    return user;
+}
 
 /**
  * Creates the user to the database.
@@ -95,7 +108,7 @@ export const login = async (email: string, password: string): Promise<Tokens> =>
  * Refreshes the tokens based on the refresh token provided as argument and returns a fresh
  * pair of tokens.
  */
-export const refreshToken = async (refreshToken: string): Promise<AccessToken> => {
+export const refreshToken = async (refreshToken: string): Promise<Tokens> => {
     const payload = await jwt.verify(refreshToken, _getSecret('refresh'));
     // @ts-expect-error email exists on payload
     const email = payload.email;
@@ -104,5 +117,5 @@ export const refreshToken = async (refreshToken: string): Promise<AccessToken> =
         throw new InvalidPayloadError('Email signed with token is invalid');
     }
 
-    return { accessToken: _getAccessToken(email) };
+    return { accessToken: _getAccessToken(email), refreshToken: _getRefreshToken(email) };
 }

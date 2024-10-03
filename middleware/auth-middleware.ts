@@ -20,7 +20,11 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
             throw new NotFoundError('Could not find access token secret');
         }
 
-        await jwt.verify(accessToken, accessTokenSecret);
+        //@ts-expect-error email on jwt payload
+        const { email } = await jwt.verify(accessToken, accessTokenSecret);
+
+        // @ts-expect-error set user
+        req.email = email;
         return next();
     } catch {
         return next(new ForbiddenError('Could not authenticate user'));

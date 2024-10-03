@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import * as authController from '../controller/auth-controller';
-import { InvalidPayloadError } from '../error/invalid-payload';
 import { authMiddleware } from '../middleware/auth-middleware';
+import { ForbiddenError } from '../error/forbidden';
 
 const router = express.Router();
 
@@ -21,7 +21,9 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
         const tokens = await authController.login(email, password);
 
         res.cookie('sktka-access-token', tokens.accessToken);
-        res.json(tokens);
+        res.cookie('sktka-refresh-token', tokens.refreshToken);
+        
+        res.json({ success: true });
     } catch (err) {
         return next(err)
     }
@@ -37,16 +39,18 @@ router.get('/logout', async (req: Request, res: Response, next: NextFunction) =>
     }
 })
 
-router.post('/refresh-token', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/refresh-token', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { token } = req.body;
+        const token = req.cookies['sktka-refresh-token'];
+
         if(!token) {
-            throw new InvalidPayloadError('Refresh token was not provided');
+            throw new ForbiddenError('Refresh token was not provided');
         }
 
-        const accessToken = await authController.refreshToken(token);
-
+        const { accessToken, refreshToken} = await authController.refreshToken(token);
         res.cookie('sktka-access-token', accessToken);
+        res.cookie('sktka-refresh-token', refreshToken);
+
         res.json({ success: true });
     } catch (err) {
         return next(err);
@@ -54,7 +58,8 @@ router.post('/refresh-token', async (req: Request, res: Response, next: NextFunc
 })
 
 router.get('/get-user', authMiddleware, async (req: Request, res: Response) => {
-    res.json({ email: 'asd' })
+    const user = await authController.getReqUser(req);
+    res.json(user)
 })
 
 export { router as authRouter };
