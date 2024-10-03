@@ -8,6 +8,8 @@ import { ForbiddenError } from "../error/forbidden";
 import { Tokens } from "../interface/iauth";
 import { InvalidPayloadError } from "../error/invalid-payload";
 import { Request } from 'express';
+import Role from "../db/models/role.model";
+import * as roleController from './role-controller'
 
 dotenv.config()
 
@@ -57,7 +59,7 @@ export const getReqUser = async (req: Request): Promise<User> => {
     // @ts-expect-error getting req
     const { email } = req;
 
-    const user = await User.findOne({ where: { email } })
+    const user = await User.findOne({ where: { email }, include: Role })
 
     if(!user) {
         throw new NotFoundError('Did not find user in the database');
@@ -77,6 +79,10 @@ export const createUser = async (firstName: string, lastName: string, email: str
     try {
         const hashedPassword = await _getHashedPassword(password);
         const user = new User({ firstName, lastName, email, password: hashedPassword });
+
+        const role = await roleController.getBasicRole()
+        user.roleId = role.id
+
         return await user.save();
     } catch(err) {
         throw new ModelValidationError(err.message);
