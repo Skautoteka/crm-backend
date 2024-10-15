@@ -39,7 +39,8 @@ router.delete(
 
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const user = await taskController.add()
+        const payload = req.body;
+        const user = await taskController.add(payload)
         res.json({ success: true, added: user })
     } catch (err) {
         return next(err)

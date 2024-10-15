@@ -63,14 +63,18 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
             label: 'Płeć zawodnika',
             isRequired: true,
             placeholder: 'Wpisz płeć',
-            type: 'TEXT',
+            type: 'SELECT',
+            options: [
+                { value: 'MALE', label: 'Mezczyzna' },
+                { value: 'FEMALE', label: 'Kobieta' }
+            ]
         },
         {
             name: 'age',
             label: 'Wiek',
             isRequired: true,
             placeholder: 'Wpisz wiek zawodnika',
-            type: 'TEXT',
+            type: 'NUMBER',
         }
     ]
 }

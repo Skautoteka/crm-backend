@@ -1,4 +1,4 @@
-import Task from '../db/models/task.model'
+import Task, { TaskCreationAttributes } from '../db/models/task.model'
 import { ModelValidationError } from '../error/model-validation'
 import { ISingleInputConfig } from '../interface'
 
@@ -10,26 +10,52 @@ import { ISingleInputConfig } from '../interface'
 export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
     return [
         {
-            name: 'host',
+            name: 'hostTeam',
             label: 'Drużyna gości',
             isRequired: true,
             placeholder: 'Wpisz nazwę drużyny',
             type: 'TEXT',
         },
         {
-            name: 'guest',
+            name: 'guestTeam',
             label: 'Drużyna gospodarzy',
             isRequired: true,
-            placeholder: 'Wpisz nazwę drużyny',
+            placeholder: 'Wyszukaj druzyne',
+            type: 'SEARCH',
+            searchType: 'team'
+        },
+        {
+            name: 'location',
+            label: 'Adres',
+            isRequired: false,
+            placeholder: 'Wpisz adres zadania',
             type: 'TEXT',
         },
         {
-            name: 'address',
-            label: 'Adres',
+            name: 'status',
+            label: 'Status',
             isRequired: true,
-            placeholder: 'Wpisz adres zadania',
-            type: 'TEXT',
-        }
+            placeholder: 'Wybierz status zadania',
+            type: 'SELECT',
+            options: [
+                { label: 'W trakcie', value: 'IN_PROGRESS' },
+                { label: 'Ukonczone', value: 'COMPLETED' },
+            ]
+        },
+        {
+            name: 'startDate',
+            label: 'Data',
+            isRequired: false,
+            placeholder: 'Wybierz date',
+            type: 'DATE'
+        },
+        {
+            name: 'type',
+            label: 'Zadanie online',
+            isRequired: false,
+            placeholder: '',
+            type: 'BOOL'
+        },
     ]
 }
 
@@ -39,9 +65,9 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
  * @param param0
  * @returns
  */
-export const add = async (): Promise<Task> => {
+export const add = async (payload: TaskCreationAttributes): Promise<Task> => {
     try {
-        const task = new Task()
+        const task = new Task(payload)
         return await task.save()
     } catch (err) {
         throw new ModelValidationError(err.message)

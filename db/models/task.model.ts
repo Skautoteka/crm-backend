@@ -12,7 +12,8 @@ import {
 import User from './user.model'
 
 interface TaskAttributes {
-    id: string
+    id: string;
+    status: string;
 }
 
 export interface TaskCreationAttributes
