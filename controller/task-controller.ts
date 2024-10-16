@@ -1,5 +1,7 @@
 import Task, { TaskCreationAttributes } from '../db/models/task.model'
+import Team from '../db/models/team.model'
 import { ModelValidationError } from '../error/model-validation'
+import { NotFoundError } from '../error/not-found'
 import { ISingleInputConfig } from '../interface'
 
 /**
@@ -10,17 +12,18 @@ import { ISingleInputConfig } from '../interface'
 export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
     return [
         {
-            name: 'hostTeam',
+            name: 'hostTeamId',
             label: 'Drużyna gości',
             isRequired: true,
-            placeholder: 'Wpisz nazwę drużyny',
-            type: 'TEXT',
+            placeholder: 'Wyszukaj druzyne gosci',
+            type: 'SEARCH',
+            searchType: 'team'
         },
         {
-            name: 'guestTeam',
+            name: 'guestTeamId',
             label: 'Drużyna gospodarzy',
             isRequired: true,
-            placeholder: 'Wyszukaj druzyne',
+            placeholder: 'Wyszukaj druzyne gospodarzy',
             type: 'SEARCH',
             searchType: 'team'
         },
@@ -68,7 +71,18 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
 export const add = async (payload: TaskCreationAttributes): Promise<Task> => {
     try {
         const task = new Task(payload)
-        return await task.save()
+        await task.save()
+
+        const added = await Task.findByPk(task.id, { include: [
+            { model: Team, as: 'hostTeam' },
+            { model: Team, as: 'guestTeam' }
+        ] })
+
+        if(!added) {
+            throw new NotFoundError('Could not find added task in database.')
+        }
+
+        return added;
     } catch (err) {
         throw new ModelValidationError(err.message)
     }
@@ -78,7 +92,10 @@ export const add = async (payload: TaskCreationAttributes): Promise<Task> => {
  * Returns all tasks.
  */
 export const getAll = async (): Promise<Task[]> => {
-    return await Task.findAll()
+    return await Task.findAll({ include: [
+        { model: Team, as: 'hostTeam' },
+        { model: Team, as: 'guestTeam' }
+    ] })
 }
 
 /**

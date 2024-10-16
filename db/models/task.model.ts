@@ -10,6 +10,7 @@ import {
     Table,
 } from 'sequelize-typescript'
 import User from './user.model'
+import Team from './team.model';
 
 interface TaskAttributes {
     id: string;
@@ -34,20 +35,26 @@ export default class Task extends Model<
     @Column({ allowNull: true, type: DataTypes.TEXT })
     status: string
 
-    @Column({ allowNull: true, type: DataTypes.TEXT })
-    type: string
-
-    @Column({ allowNull: true, type: DataTypes.TEXT })
-    hostTeam: string
-
-    @Column({ allowNull: true, type: DataTypes.TEXT })
-    guestTeam: string
+    @Column({ allowNull: true, type: DataTypes.BOOLEAN })
+    type: boolean
 
     @Column({ allowNull: true, type: DataTypes.TEXT })
     location: string
 
     @Column({ allowNull: true, type: DataTypes.DATE })
     startDate: string
+
+    @ForeignKey(() => Team)
+    hostTeamId: string;
+
+    @BelongsTo(() => Team, { foreignKey: 'hostTeamId' })
+    hostTeam: Team;
+
+    @ForeignKey(() => Team)
+    guestTeamId: string;
+
+    @BelongsTo(() => Team, { foreignKey: 'guestTeamId' })
+    guestTeam: Team;
 
     @ForeignKey(() => User)
     @Column({ allowNull: true, type: DataTypes.UUID })
