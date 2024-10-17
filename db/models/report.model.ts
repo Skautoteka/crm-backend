@@ -1,12 +1,15 @@
 import { DataTypes, Optional } from 'sequelize'
 import {
+    BelongsTo,
     Column,
     DataType,
     Default,
+    ForeignKey,
     Model,
     PrimaryKey,
     Table,
 } from 'sequelize-typescript'
+import Player from './player.model'
 
 interface ReportAttributes {
     id: string
@@ -34,4 +37,10 @@ export default class Report extends Model<
 
     @Column({ allowNull: false, type: DataType.TEXT })
     status: 'in_progress' | 'finished'
+
+    @ForeignKey(() => Player)
+    playerId: string;
+
+    @BelongsTo(() => Player, { foreignKey: 'playerId' })
+    guestTeam: Player;
 }
