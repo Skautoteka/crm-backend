@@ -1,7 +1,6 @@
 import Report from '../db/models/report.model'
 import { ISingleInputConfig } from '../interface'
 import { ReportCreationAttributes } from '../db/models/report.model'
-import { InvalidPayloadError } from '../error/invalid-payload'
 import { ModelValidationError } from '../error/model-validation'
 import Player from '../db/models/player.model'
 import { NotFoundError } from '../error/not-found'
@@ -30,6 +29,17 @@ export const getReportCreateFields = async (): Promise<
             type: 'SEARCH',
             searchType: 'player'
         },
+        {
+            name: 'status',
+            label: 'Status raportu',
+            isRequired: false,
+            placeholder: 'Wybier status raportu',
+            type: 'SELECT',
+            options: [
+                { label: 'W trakcie', value: 'IN_PROGRESS' },
+                { label: 'Ukonczony', value: 'COMPLETED' }
+            ]
+        },
     ]
 }
 
@@ -53,16 +63,14 @@ export const remove = async (id: string): Promise<void> => {
  * @param param0
  * @returns
  */
-export const add = async ({
-    name,
-}: ReportCreationAttributes): Promise<Report> => {
-    if (!name) {
-        throw new InvalidPayloadError('No name was provided')
-    }
-
+export const add = async (payload: ReportCreationAttributes): Promise<Report> => {
     try {
-        const report = new Report({ name })
-        report.status = getDefaultReportStatus()
+        const report = new Report(payload)
+        
+        if(!payload.status) {
+            report.status = getDefaultReportStatus()
+        }
+
         const { id } = await report.save()
 
         const added = await Report.findByPk(id, { include: [Player] });
@@ -83,7 +91,7 @@ export const add = async ({
  * @returns
  */
 export const getAll = async (): Promise<Report[]> => {
-    return await Report.findAll()
+    return await Report.findAll({ include: Player })
 }
 
 const getDefaultReportStatus = (): 'IN_PROGRESS' | 'COMPLETED' => {
