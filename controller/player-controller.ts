@@ -1,3 +1,4 @@
+import { Op } from "sequelize"
 import Player, { PlayerCreationAttributes } from "../db/models/player.model"
 import Team from "../db/models/team.model"
 import { ModelValidationError } from "../error/model-validation"
@@ -30,6 +31,27 @@ export const add = async (payload: PlayerCreationAttributes): Promise<Player> =>
     } catch (err) {
         throw new ModelValidationError(err.message)
     }
+}
+
+/**
+ * Queries players based on the search query and the maximum
+ * size.
+ *
+ * @returns
+ */
+export const queryPlayer = async (
+    search: string,
+    size: number = 1
+): Promise<Player[]> => {
+    return await Player.findAll({
+        where: {
+            [Op.or]: [
+              { firstName: { [Op.like]: `%${search}%` } },
+              { lastName: { [Op.like]: `%${search}%` } }
+            ]
+          },    
+        limit: size,
+    })
 }
 
 /**

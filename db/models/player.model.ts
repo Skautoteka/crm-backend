@@ -6,6 +6,7 @@ import {
     Default,
     ForeignKey,
     Model,
+    NotNull,
     PrimaryKey,
     Table,
 } from 'sequelize-typescript'
@@ -39,6 +40,11 @@ export default class Player extends Model<
 
     @Column({ allowNull: false, type: DataTypes.TEXT })
     lastName: string;
+
+    @Column({ type: DataTypes.TEXT })
+    get name(): string {
+      return this.getDataValue('firstName') + ' ' + this.getDataValue('lastName');
+    }
 
     @Column({ allowNull: false, type: DataTypes.TEXT })
     sex: string;

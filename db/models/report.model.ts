@@ -14,7 +14,7 @@ import Player from './player.model'
 interface ReportAttributes {
     id: string
     name: string
-    status: 'in_progress' | 'finished'
+    status: 'IN_PROGRESS' | 'COMPLETED'
 }
 
 export interface ReportCreationAttributes
@@ -36,11 +36,11 @@ export default class Report extends Model<
     name: string
 
     @Column({ allowNull: false, type: DataType.TEXT })
-    status: 'in_progress' | 'finished'
+    status: 'IN_PROGRESS' | 'COMPLETED'
 
     @ForeignKey(() => Player)
     playerId: string;
 
     @BelongsTo(() => Player, { foreignKey: 'playerId' })
-    guestTeam: Player;
+    player: Player;
 }

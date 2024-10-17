@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
 import * as playerController from '../controller/player-controller'
+import { InvalidPayloadError } from '../error/invalid-payload'
 
 const router = express.Router()
 
@@ -40,6 +41,28 @@ router.get(
         try {
             const fields = await playerController.getTaskCreateFields()
             return res.json(fields)
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
+router.get(
+    '/search',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { search, size } = req.query;
+            
+            if (!search) {
+                throw new InvalidPayloadError('Size or search not specified')
+            }
+
+            if (typeof search !== 'string') {
+                throw new InvalidPayloadError('Invalid type of search or size')
+            }
+
+            const teams = await playerController.queryPlayer(search, Number(size || 5))
+            return res.json(teams)
         } catch (err) {
             return next(err)
         }

@@ -3,6 +3,8 @@ import { ISingleInputConfig } from '../interface'
 import { ReportCreationAttributes } from '../db/models/report.model'
 import { InvalidPayloadError } from '../error/invalid-payload'
 import { ModelValidationError } from '../error/model-validation'
+import Player from '../db/models/player.model'
+import { NotFoundError } from '../error/not-found'
 
 /**
  * Gets the model for the task model creation.
@@ -19,6 +21,14 @@ export const getReportCreateFields = async (): Promise<
             isRequired: true,
             placeholder: 'Wpisz nazwę raportu',
             type: 'TEXT',
+        },
+        {
+            name: 'playerId',
+            label: 'Zawodnik do raportu',
+            isRequired: true,
+            placeholder: 'Wyszukaj zawodnika',
+            type: 'SEARCH',
+            searchType: 'player'
         },
     ]
 }
@@ -53,7 +63,15 @@ export const add = async ({
     try {
         const report = new Report({ name })
         report.status = getDefaultReportStatus()
-        return await report.save()
+        const { id } = await report.save()
+
+        const added = await Report.findByPk(id, { include: [Player] });
+
+        if(!added) {
+            throw new NotFoundError('Could not find added report.');
+        }
+
+        return added;
     } catch (err) {
         throw new ModelValidationError(err.message)
     }
@@ -68,6 +86,6 @@ export const getAll = async (): Promise<Report[]> => {
     return await Report.findAll()
 }
 
-const getDefaultReportStatus = (): 'in_progress' | 'finished' => {
-    return 'in_progress'
+const getDefaultReportStatus = (): 'IN_PROGRESS' | 'COMPLETED' => {
+    return 'IN_PROGRESS'
 }
