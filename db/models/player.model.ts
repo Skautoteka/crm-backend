@@ -46,9 +46,12 @@ export default class Player extends Model<
     @Column({ allowNull: false, type: DataTypes.INTEGER })
     age: number;
 
+    @Column({ allowNull: false, type: DataTypes.TEXT })
+    position: 'FORWARD' | 'DEFENSE' | 'WINGER';
+
     @ForeignKey(() => Team)
     @Column({ allowNull: true, type: DataTypes.UUID })
-    teamId: string
+    teamId: string;
 
     @BelongsTo(() => Team)
     team: Team

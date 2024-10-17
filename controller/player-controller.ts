@@ -1,12 +1,14 @@
 import Player, { PlayerCreationAttributes } from "../db/models/player.model"
+import Team from "../db/models/team.model"
 import { ModelValidationError } from "../error/model-validation"
+import { NotFoundError } from "../error/not-found"
 import { ISingleInputConfig } from "../interface"
 
 /**
  * Returns all players.
  */
 export const getAll = async (): Promise<Player[]> => {
-    return await Player.findAll()
+    return await Player.findAll({ include: Team })
 }
 
 /**
@@ -15,10 +17,16 @@ export const getAll = async (): Promise<Player[]> => {
  * @param param0
  * @returns
  */
-export const add = async ({ firstName, lastName, age, sex }: PlayerCreationAttributes): Promise<Player> => {
+export const add = async (payload: PlayerCreationAttributes): Promise<Player> => {
     try {
-        const player = new Player({ firstName, lastName, age, sex })
-        return await player.save()
+        const { id } = await new Player(payload).save();
+        const added = await Player.findByPk(id, { include: Team })
+
+        if(!added) {
+            throw new NotFoundError('Could not find added player.');
+        }
+
+        return added;
     } catch (err) {
         throw new ModelValidationError(err.message)
     }
@@ -68,6 +76,26 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
                 { value: 'MALE', label: 'Mezczyzna' },
                 { value: 'FEMALE', label: 'Kobieta' }
             ]
+        },
+        {
+            name: 'position',
+            label: 'Pozycja zawodnika',
+            isRequired: true,
+            placeholder: 'Wybierz pozycje',
+            type: 'SELECT',
+            options: [
+                { value: 'FORWARD', label: 'Napastnik' },
+                { value: 'DEFENSE', label: 'Obrońca' },
+                { value: 'WINGER', label: 'Skrzydłowy' }
+            ]
+        },
+        {
+            name: 'teamId',
+            label: 'Drużyna zawodnika',
+            isRequired: false,
+            placeholder: 'Wyszukaj druzyne zawodnika',
+            type: 'SEARCH',
+            searchType: 'team'
         },
         {
             name: 'age',
