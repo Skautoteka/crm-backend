@@ -8,6 +8,10 @@ dotenv.config()
 
 // eslint-disable-next-line
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    if (req.hostname === 'localhost' || req.hostname === '127.0.0.1') {
+        return next();
+    }
+
     const accessToken = req.cookies['sktka-access-token'];
 
     try {
