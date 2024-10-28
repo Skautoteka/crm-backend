@@ -8,7 +8,8 @@ dotenv.config()
 
 // eslint-disable-next-line
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    if (req.hostname === 'localhost' || req.hostname === '127.0.0.1') {
+    //@ts-ignore anyway
+    if ((req.hostname === 'localhost' || req.hostname === '127.0.0.1') && req.headers.host.split(':')[1] !== '4200') {
         return next();
     }
 
