@@ -12,4 +12,16 @@ router.get('/all', async (req: Request, res: Response, next: NextFunction) => {
     }
 })
 
+router.get(
+    '/create-fields',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const fields = await userController.getUserCreateFields()
+            return res.json(fields)
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
 export { router as userRouter }
