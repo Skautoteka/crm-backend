@@ -1,6 +1,7 @@
 import User from '../db/models/user.model'
 import Role from '../db/models/role.model'
 import { ISingleInputConfig } from '../interface'
+import Region from '../db/models/region.model'
 
 export const getAll = async () => {
     const users = await User.findAll({
@@ -9,12 +10,17 @@ export const getAll = async () => {
                 model: Role,
                 attributes: ['name'],
             },
+            {
+                model: Region,
+                attributes: ['name'],
+            },
         ],
     })
 
     return users.map((user) => ({
         ...user.get(),
         role: user.role?.name,
+        region: user.region?.name,
     }))
 }
 
