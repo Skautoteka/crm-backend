@@ -32,6 +32,36 @@ module.exports = {
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
+            {
+                id: '23512d44-e0e0-4ed3-a09c-32603587dbf8',
+                firstName: 'Dominik',
+                lastName: 'Paczkowski',
+                email: 'dominik@dominik',
+                password: await hashPassword('scout123'),
+                roleId: '5f26f9d7-e4fc-4662-bafd-a4d34222130e',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                id: '9b1e9a92-404c-44e5-bea3-1724d00f1db6',
+                firstName: 'Damian',
+                lastName: 'Kowalski',
+                email: 'damian@damian',
+                password: await hashPassword('1234'),
+                roleId: '5f26f9d7-e4fc-4662-bafd-a4d34222130e',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                id: 'c4889946-9181-4d3b-b3a2-8a980b008546',
+                firstName: 'Adrian',
+                lastName: 'Nowicki',
+                email: 'adrian@adrian',
+                password: await hashPassword('1234'),
+                roleId: '5f26f9d7-e4fc-4662-bafd-a4d34222130e',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
         ]
 
         await queryInterface.bulkInsert('Users', users, {})
