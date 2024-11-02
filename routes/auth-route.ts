@@ -7,8 +7,15 @@ const router = express.Router();
 
 router.post('/register', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { firstName, lastName, email, password } = req.body;
-        await authController.createUser(firstName, lastName, email, password);
+        const { firstName, lastName, email, password } = req.body
+
+        if (!firstName || !lastName || !email || !password) {
+            throw new Error('Missing required fields')
+        }
+
+        console.log('Registration attempt:', { firstName, lastName, email })
+
+        await authController.createUser(firstName, lastName, email, password)
         res.json({ success: true })
     } catch (err) {
         return next(err);
