@@ -62,6 +62,16 @@ module.exports = {
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
+            {
+                id: '98c789ea-049b-4aa3-9b23-5102d0e81c14',
+                firstName: 'Skaut',
+                lastName: 'Użytkownik',
+                email: 'skaut@skaut',
+                password: await hashPassword('1234'),
+                roleId: 'c254b01e-2723-4786-b24e-b37fba1dd92e',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
         ]
 
         await queryInterface.bulkInsert('Users', users, {})
