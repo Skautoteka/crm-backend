@@ -15,12 +15,13 @@ import Role from './role.model'
 import Task from './task.model'
 
 interface UserAttributes {
-    role: string
     id: number
     firstName: string
     lastName: string
     email: string
     password: string
+    role: string
+    region: string
 }
 
 export interface UserCreationAttributes
