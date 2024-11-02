@@ -1,6 +1,6 @@
+import { ISingleInputConfig } from '../interface'
 import User from '../db/models/user.model'
 import Role from '../db/models/role.model'
-import { ISingleInputConfig } from '../interface'
 import Region from '../db/models/region.model'
 
 export const getAll = async () => {
@@ -69,7 +69,7 @@ export const getUserCreateFields = async (): Promise<ISingleInputConfig[]> => {
             label: 'Region',
             isRequired: false,
             placeholder: 'Wyszukaj region',
-            type: 'SELECT',
+            type: 'SEARCH',
             searchType: 'region',
         },
     ]
