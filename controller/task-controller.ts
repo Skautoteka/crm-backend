@@ -17,7 +17,7 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
             isRequired: true,
             placeholder: 'Wyszukaj druzyne gosci',
             type: 'SEARCH',
-            searchType: 'team'
+            searchType: 'team',
         },
         {
             name: 'guestTeamId',
@@ -25,7 +25,7 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
             isRequired: true,
             placeholder: 'Wyszukaj druzyne gospodarzy',
             type: 'SEARCH',
-            searchType: 'team'
+            searchType: 'team',
         },
         {
             name: 'location',
@@ -43,21 +43,21 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
             options: [
                 { label: 'W trakcie', value: 'IN_PROGRESS' },
                 { label: 'Ukonczone', value: 'COMPLETED' },
-            ]
+            ],
         },
         {
             name: 'startDate',
             label: 'Data',
             isRequired: false,
             placeholder: 'Wybierz date',
-            type: 'DATE'
+            type: 'DATE',
         },
         {
             name: 'type',
             label: 'Zadanie online',
             isRequired: false,
             placeholder: '',
-            type: 'BOOL'
+            type: 'BOOL',
         },
     ]
 }
@@ -73,16 +73,18 @@ export const add = async (payload: TaskCreationAttributes): Promise<Task> => {
         const task = new Task(payload)
         await task.save()
 
-        const added = await Task.findByPk(task.id, { include: [
-            { model: Team, as: 'hostTeam' },
-            { model: Team, as: 'guestTeam' }
-        ] })
+        const added = await Task.findByPk(task.id, {
+            include: [
+                { model: Team, as: 'hostTeam' },
+                { model: Team, as: 'guestTeam' },
+            ],
+        })
 
-        if(!added) {
+        if (!added) {
             throw new NotFoundError('Could not find added task in database.')
         }
 
-        return added;
+        return added
     } catch (err) {
         throw new ModelValidationError(err.message)
     }
@@ -92,10 +94,12 @@ export const add = async (payload: TaskCreationAttributes): Promise<Task> => {
  * Returns all tasks.
  */
 export const getAll = async (): Promise<Task[]> => {
-    return await Task.findAll({ include: [
-        { model: Team, as: 'hostTeam' },
-        { model: Team, as: 'guestTeam' }
-    ] })
+    return await Task.findAll({
+        include: [
+            { model: Team, as: 'hostTeam' },
+            { model: Team, as: 'guestTeam' },
+        ],
+    })
 }
 
 /**

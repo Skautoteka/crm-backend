@@ -27,7 +27,7 @@ export const getReportCreateFields = async (): Promise<
             isRequired: true,
             placeholder: 'Wyszukaj zawodnika',
             type: 'SEARCH',
-            searchType: 'player'
+            searchType: 'player',
         },
         {
             name: 'status',
@@ -37,8 +37,8 @@ export const getReportCreateFields = async (): Promise<
             type: 'SELECT',
             options: [
                 { label: 'W trakcie', value: 'IN_PROGRESS' },
-                { label: 'Ukonczony', value: 'COMPLETED' }
-            ]
+                { label: 'Ukonczony', value: 'COMPLETED' },
+            ],
         },
     ]
 }
@@ -63,23 +63,25 @@ export const remove = async (id: string): Promise<void> => {
  * @param param0
  * @returns
  */
-export const add = async (payload: ReportCreationAttributes): Promise<Report> => {
+export const add = async (
+    payload: ReportCreationAttributes
+): Promise<Report> => {
     try {
         const report = new Report(payload)
-        
-        if(!payload.status) {
+
+        if (!payload.status) {
             report.status = getDefaultReportStatus()
         }
 
         const { id } = await report.save()
 
-        const added = await Report.findByPk(id, { include: [Player] });
+        const added = await Report.findByPk(id, { include: [Player] })
 
-        if(!added) {
-            throw new NotFoundError('Could not find added report.');
+        if (!added) {
+            throw new NotFoundError('Could not find added report.')
         }
 
-        return added;
+        return added
     } catch (err) {
         throw new ModelValidationError(err.message)
     }

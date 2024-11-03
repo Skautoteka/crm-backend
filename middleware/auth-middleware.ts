@@ -1,38 +1,44 @@
 import { Request, Response, NextFunction } from 'express'
-import { ForbiddenError } from '../error/forbidden';
+import { ForbiddenError } from '../error/forbidden'
 import dotenv from 'dotenv'
-import { NotFoundError } from '../error/not-found';
-import jwt from 'jsonwebtoken';
+import { NotFoundError } from '../error/not-found'
+import jwt from 'jsonwebtoken'
 
 dotenv.config()
 
 // eslint-disable-next-line
-export const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const authMiddleware = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
     //@ts-expect-error anyway
-    if ((req.hostname === 'localhost' || req.hostname === '127.0.0.1') && req.headers.host.split(':')[1] !== '4200') {
-        return next();
+    if (
+        (req.hostname === 'localhost' || req.hostname === '127.0.0.1') &&
+        req.headers.host.split(':')[1] !== '4200'
+    ) {
+        return next()
     }
 
-    const accessToken = req.cookies['sktka-access-token'];
+    const accessToken = req.cookies['sktka-access-token']
 
     try {
-        if(!accessToken) {
-            throw new ForbiddenError('Unknown user with tokens');
+        if (!accessToken) {
+            throw new ForbiddenError('Unknown user with tokens')
         }
-    
-        const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
-        if(!accessTokenSecret) {
-            throw new NotFoundError('Could not find access token secret');
+
+        const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
+        if (!accessTokenSecret) {
+            throw new NotFoundError('Could not find access token secret')
         }
 
         //@ts-expect-error email on jwt payload
-        const { email } = await jwt.verify(accessToken, accessTokenSecret);
+        const { email } = await jwt.verify(accessToken, accessTokenSecret)
 
         // @ts-expect-error set user
-        req.email = email;
-        return next();
+        req.email = email
+        return next()
     } catch {
-        return next(new ForbiddenError('Could not authenticate user'));
+        return next(new ForbiddenError('Could not authenticate user'))
     }
-
 }

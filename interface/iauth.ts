@@ -1,8 +1,8 @@
 export type Tokens = {
-    accessToken: string;
-    refreshToken: string;
+    accessToken: string
+    refreshToken: string
 }
 
 export type AccessToken = {
-    accessToken: string;
+    accessToken: string
 }

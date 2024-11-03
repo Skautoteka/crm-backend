@@ -1,14 +1,14 @@
-import User from "../db/models/user.model";
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { ModelValidationError } from "../error/model-validation";
-import { NotFoundError } from "../error/not-found";
+import User from '../db/models/user.model'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import { ModelValidationError } from '../error/model-validation'
+import { NotFoundError } from '../error/not-found'
 import dotenv from 'dotenv'
-import { ForbiddenError } from "../error/forbidden";
-import { Tokens } from "../interface/iauth";
-import { InvalidPayloadError } from "../error/invalid-payload";
-import { Request } from 'express';
-import Role from "../db/models/role.model";
+import { ForbiddenError } from '../error/forbidden'
+import { Tokens } from '../interface/iauth'
+import { InvalidPayloadError } from '../error/invalid-payload'
+import { Request } from 'express'
+import Role from '../db/models/role.model'
 import { UserAttributes, PublicUserAttributes } from '../db/models/user.model'
 import * as roleController from './role-controller'
 import * as regionController from './region-controller'
@@ -123,23 +123,29 @@ export const createUser = async ({
 
 /**
  * Tries to log in the user to the system. The value returned is a string representing
- * 
- * @param email 
- * @param password 
+ *
+ * @param email
+ * @param password
  */
-export const login = async (email: string, password: string): Promise<Tokens> => {
-    const user = await User.findOne({ where: { email } });
+export const login = async (
+    email: string,
+    password: string
+): Promise<Tokens> => {
+    const user = await User.findOne({ where: { email } })
 
-    if(!user) {
-        throw new ForbiddenError('Password is invalid');
+    if (!user) {
+        throw new ForbiddenError('Password is invalid')
     }
 
-    const compareResult = await bcrypt.compare(password, user.password);
-    if(!compareResult) {
-        throw new ForbiddenError('Password is invalid');
+    const compareResult = await bcrypt.compare(password, user.password)
+    if (!compareResult) {
+        throw new ForbiddenError('Password is invalid')
     }
 
-    return { accessToken: _getAccessToken(user.email), refreshToken: _getRefreshToken(user.email) }
+    return {
+        accessToken: _getAccessToken(user.email),
+        refreshToken: _getRefreshToken(user.email),
+    }
 }
 
 /**
@@ -147,13 +153,16 @@ export const login = async (email: string, password: string): Promise<Tokens> =>
  * pair of tokens.
  */
 export const refreshToken = async (refreshToken: string): Promise<Tokens> => {
-    const payload = await jwt.verify(refreshToken, _getSecret('refresh'));
+    const payload = await jwt.verify(refreshToken, _getSecret('refresh'))
     // @ts-expect-error email exists on payload
-    const email = payload.email;
+    const email = payload.email
 
-    if(typeof email !== 'string') {
-        throw new InvalidPayloadError('Email signed with token is invalid');
+    if (typeof email !== 'string') {
+        throw new InvalidPayloadError('Email signed with token is invalid')
     }
 
-    return { accessToken: _getAccessToken(email), refreshToken: _getRefreshToken(email) };
+    return {
+        accessToken: _getAccessToken(email),
+        refreshToken: _getRefreshToken(email),
+    }
 }
