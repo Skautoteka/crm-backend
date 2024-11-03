@@ -3,6 +3,7 @@ import Region from '../db/models/region.model'
 import { RegionCreationAttributes } from '../db/models/region.model'
 import { InvalidPayloadError } from '../error/invalid-payload'
 import { ModelValidationError } from '../error/model-validation'
+import { NotFoundError } from '../error/not-found'
 
 /**
  * Queries regions based on the search query and the maximum
@@ -60,4 +61,19 @@ export const add = async ({
  */
 export const getAll = async (): Promise<Region[]> => {
     return await Region.findAll()
+}
+
+/**
+ * Gets basic role in the system.
+ *
+ * @returns
+ */
+export const getRegion = async (regionId: string): Promise<Region> => {
+    const region = await Region.findOne({ where: { id: regionId } })
+
+    if (!region) {
+        throw new NotFoundError('Could not find the region in the system')
+    }
+
+    return region
 }
