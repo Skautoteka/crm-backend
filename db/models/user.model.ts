@@ -14,7 +14,7 @@ import Region from './region.model'
 import Role from './role.model'
 import Task from './task.model'
 
-interface UserAttributes {
+export interface UserAttributes {
     id: number
     firstName: string
     lastName: string
@@ -23,6 +23,15 @@ interface UserAttributes {
     role: string
     region: string
 }
+
+export interface PublicUserAttributes {
+    firstName: string
+    lastName: string
+    email: string
+    role: string
+    region: string
+}
+
 
 export interface UserCreationAttributes
     extends Optional<UserAttributes, 'id'> {}
