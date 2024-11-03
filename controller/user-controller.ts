@@ -53,15 +53,15 @@ export const getUserCreateFields = async (): Promise<ISingleInputConfig[]> => {
             type: 'TEXT',
         },
         {
-            name: 'rola',
+            name: 'role',
             label: 'Rola',
             isRequired: true,
             placeholder: 'Wybierz role użytkownika',
             type: 'SELECT',
             options: [
-                { label: 'Skaut', value: 'scout' },
-                { label: 'Menadżer regionu', value: 'manager' },
-                { label: 'Analityk', value: 'analyst' },
+                { label: 'Skaut', value: 'Skaut' },
+                { label: 'Menadżer regionu', value: 'Menadżer regionu' },
+                { label: 'Analityk', value: 'Analityk' },
             ],
         },
         {
