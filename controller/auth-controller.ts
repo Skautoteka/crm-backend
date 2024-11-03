@@ -9,83 +9,111 @@ import { Tokens } from "../interface/iauth";
 import { InvalidPayloadError } from "../error/invalid-payload";
 import { Request } from 'express';
 import Role from "../db/models/role.model";
+import { UserAttributes, PublicUserAttributes } from '../db/models/user.model'
 import * as roleController from './role-controller'
+import * as regionController from './region-controller'
 
 dotenv.config()
 
 /**
  * Returns the secret used to sign jwt.
- * 
- * @param type 
- * @returns 
+ *
+ * @param type
+ * @returns
  */
 const _getSecret = (type: 'refresh' | 'access'): string => {
-    const secret = type === 'refresh' ? process.env.REFRESH_TOKEN_SECRET : process.env.ACCESS_TOKEN_SECRET;
+    const secret =
+        type === 'refresh'
+            ? process.env.REFRESH_TOKEN_SECRET
+            : process.env.ACCESS_TOKEN_SECRET
 
-    if(!secret) {
-        throw new NotFoundError('Could not find access/refresh token secret');
+    if (!secret) {
+        throw new NotFoundError('Could not find access/refresh token secret')
     }
 
-    return secret;
+    return secret
 }
 
 /**
  * Returns an access token.
  */
 const _getAccessToken = (email: string): string => {
-    return jwt.sign({ email }, _getSecret('access'), { expiresIn: '10s' });
+    return jwt.sign({ email }, _getSecret('access'), { expiresIn: '10s' })
 }
 
 /**
  * Returns refresh token
  */
 const _getRefreshToken = (email: string): string => {
-    return jwt.sign({ email }, _getSecret('refresh'));
+    return jwt.sign({ email }, _getSecret('refresh'))
 }
 
 /**
  * Generates hashed password from a password given as argument.
- * 
- * @param password 
- * @returns 
+ *
+ * @param password
+ * @returns
  */
 const _getHashedPassword = async (password: string): Promise<string> => {
-    const saltRounds = 10;
-    const salt = await bcrypt.genSalt(saltRounds);
-    return await bcrypt.hash(password, salt);
+    const saltRounds = 10
+    const salt = await bcrypt.genSalt(saltRounds)
+    return await bcrypt.hash(password, salt)
 }
 
 export const getReqUser = async (req: Request): Promise<User> => {
     // @ts-expect-error getting req
-    const { email } = req;
+    const { email } = req
 
     const user = await User.findOne({ where: { email }, include: Role })
 
-    if(!user) {
-        throw new NotFoundError('Did not find user in the database');
+    if (!user) {
+        throw new NotFoundError('Did not find user in the database')
     }
 
-    return user;
+    return user
 }
 
 /**
  * Creates the user to the database.
- * 
- * @param firstName 
- * @param lastName 
- * @returns 
+ *
+ * @param firstName
+ * @param lastName
+ * @returns
  */
-export const createUser = async (firstName: string, lastName: string, email: string, password: string): Promise<User> => {
+export const createUser = async ({
+    firstName,
+    lastName,
+    email,
+    password,
+    role,
+    region,
+}: UserAttributes): Promise<PublicUserAttributes> => {
     try {
-        const hashedPassword = await _getHashedPassword(password);
-        const user = new User({ firstName, lastName, email, password: hashedPassword });
+        const hashedPassword = await _getHashedPassword(password)
+        const roleObject = await roleController.getBasicRole(role ?? 'scout')
+        const regionObject = await regionController.getRegion(region)
 
-        const role = await roleController.getBasicRole()
-        user.roleId = role.id
+        const user = new User({
+            firstName,
+            lastName,
+            email,
+            password: hashedPassword,
+            role: roleObject.id,
+            region: regionObject.id,
+        })
+        await user.save()
 
-        return await user.save();
-    } catch(err) {
-        throw new ModelValidationError(err.message);
+        const userData = {
+            firstName,
+            lastName,
+            email,
+            role: roleObject.name,
+            region: regionObject.name,
+        }
+
+        return {...userData}
+    } catch (err) {
+        throw new ModelValidationError(err.message)
     }
 }
 

@@ -2,25 +2,50 @@ import express, { NextFunction, Request, Response } from 'express';
 import * as authController from '../controller/auth-controller';
 import { authMiddleware } from '../middleware/auth-middleware';
 import { ForbiddenError } from '../error/forbidden';
+import { UserAttributes } from '../db/models/user.model'
 
-const router = express.Router();
+const router = express.Router()
 
-router.post('/register', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { firstName, lastName, email, password } = req.body
+router.post(
+    '/register',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { firstName, lastName, email, password, role, region } =
+                req.body
 
-        if (!firstName || !lastName || !email || !password) {
-            throw new Error('Missing required fields')
+            if (!firstName || !lastName || !email || !role) {
+                throw new Error('Missing required fields')
+            }
+
+            console.log('Registration attempt:', {
+                firstName,
+                lastName,
+                email,
+                password,
+                role,
+                region,
+            })
+
+            const user = await authController.createUser(<UserAttributes>{
+                firstName,
+                lastName,
+                email,
+                password: password ? password : 'tempPassword',
+                role: role,
+                region,
+            })
+
+            res.json({
+                success: true,
+                added: {
+                    ...user,
+                },
+            })
+        } catch (err) {
+            return next(err)
         }
-
-        console.log('Registration attempt:', { firstName, lastName, email })
-
-        await authController.createUser(firstName, lastName, email, password)
-        res.json({ success: true })
-    } catch (err) {
-        return next(err);
     }
-})
+)
 
 router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     try {
