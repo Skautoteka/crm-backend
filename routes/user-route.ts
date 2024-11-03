@@ -24,4 +24,17 @@ router.get(
     }
 )
 
+router.delete(
+    '/:id',
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params
+        try {
+            await userController.remove(id)
+            return res.json({ success: true })
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
 export { router as userRouter }

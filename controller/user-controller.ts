@@ -25,6 +25,20 @@ export const getAll = async () => {
 }
 
 /**
+ * Removes a user from a database.
+ *
+ * @param id
+ * @returns
+ */
+export const remove = async (id: string): Promise<void> => {
+    const user = await User.findOne({ where: { id } })
+
+    if (user) {
+        return await user.destroy()
+    }
+}
+
+/**
  * Gets the model for the user model creation.
  *
  * @returns

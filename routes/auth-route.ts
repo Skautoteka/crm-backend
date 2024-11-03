@@ -43,7 +43,6 @@ router.post(
                 region,
                 phoneNumber,
             })
-            console.log('user', user)
 
             res.json({
                 success: true,
