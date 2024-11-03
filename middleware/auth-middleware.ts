@@ -12,9 +12,9 @@ export const authMiddleware = async (
     res: Response,
     next: NextFunction
 ): Promise<void> => {
-    //@ts-expect-error anyway
     if (
         (req.hostname === 'localhost' || req.hostname === '127.0.0.1') &&
+        //@ts-expect-error anyway
         req.headers.host.split(':')[1] !== '4200'
     ) {
         return next()
