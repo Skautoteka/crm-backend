@@ -10,8 +10,15 @@ router.post(
     '/register',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { firstName, lastName, email, password, role, region } =
-                req.body
+            const {
+                firstName,
+                lastName,
+                email,
+                password,
+                role,
+                region,
+                phoneNumber,
+            } = req.body
 
             if (!firstName || !lastName || !email || !role) {
                 throw new Error('Missing required fields')
@@ -24,6 +31,7 @@ router.post(
                 password,
                 role,
                 region,
+                phoneNumber,
             })
 
             const user = await authController.createUser(<UserAttributes>{
@@ -33,7 +41,9 @@ router.post(
                 password: password ? password : 'tempPassword',
                 role: role,
                 region,
+                phoneNumber,
             })
+            console.log('user', user)
 
             res.json({
                 success: true,

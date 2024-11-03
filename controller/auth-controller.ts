@@ -87,6 +87,7 @@ export const createUser = async ({
     password,
     role,
     region,
+    phoneNumber,
 }: UserAttributes): Promise<PublicUserAttributes> => {
     try {
         const hashedPassword = await _getHashedPassword(password)
@@ -99,19 +100,22 @@ export const createUser = async ({
             email,
             password: hashedPassword,
             role: roleObject.id,
+            phoneNumber,
             region: regionObject.id,
         })
-        await user.save()
+        const data = await user.save()
 
         const userData = {
+            id: data.id,
             firstName,
             lastName,
             email,
             role: roleObject.name,
+            phoneNumber,
             region: regionObject.name,
         }
 
-        return {...userData}
+        return { ...userData }
     } catch (err) {
         throw new ModelValidationError(err.message)
     }

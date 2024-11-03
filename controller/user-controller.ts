@@ -65,6 +65,13 @@ export const getUserCreateFields = async (): Promise<ISingleInputConfig[]> => {
             ],
         },
         {
+            name: 'phoneNumber',
+            label: 'Numer telefonu',
+            isRequired: false,
+            placeholder: 'Wpisz numer telefonu',
+            type: 'TEXT',
+        },
+        {
             name: 'region',
             label: 'Region',
             isRequired: false,

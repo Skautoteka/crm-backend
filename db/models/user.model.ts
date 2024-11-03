@@ -15,10 +15,11 @@ import Role from './role.model'
 import Task from './task.model'
 
 export interface UserAttributes {
-    id: number
+    id: string
     firstName: string
     lastName: string
     email: string
+    phoneNumber: string
     password: string
     role: string
     region: string
@@ -29,9 +30,9 @@ export interface PublicUserAttributes {
     lastName: string
     email: string
     role: string
+    phoneNumber: string
     region: string
 }
-
 
 export interface UserCreationAttributes
     extends Optional<UserAttributes, 'id'> {}
@@ -55,10 +56,13 @@ export default class User extends Model<
     lastName: string
 
     @Column({ allowNull: false, unique: true, type: DataTypes.STRING(200) })
-    email: string;
+    email: string
+
+    @Column({ allowNull: true, unique: false, type: DataTypes.STRING(32) })
+    phoneNumber: string
 
     @Column({ allowNull: false, type: DataTypes.STRING(64) })
-    password: string;
+    password: string
 
     @ForeignKey(() => Region)
     @Column({ allowNull: true, type: DataTypes.UUID })
