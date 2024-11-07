@@ -1,8 +1,6 @@
-import { Op } from "sequelize"
 import PlayerTrait, { PlayerTraitCreationAttributes } from "../db/models/playerTrait.model";
 import { ModelValidationError } from "../error/model-validation";
 import { NotFoundError } from "../error/not-found";
-import { ISingleInputConfig } from "../interface"
 
 /**
  * Returns all traits.
