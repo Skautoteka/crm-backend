@@ -46,9 +46,7 @@ router.post(
 
             res.json({
                 success: true,
-                added: {
-                    ...user,
-                },
+                added: user,
             })
         } catch (err) {
             return next(err)
