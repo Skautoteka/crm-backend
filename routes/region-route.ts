@@ -4,11 +4,19 @@ import { InvalidPayloadError } from '../error/invalid-payload'
 
 const router = express.Router()
 
+router.get('/all', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const regions = await regionController.getAll()
+        return res.json(regions)
+    } catch (err) {
+        return next(err)
+    }
+})
+
 router.get(
     '/search',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            console.log('herer')
             const { search, size } = req.query
 
             if (!search) {
