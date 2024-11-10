@@ -10,11 +10,11 @@ import {
     Table,
 } from 'sequelize-typescript'
 import User from './user.model'
-import Team from './team.model';
+import Team from './team.model'
 
 interface TaskAttributes {
-    id: string;
-    status: string;
+    id: string
+    status: string
 }
 
 export interface TaskCreationAttributes
@@ -45,16 +45,16 @@ export default class Task extends Model<
     startDate: string
 
     @ForeignKey(() => Team)
-    hostTeamId: string;
+    hostTeamId: string
 
     @BelongsTo(() => Team, { foreignKey: 'hostTeamId' })
-    hostTeam: Team;
+    hostTeam: Team
 
     @ForeignKey(() => Team)
-    guestTeamId: string;
+    guestTeamId: string
 
     @BelongsTo(() => Team, { foreignKey: 'guestTeamId' })
-    guestTeam: Team;
+    guestTeam: Team
 
     @ForeignKey(() => User)
     @Column({ allowNull: true, type: DataTypes.UUID })

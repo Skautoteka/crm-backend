@@ -18,7 +18,7 @@ router.delete(
     async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params
         try {
-            await playerController.remove(id);
+            await playerController.remove(id)
             return res.json({ success: true })
         } catch (err) {
             return next(err)
@@ -51,8 +51,8 @@ router.get(
     '/search',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { search, size } = req.query;
-            
+            const { search, size } = req.query
+
             if (!search) {
                 throw new InvalidPayloadError('Size or search not specified')
             }
@@ -61,7 +61,10 @@ router.get(
                 throw new InvalidPayloadError('Invalid type of search or size')
             }
 
-            const teams = await playerController.queryPlayer(search, Number(size || 5))
+            const teams = await playerController.queryPlayer(
+                search,
+                Number(size || 5)
+            )
             return res.json(teams)
         } catch (err) {
             return next(err)

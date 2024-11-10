@@ -1,9 +1,9 @@
-import { Op } from "sequelize"
-import Player, { PlayerCreationAttributes } from "../db/models/player.model"
-import Team from "../db/models/team.model"
-import { ModelValidationError } from "../error/model-validation"
-import { NotFoundError } from "../error/not-found"
-import { ISingleInputConfig } from "../interface"
+import { Op } from 'sequelize'
+import Player, { PlayerCreationAttributes } from '../db/models/player.model'
+import Team from '../db/models/team.model'
+import { ModelValidationError } from '../error/model-validation'
+import { NotFoundError } from '../error/not-found'
+import { ISingleInputConfig } from '../interface'
 
 /**
  * Returns all players.
@@ -18,16 +18,18 @@ export const getAll = async (): Promise<Player[]> => {
  * @param param0
  * @returns
  */
-export const add = async (payload: PlayerCreationAttributes): Promise<Player> => {
+export const add = async (
+    payload: PlayerCreationAttributes
+): Promise<Player> => {
     try {
-        const { id } = await new Player(payload).save();
+        const { id } = await new Player(payload).save()
         const added = await Player.findByPk(id, { include: Team })
 
-        if(!added) {
-            throw new NotFoundError('Could not find added player.');
+        if (!added) {
+            throw new NotFoundError('Could not find added player.')
         }
 
-        return added;
+        return added
     } catch (err) {
         throw new ModelValidationError(err.message)
     }
@@ -46,10 +48,10 @@ export const queryPlayer = async (
     return await Player.findAll({
         where: {
             [Op.or]: [
-              { firstName: { [Op.like]: `%${search}%` } },
-              { lastName: { [Op.like]: `%${search}%` } }
-            ]
-          },    
+                { firstName: { [Op.like]: `%${search}%` } },
+                { lastName: { [Op.like]: `%${search}%` } },
+            ],
+        },
         limit: size,
     })
 }
@@ -96,8 +98,8 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
             type: 'SELECT',
             options: [
                 { value: 'MALE', label: 'Mezczyzna' },
-                { value: 'FEMALE', label: 'Kobieta' }
-            ]
+                { value: 'FEMALE', label: 'Kobieta' },
+            ],
         },
         {
             name: 'position',
@@ -108,8 +110,8 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
             options: [
                 { value: 'FORWARD', label: 'Napastnik' },
                 { value: 'DEFENSE', label: 'Obrońca' },
-                { value: 'WINGER', label: 'Skrzydłowy' }
-            ]
+                { value: 'WINGER', label: 'Skrzydłowy' },
+            ],
         },
         {
             name: 'teamId',
@@ -117,7 +119,7 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
             isRequired: false,
             placeholder: 'Wyszukaj druzyne zawodnika',
             type: 'SEARCH',
-            searchType: 'team'
+            searchType: 'team',
         },
         {
             name: 'age',
@@ -125,6 +127,6 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
             isRequired: true,
             placeholder: 'Wpisz wiek zawodnika',
             type: 'NUMBER',
-        }
+        },
     ]
 }

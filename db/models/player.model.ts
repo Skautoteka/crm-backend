@@ -6,7 +6,6 @@ import {
     Default,
     ForeignKey,
     Model,
-    NotNull,
     PrimaryKey,
     Table,
 } from 'sequelize-typescript'
@@ -39,25 +38,27 @@ export default class Player extends Model<
     firstName: string
 
     @Column({ allowNull: false, type: DataTypes.TEXT })
-    lastName: string;
+    lastName: string
 
     @Column({ type: DataTypes.TEXT })
     get name(): string {
-      return this.getDataValue('firstName') + ' ' + this.getDataValue('lastName');
+        return (
+            this.getDataValue('firstName') + ' ' + this.getDataValue('lastName')
+        )
     }
 
     @Column({ allowNull: false, type: DataTypes.TEXT })
-    sex: string;
+    sex: string
 
     @Column({ allowNull: false, type: DataTypes.INTEGER })
-    age: number;
+    age: number
 
     @Column({ allowNull: false, type: DataTypes.TEXT })
-    position: 'FORWARD' | 'DEFENSE' | 'WINGER';
+    position: 'FORWARD' | 'DEFENSE' | 'WINGER'
 
     @ForeignKey(() => Team)
     @Column({ allowNull: true, type: DataTypes.UUID })
-    teamId: string;
+    teamId: string
 
     @BelongsTo(() => Team)
     team: Team

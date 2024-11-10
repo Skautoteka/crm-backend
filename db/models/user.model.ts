@@ -14,12 +14,24 @@ import Region from './region.model'
 import Role from './role.model'
 import Task from './task.model'
 
-interface UserAttributes {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
+export interface UserAttributes {
+    id: string
+    firstName: string
+    lastName: string
+    email: string
+    phoneNumber: string
+    password: string
+    role: string
+    region: string | null
+}
+
+export interface PublicUserAttributes {
+    firstName: string
+    lastName: string
+    email: string
+    role: string
+    phoneNumber: string
+    region: string | null
 }
 
 export interface UserCreationAttributes
@@ -44,10 +56,13 @@ export default class User extends Model<
     lastName: string
 
     @Column({ allowNull: false, unique: true, type: DataTypes.STRING(200) })
-    email: string;
+    email: string
+
+    @Column({ allowNull: true, unique: false, type: DataTypes.STRING(32) })
+    phoneNumber: string
 
     @Column({ allowNull: false, type: DataTypes.STRING(64) })
-    password: string;
+    password: string
 
     @ForeignKey(() => Region)
     @Column({ allowNull: true, type: DataTypes.UUID })

@@ -39,8 +39,8 @@ export default class Report extends Model<
     status: 'IN_PROGRESS' | 'COMPLETED'
 
     @ForeignKey(() => Player)
-    playerId: string;
+    playerId: string
 
     @BelongsTo(() => Player, { foreignKey: 'playerId' })
-    player: Player;
+    player: Player
 }

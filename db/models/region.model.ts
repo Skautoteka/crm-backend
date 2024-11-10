@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes, Optional } from 'sequelize'
 import {
     Column,
     DataType,
@@ -9,6 +9,14 @@ import {
     Table,
 } from 'sequelize-typescript'
 import User from './user.model'
+
+interface RegionAttributes {
+    id: string
+    name: string
+}
+
+export interface RegionCreationAttributes
+    extends Optional<RegionAttributes, 'id'> {}
 
 @Table({
     timestamps: true,
