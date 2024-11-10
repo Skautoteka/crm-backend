@@ -13,6 +13,7 @@ import { teamRouter } from './routes/team-route'
 import { playerRouter } from './routes/player-route'
 import { userRouter } from './routes/user-route'
 import { authRouter } from './routes/auth-route'
+import { roleRouter } from './routes/role-route'
 import { authMiddleware } from './middleware/auth-middleware'
 import cookieParser from 'cookie-parser'
 
@@ -29,6 +30,7 @@ app.use('/api/region', authMiddleware, regionRouter)
 app.use('/api/team', authMiddleware, teamRouter)
 app.use('/api/player', authMiddleware, playerRouter)
 app.use('/api/user', authMiddleware, userRouter)
+app.use('/api/role', authMiddleware, roleRouter)
 app.use('/api/auth', authRouter)
 
 const port = process.env.PORT

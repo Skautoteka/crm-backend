@@ -91,17 +91,17 @@ export const createUser = async ({
 }: UserAttributes): Promise<PublicUserAttributes> => {
     try {
         const hashedPassword = await _getHashedPassword(password)
-        const roleObject = await roleController.getBasicRole(role ?? 'scout')
-        const regionObject = await regionController.getRegion(region)
+        const roleObject = await roleController.getBasicRole(role)
+        const regionObject = await regionController.getRegion(region ?? null)
 
         const user = new User({
             firstName,
             lastName,
             email,
             password: hashedPassword,
-            role: roleObject.id,
+            role: role,
             phoneNumber,
-            region: regionObject.id,
+            region: regionObject ? regionObject.id : null,
         })
         const data = await user.save()
 
@@ -112,7 +112,7 @@ export const createUser = async ({
             email,
             role: roleObject.name,
             phoneNumber,
-            region: regionObject.name,
+            region: regionObject ? regionObject.name : null,
         }
 
         return { ...userData }
