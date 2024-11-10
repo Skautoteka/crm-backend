@@ -22,7 +22,7 @@ export interface UserAttributes {
     phoneNumber: string
     password: string
     role: string
-    region: string
+    region: string | null
 }
 
 export interface PublicUserAttributes {
@@ -31,7 +31,7 @@ export interface PublicUserAttributes {
     email: string
     role: string
     phoneNumber: string
-    region: string
+    region: string | null
 }
 
 export interface UserCreationAttributes

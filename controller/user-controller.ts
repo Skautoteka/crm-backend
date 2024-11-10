@@ -71,12 +71,8 @@ export const getUserCreateFields = async (): Promise<ISingleInputConfig[]> => {
             label: 'Rola',
             isRequired: true,
             placeholder: 'Wybierz role użytkownika',
-            type: 'SELECT',
-            options: [
-                { label: 'Skaut', value: 'Skaut' },
-                { label: 'Menadżer regionu', value: 'Menadżer regionu' },
-                { label: 'Analityk', value: 'Analityk' },
-            ],
+            type: 'DB',
+            searchType: 'role',
         },
         {
             name: 'phoneNumber',

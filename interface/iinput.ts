@@ -13,4 +13,11 @@ export interface ISelectOption {
     label: string
 }
 
-type InputType = 'TEXT' | 'BOOL' | 'DATE' | 'NUMBER' | 'SELECT' | 'SEARCH'
+type InputType =
+    | 'TEXT'
+    | 'BOOL'
+    | 'DATE'
+    | 'NUMBER'
+    | 'SELECT'
+    | 'SEARCH'
+    | 'DB'
