@@ -10,6 +10,7 @@ import {
     Table,
 } from 'sequelize-typescript'
 import Player from './player.model'
+import Task from './task.model'
 
 interface ReportAttributes {
     id: string
@@ -43,4 +44,11 @@ export default class Report extends Model<
 
     @BelongsTo(() => Player, { foreignKey: 'playerId' })
     player: Player
+
+    @ForeignKey(() => Task)
+    @Column({ allowNull: true, type: DataTypes.UUID })
+    taskId: string
+
+    @BelongsTo(() => Task)
+    task: Task
 }
