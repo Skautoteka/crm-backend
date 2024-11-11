@@ -16,6 +16,7 @@ interface ReportAttributes {
     id: string
     name: string
     status: 'IN_PROGRESS' | 'COMPLETED'
+    taskId: string
 }
 
 export interface ReportCreationAttributes
