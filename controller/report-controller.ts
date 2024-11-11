@@ -96,6 +96,15 @@ export const getAll = async (): Promise<Report[]> => {
     return await Report.findAll({ include: Player })
 }
 
+/**
+ * Returns all reports based on task id.
+ *
+ * @returns
+ */
+export const getAllByTaskId = async (taskId: string): Promise<Report[]> => {
+    return await Report.findAll({ where: {taskId} })
+}
+
 const getDefaultReportStatus = (): 'IN_PROGRESS' | 'COMPLETED' => {
     return 'IN_PROGRESS'
 }
