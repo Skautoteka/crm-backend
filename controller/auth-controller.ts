@@ -5,7 +5,7 @@ import { ModelValidationError } from '../error/model-validation'
 import { NotFoundError } from '../error/not-found'
 import dotenv from 'dotenv'
 import { ForbiddenError } from '../error/forbidden'
-import { Tokens } from '../interface/iauth'
+import { RoleType, Tokens } from '../interface/iauth'
 import { InvalidPayloadError } from '../error/invalid-payload'
 import { Request } from 'express'
 import Role from '../db/models/role.model'
@@ -37,15 +37,17 @@ const _getSecret = (type: 'refresh' | 'access'): string => {
 /**
  * Returns an access token.
  */
-const _getAccessToken = (email: string): string => {
-    return jwt.sign({ email }, _getSecret('access'), { expiresIn: '10s' })
+const _getAccessToken = (email: string, role: string): string => {
+    console.log('ROLE ', role)
+    return jwt.sign({ email, role }, _getSecret('access'), { expiresIn: '10s' })
 }
 
 /**
  * Returns refresh token
  */
-const _getRefreshToken = (email: string): string => {
-    return jwt.sign({ email }, _getSecret('refresh'))
+const _getRefreshToken = (email: string, role: string): string => {
+    console.log('ROLE ', role)
+    return jwt.sign({ email, role }, _getSecret('refresh'))
 }
 
 /**
@@ -58,6 +60,22 @@ const _getHashedPassword = async (password: string): Promise<string> => {
     const saltRounds = 10
     const salt = await bcrypt.genSalt(saltRounds)
     return await bcrypt.hash(password, salt)
+}
+
+/**
+ * Returns the role of the current request (user)
+ * 
+ * @returns 
+ */
+export const getReqRole = (req: Request): RoleType => {
+        // @ts-expect-error getting req
+        const { role } = req
+
+        if(!role) {
+            throw new ForbiddenError('Could not find the role of the user for the request');
+        }
+
+        return role;
 }
 
 export const getReqUser = async (req: Request): Promise<User> => {
@@ -131,7 +149,7 @@ export const login = async (
     email: string,
     password: string
 ): Promise<Tokens> => {
-    const user = await User.findOne({ where: { email } })
+    const user = await User.findOne({ where: { email }, include: [Role] })
 
     if (!user) {
         throw new ForbiddenError('Password is invalid')
@@ -143,8 +161,8 @@ export const login = async (
     }
 
     return {
-        accessToken: _getAccessToken(user.email),
-        refreshToken: _getRefreshToken(user.email),
+        accessToken: _getAccessToken(user.email, user.roleId),
+        refreshToken: _getRefreshToken(user.email, user.roleId),
     }
 }
 
@@ -154,15 +172,19 @@ export const login = async (
  */
 export const refreshToken = async (refreshToken: string): Promise<Tokens> => {
     const payload = await jwt.verify(refreshToken, _getSecret('refresh'))
+    
     // @ts-expect-error email exists on payload
     const email = payload.email
+
+    // @ts-expect-error email exists on payload
+    const role = payload.role
 
     if (typeof email !== 'string') {
         throw new InvalidPayloadError('Email signed with token is invalid')
     }
 
     return {
-        accessToken: _getAccessToken(email),
-        refreshToken: _getRefreshToken(email),
+        accessToken: _getAccessToken(email, role),
+        refreshToken: _getRefreshToken(email, role),
     }
 }
