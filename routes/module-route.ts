@@ -1,17 +1,17 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
+import * as moduleController from '../controller/module-controller';
+import { RoleType } from '../interface/iauth';
 
 
 const router = express.Router();
 
-router.get('/', async (req: Request, res: Response) => {
-    res.json([
-        { label: 'Zadania', icon: 'move-task', route: 'tasks' },
-        { label: 'Raporty', icon: 'file-document', route: 'reports' },
-        { label: 'Zawodnicy', icon: 'user', route: 'players' },
-        { label: 'Drużyny', icon: 'organisation', route: 'teams' },
-        { label: 'Analiza', icon: 'chart', route: 'analysis' },
-        { label: 'Użytkownicy', icon: 'user-list', route: 'users' }
-    ])
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const routes = moduleController.getModuleRoutes(RoleType.Admin);
+        res.json(routes);
+    } catch (err) {
+        return next(err);
+    }
 })
 
 export { router as moduleRouter }

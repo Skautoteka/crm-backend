@@ -1,24 +1,41 @@
+import { RoleType } from "../interface/iauth";
 import { PermissionConfig } from "../interface/ipermissions";
 
-export const MODULE_PERMISSION: PermissionConfig = [
+export const MODULE_PERMISSIONS: PermissionConfig = [
     { 
-        role: 'admin', 
-        resource: '', 
+        role: RoleType.Admin,
         permission: {
-            read: true,
-            create: true,
-            edit: true,
-            delete: true
+            read: ['task'],
+            create: ['task'],
+            edit: ['task'],
+            delete: ['task']
         } 
     },
     { 
-        role: 'admin', 
-        resource: '', 
+        role: RoleType.Admin,
         permission: {
-            read: true,
-            create: true,
-            edit: true,
-            delete: true
+            read: [],
+            create: [],
+            edit: [],
+            delete: []
+        } 
+    },
+    { 
+        role: RoleType.Admin,
+        permission: {
+            read: [],
+            create: [],
+            edit: [],
+            delete: []
+        } 
+    },
+    { 
+        role: RoleType.Admin,
+        permission: {
+            read: [],
+            create: [],
+            edit: [],
+            delete: []
         } 
     },
 ] 

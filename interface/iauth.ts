@@ -7,7 +7,7 @@ export type AccessToken = {
     accessToken: string
 }
 
-export enum RoleTypes {
+export enum RoleType {
     Admin = 'ADMIN',
     SportsDirector = 'SPORTS_DIRECTOR',
     RegionManager = 'REGION_MANAGER',

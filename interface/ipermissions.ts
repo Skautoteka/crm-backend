@@ -1,13 +1,14 @@
+import { RoleType } from "./iauth";
+
 export interface IPermission {
-    read: boolean;
-    create: boolean;
-    edit: boolean;
-    delete: boolean;
+    read: string[];
+    create: string[];
+    edit: string[];
+    delete: string[];
 }
 
 export interface IPermissionEntry {
-    role: string;
-    resource: string;
+    role: RoleType;
     permission: IPermission;
 }
 
