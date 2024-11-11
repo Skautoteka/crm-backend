@@ -72,7 +72,7 @@ export default class User extends Model<
     region: Region
 
     @ForeignKey(() => Role)
-    @Column({ type: DataTypes.UUID })
+    @Column({ type: DataTypes.STRING(50) })
     roleId: string
 
     @BelongsTo(() => Role)

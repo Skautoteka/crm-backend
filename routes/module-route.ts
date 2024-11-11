@@ -3,7 +3,7 @@ import express, { Request, Response } from 'express';
 
 const router = express.Router();
 
-router.get('/', async (_: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
     res.json([
         { label: 'Zadania', icon: 'move-task', route: 'tasks' },
         { label: 'Raporty', icon: 'file-document', route: 'reports' },

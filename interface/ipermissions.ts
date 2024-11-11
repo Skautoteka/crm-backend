@@ -6,8 +6,8 @@ export interface IPermission {
 }
 
 export interface IPermissionEntry {
-    roles: string[];
-    name: string;
+    role: string;
+    resource: string;
     permission: IPermission;
 }
 
