@@ -53,5 +53,5 @@ export default class Report extends Model<Report> {
     createdBy: User
 
     @BelongsToMany(() => PlayerTrait, () => ReportTrait)
-    traits: PlayerTrait[];
+    traits: PlayerTrait[]
 }

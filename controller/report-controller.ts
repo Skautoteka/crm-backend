@@ -5,6 +5,8 @@ import { ModelValidationError } from '../error/model-validation'
 import Player from '../db/models/player.model'
 import { NotFoundError } from '../error/not-found'
 import User from '../db/models/user.model'
+import ReportTrait from '../db/models/report-trait.model'
+import PlayerTrait from '../db/models/player-trait.model'
 
 /**
  * Gets the model for the task model creation.
@@ -69,7 +71,7 @@ export const add = async (
     user: User
 ): Promise<Report> => {
     try {
-        const report = new Report({ ...payload, createdById: user.id })
+        const report = new Report({ ...payload, createdById: user.id,  })
 
         if (!payload.status) {
             report.status = getDefaultReportStatus()
@@ -77,7 +79,10 @@ export const add = async (
 
         const { id } = await report.save()
 
-        const added = await Report.findByPk(id, { include: [Player] })
+        const reportTrait = new ReportTrait({ traitId: 'e0a6b3f5-1234-4f3b-912d-b44a63a1e2b8', reportId: report.id })
+        await reportTrait.save();
+
+        const added = await Report.findByPk(id, { include: [{ model: Player, as: 'player' }] })
 
         if (!added) {
             throw new NotFoundError('Could not find added report.')
@@ -85,6 +90,7 @@ export const add = async (
 
         return added
     } catch (err) {
+        console.log(err)
         throw new ModelValidationError(err.message)
     }
 }
@@ -96,6 +102,14 @@ export const add = async (
  */
 export const getAll = async (user: User): Promise<Report[]> => {
     return await Report.findAll({ include: Player, where: { createdById: user.id } })
+}
+
+/**
+ * Retrieves all detailed reports.
+ * @returns 
+ */
+export const getAllDetailed = async (): Promise<Report[]> => {
+    return await Report.findAll({ include: [Player, PlayerTrait] });
 }
 
 const getDefaultReportStatus = (): 'IN_PROGRESS' | 'COMPLETED' => {

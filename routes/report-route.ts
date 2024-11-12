@@ -19,10 +19,19 @@ router.get(
 router.get('/all', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await authController.getReqUser(req)
-        const teams = await reportController.getAll(user)
-        return res.json(teams)
+        const reports = await reportController.getAll(user)
+        return res.json(reports)
     } catch (err) {
         return next(err)
+    }
+})
+
+router.get('/all-detailed', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const reports = await reportController.getAllDetailed();
+        return res.json(reports)
+    } catch (err) {
+        return next(err);
     }
 })
 
