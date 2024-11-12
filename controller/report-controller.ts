@@ -109,7 +109,13 @@ export const getAll = async (user: User): Promise<Report[]> => {
  * @returns 
  */
 export const getAllDetailed = async (): Promise<Report[]> => {
-    return await Report.findAll({ include: [Player, PlayerTrait] });
+    return await Report.findAll({ 
+        include: [
+            { model: Player, attributes: { exclude: ['createdAt', 'updatedAt'] } }, 
+            PlayerTrait
+        ], 
+        attributes: { exclude: ['createdAt', 'updatedAt'] } 
+    });
 }
 
 const getDefaultReportStatus = (): 'IN_PROGRESS' | 'COMPLETED' => {
