@@ -1,5 +1,6 @@
 import Task, { TaskCreationAttributes } from '../db/models/task.model'
 import Team from '../db/models/team.model'
+import User from '../db/models/user.model'
 import { ModelValidationError } from '../error/model-validation'
 import { NotFoundError } from '../error/not-found'
 import { ISingleInputConfig } from '../interface'
@@ -53,6 +54,14 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
             type: 'DATE',
         },
         {
+            name: 'assignedToId',
+            label: 'Przypisany do',
+            isRequired: false,
+            placeholder: 'Wybierz przypisanego',
+            type: 'SEARCH',
+            searchType: 'user',
+        },
+        {
             name: 'type',
             label: 'Zadanie online',
             isRequired: false,
@@ -68,9 +77,9 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
  * @param param0
  * @returns
  */
-export const add = async (payload: TaskCreationAttributes): Promise<Task> => {
+export const add = async (payload: TaskCreationAttributes, user: User): Promise<Task> => {
     try {
-        const task = new Task(payload)
+        const task = new Task({ ...payload, createdById: user.id })
         await task.save()
 
         const added = await Task.findByPk(task.id, {

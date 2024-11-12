@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
 import * as taskController from '../controller/task-controller'
+import * as authController from '../controller/auth-controller';
 
 const router = express.Router()
 
@@ -40,8 +41,9 @@ router.delete(
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const payload = req.body
-        const user = await taskController.add(payload)
-        res.json({ success: true, added: user })
+        const user = await authController.getReqUser(req);
+        const task = await taskController.add(payload, user)
+        res.json({ success: true, added: task })
     } catch (err) {
         return next(err)
     }

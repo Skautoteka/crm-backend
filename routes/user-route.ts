@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
 import * as userController from '../controller/user-controller'
+import { InvalidPayloadError } from '../error/invalid-payload'
 
 const router = express.Router()
 
@@ -18,6 +19,31 @@ router.get(
         try {
             const fields = await userController.getUserCreateFields()
             return res.json(fields)
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
+router.get(
+    '/search',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { search, size } = req.query
+
+            if (!search) {
+                throw new InvalidPayloadError('Size or search not specified')
+            }
+
+            if (typeof search !== 'string') {
+                throw new InvalidPayloadError('Invalid type of search or size')
+            }
+
+            const users = await userController.queryUsers(
+                search,
+                Number(size || 5)
+            )
+            return res.json(users)
         } catch (err) {
             return next(err)
         }
