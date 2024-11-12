@@ -1,6 +1,17 @@
 import { Dialect } from 'sequelize'
 import { Sequelize } from 'sequelize-typescript'
 import dotenv from 'dotenv'
+import Permission from './models/permission.model'
+import PlayerTrait from './models/player-trait.model'
+import Player from './models/player.model'
+import Region from './models/region.model'
+import Report from './models/report.model'
+import RolePermission from './models/role-permission.model'
+import Role from './models/role.model'
+import Task from './models/task.model'
+import Team from './models/team.model'
+import User from './models/user.model'
+import ReportTrait from './models/report-trait.model'
 
 dotenv.config()
 
@@ -21,5 +32,17 @@ export const sequelize = new Sequelize({
     dialect: process.env.DB_DIALECT,
     username: process.env.DB_USER,
     password: process.env.DB_PW,
-    models: [__dirname + '/models'],
+    models: [
+        ReportTrait,
+        Permission,
+        PlayerTrait,
+        Player,
+        Region,
+        Report,
+        RolePermission,
+        Role,
+        Task,
+        Team,
+        User
+    ],
 })

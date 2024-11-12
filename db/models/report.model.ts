@@ -1,6 +1,7 @@
 import { DataTypes, Optional } from 'sequelize'
 import {
     BelongsTo,
+    BelongsToMany,
     Column,
     DataType,
     Default,
@@ -11,6 +12,8 @@ import {
 } from 'sequelize-typescript'
 import Player from './player.model'
 import User from './user.model'
+import PlayerTrait from './player-trait.model'
+import ReportTrait from './report-trait.model'
 
 interface ReportAttributes {
     id: string
@@ -25,10 +28,7 @@ export interface ReportCreationAttributes
 @Table({
     timestamps: true,
 })
-export default class Report extends Model<
-    ReportAttributes,
-    ReportCreationAttributes
-> {
+export default class Report extends Model<Report> {
     @PrimaryKey
     @Default(DataType.UUIDV4)
     @Column({ type: DataTypes.UUID })
@@ -51,4 +51,7 @@ export default class Report extends Model<
 
     @BelongsTo(() => User, { foreignKey: 'createdById' })
     createdBy: User
+
+    @BelongsToMany(() => PlayerTrait, () => ReportTrait)
+    traits: PlayerTrait[];
 }
