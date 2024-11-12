@@ -10,11 +10,13 @@ import {
     Table,
 } from 'sequelize-typescript'
 import Player from './player.model'
+import User from './user.model'
 
 interface ReportAttributes {
     id: string
     name: string
     status: 'IN_PROGRESS' | 'COMPLETED'
+    createdById: string
 }
 
 export interface ReportCreationAttributes
@@ -43,4 +45,10 @@ export default class Report extends Model<
 
     @BelongsTo(() => Player, { foreignKey: 'playerId' })
     player: Player
+
+    @ForeignKey(() => User)
+    createdById: string;
+
+    @BelongsTo(() => User, { foreignKey: 'createdById' })
+    createdBy: User
 }

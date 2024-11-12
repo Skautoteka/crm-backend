@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
 import * as reportController from '../controller/report-controller'
+import * as authController from '../controller/auth-controller';
 
 const router = express.Router()
 
@@ -17,7 +18,8 @@ router.get(
 
 router.get('/all', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const teams = await reportController.getAll()
+        const user = await authController.getReqUser(req)
+        const teams = await reportController.getAll(user)
         return res.json(teams)
     } catch (err) {
         return next(err)
@@ -39,7 +41,8 @@ router.delete(
 
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const team = await reportController.add(req.body)
+        const user = await authController.getReqUser(req)
+        const team = await reportController.add(req.body, user)
         res.json({ success: true, added: team })
     } catch (err) {
         return next(err)

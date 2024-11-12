@@ -4,6 +4,7 @@ import { ReportCreationAttributes } from '../db/models/report.model'
 import { ModelValidationError } from '../error/model-validation'
 import Player from '../db/models/player.model'
 import { NotFoundError } from '../error/not-found'
+import User from '../db/models/user.model'
 
 /**
  * Gets the model for the task model creation.
@@ -64,10 +65,11 @@ export const remove = async (id: string): Promise<void> => {
  * @returns
  */
 export const add = async (
-    payload: ReportCreationAttributes
+    payload: ReportCreationAttributes,
+    user: User
 ): Promise<Report> => {
     try {
-        const report = new Report(payload)
+        const report = new Report({ ...payload, createdById: user.id })
 
         if (!payload.status) {
             report.status = getDefaultReportStatus()
@@ -92,8 +94,8 @@ export const add = async (
  *
  * @returns
  */
-export const getAll = async (): Promise<Report[]> => {
-    return await Report.findAll({ include: Player })
+export const getAll = async (user: User): Promise<Report[]> => {
+    return await Report.findAll({ include: Player, where: { createdById: user.id } })
 }
 
 const getDefaultReportStatus = (): 'IN_PROGRESS' | 'COMPLETED' => {

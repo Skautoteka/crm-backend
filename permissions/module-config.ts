@@ -5,37 +5,46 @@ export const MODULE_PERMISSIONS: PermissionConfig = [
     { 
         role: RoleType.Admin,
         permission: {
-            read: ['task'],
-            create: ['task'],
-            edit: ['task'],
-            delete: ['task']
+            read: ['task', 'player', 'team', 'analysis', 'user', 'report'],
+            create: ['task', 'player', 'team', 'analysis', 'user', 'report'],
+            edit: ['task', 'player', 'team', 'analysis', 'user', 'report'],
+            delete: ['task', 'player', 'team', 'analysis', 'user', 'report']
         } 
     },
     { 
-        role: RoleType.Admin,
+        role: RoleType.Scout,
         permission: {
-            read: [],
-            create: [],
-            edit: [],
-            delete: []
+            read: ['task', 'player', 'team', 'analysis', 'user', 'report'],
+            create: ['task', 'player', 'team', 'analysis', 'user', 'report'],
+            edit: ['task', 'player', 'team', 'analysis', 'user', 'report'],
+            delete: ['task', 'player', 'team', 'analysis', 'user', 'report']
         } 
     },
     { 
-        role: RoleType.Admin,
+        role: RoleType.SportsDirector,
         permission: {
-            read: [],
-            create: [],
-            edit: [],
-            delete: []
+            read: ['task', 'player', 'team', 'analysis', 'user', 'report'],
+            create: ['task', 'player', 'team', 'analysis', 'user', 'report'],
+            edit: ['task', 'player', 'team', 'analysis', 'user', 'report'],
+            delete: ['task', 'player', 'team', 'analysis', 'user', 'report']
         } 
     },
     { 
-        role: RoleType.Admin,
+        role: RoleType.RegionManager,
         permission: {
-            read: [],
-            create: [],
-            edit: [],
-            delete: []
+            read: ['task', 'player', 'team', 'analysis', 'user', 'report'],
+            create: ['task', 'player', 'team', 'analysis', 'user', 'report'],
+            edit: ['task', 'player', 'team', 'analysis', 'user', 'report'],
+            delete: ['task', 'player', 'team', 'analysis', 'user', 'report']
+        } 
+    },
+    { 
+        role: RoleType.RegionManager,
+        permission: {
+            read: ['task', 'player', 'team', 'analysis', 'user', 'report'],
+            create: ['task', 'player', 'team', 'analysis', 'user', 'report'],
+            edit: ['task', 'player', 'team', 'analysis', 'user', 'report'],
+            delete: ['task', 'player', 'team', 'analysis', 'user', 'report']
         } 
     },
 ] 
