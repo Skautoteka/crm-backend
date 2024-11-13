@@ -1,10 +1,16 @@
 import express, { NextFunction, Request, Response } from 'express'
 import * as playerController from '../controller/player-controller'
 import { InvalidPayloadError } from '../error/invalid-payload'
+import { routePermission } from '../permissions';
+import { CREATE_PERMISSIONS, MODULE_PERMISSIONS, READ_PERMISSIONS, REMOVE_PERMISSIONS } from '../permissions/player';
 
-const router = express.Router()
+const router = express.Router();
 
-router.get('/all', async (req: Request, res: Response, next: NextFunction) => {
+router.use(
+    routePermission(MODULE_PERMISSIONS)
+)
+
+router.get('/all', routePermission(READ_PERMISSIONS), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const players = await playerController.getAll()
         return res.json(players)
@@ -15,6 +21,7 @@ router.get('/all', async (req: Request, res: Response, next: NextFunction) => {
 
 router.delete(
     '/:id',
+    routePermission(REMOVE_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params
         try {
@@ -26,7 +33,7 @@ router.delete(
     }
 )
 
-router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/', routePermission(CREATE_PERMISSIONS), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const player = await playerController.add(req.body)
         res.json({ success: true, added: player })
@@ -37,6 +44,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 
 router.get(
     '/create-fields',
+    routePermission(CREATE_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const fields = await playerController.getTaskCreateFields()
@@ -49,6 +57,7 @@ router.get(
 
 router.get(
     '/search',
+    routePermission(READ_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { search, size } = req.query

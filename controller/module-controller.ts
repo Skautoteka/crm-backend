@@ -1,7 +1,4 @@
-import { ForbiddenError } from "../error/forbidden";
-import { NotFoundError } from "../error/not-found";
 import { RoleType } from "../interface/iauth";
-import { MODULE_PERMISSIONS } from "../permissions/module-config";
 
 /**
  * Builds module routes config.
@@ -22,17 +19,7 @@ export const getModuleRoutes = (role: RoleType) => {
  * @returns 
  */
 const _buildRoute = (name: string, role: RoleType) => {
-    const config = MODULE_PERMISSIONS.find(p => p.role === role);
-
-    if(!config) {
-        throw new NotFoundError(`Could not find permission for role ${role}`);
-    }
-
-    const { permission } = config;
-    
-    if(!permission.read.includes(name)) {
-        return null;
-    }
+    console.log(role)
 
     const label = _getLabel(name);
     const icon = _getIcon(name);

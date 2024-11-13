@@ -1,19 +1,22 @@
-import { NotFoundError } from "../error/not-found";
-import { RoleType } from "../interface/iauth";
-import { IPermission } from "../interface/ipermissions"
-import { MODULE_PERMISSIONS } from "./module-config";
+import { Request, Response, NextFunction } from 'express';
+import * as authController from '../controller/auth-controller';
+import { PermissionConfig } from '../interface/ipermissions';
+import { UnauthorizedError } from '../error/unauthorized';
 
-export const getPermission = async (type: 'MODULE' | 'RECORD', role: RoleType, resource: string): Promise<IPermission> => {
-    const permission = type === 'MODULE' ? _checkModulePermission(role) : _checkModulePermission(role);
-    return permission;
-} 
+/**
+ * Sets the permission for the route
+ * 
+ * @param config 
+ * @returns 
+ */
+export const routePermission = (config: PermissionConfig) => {
+    return (req: Request, res: Response, next: NextFunction) => {
+        const role = authController.getReqRole(req);
 
-const _checkModulePermission = (role: RoleType): IPermission => {
-    const permission = MODULE_PERMISSIONS.find(p => p.role === role);
+        if(!config.includes(role)) {
+            return next(new UnauthorizedError(`Cannot perform action on this module as "${role}"`));
+        }
 
-    if(!permission) {
-        throw new NotFoundError(`Could not find module permission for role ${role}`);
+        return next();
     }
-
-    return permission.permission;
 }
