@@ -77,7 +77,10 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
  * @param param0
  * @returns
  */
-export const add = async (payload: TaskCreationAttributes, user: User): Promise<Task> => {
+export const add = async (
+    payload: TaskCreationAttributes,
+    user: User
+): Promise<Task> => {
     try {
         const task = new Task({ ...payload, createdById: user.id })
         await task.save()

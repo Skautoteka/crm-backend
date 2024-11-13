@@ -38,9 +38,9 @@ export const queryUsers = async (
     return await User.findAll({
         where: {
             [Op.or]: [
-                { firstName: { [Op.substring]: search }, },
-                { lastName: { [Op.substring]: search }, }
-            ]
+                { firstName: { [Op.substring]: search } },
+                { lastName: { [Op.substring]: search } },
+            ],
         },
         limit: size,
     })

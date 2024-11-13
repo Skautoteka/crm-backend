@@ -1,13 +1,15 @@
-import PlayerTrait, { PlayerTraitCreationAttributes } from "../db/models/player-trait.model";
-import { ModelValidationError } from "../error/model-validation";
-import { NotFoundError } from "../error/not-found";
+import PlayerTrait, {
+    PlayerTraitCreationAttributes,
+} from '../db/models/player-trait.model'
+import { ModelValidationError } from '../error/model-validation'
+import { NotFoundError } from '../error/not-found'
 
 /**
  * Returns all traits.
  */
 export const getAllTraits = async (): Promise<PlayerTrait[]> => {
-    return await PlayerTrait.findAll();
-};
+    return await PlayerTrait.findAll()
+}
 
 /**
  * Adds a new trait.
@@ -15,20 +17,22 @@ export const getAllTraits = async (): Promise<PlayerTrait[]> => {
  * @param payload
  * @returns
  */
-export const addTrait = async (payload: PlayerTraitCreationAttributes): Promise<PlayerTrait> => {
+export const addTrait = async (
+    payload: PlayerTraitCreationAttributes
+): Promise<PlayerTrait> => {
     try {
-        const trait = await new PlayerTrait(payload).save();
-        const addedTrait = await PlayerTrait.findByPk(trait.id);
+        const trait = await new PlayerTrait(payload).save()
+        const addedTrait = await PlayerTrait.findByPk(trait.id)
 
         if (!addedTrait) {
-            throw new NotFoundError("Could not find added player trait.");
+            throw new NotFoundError('Could not find added player trait.')
         }
 
-        return addedTrait;
+        return addedTrait
     } catch (err) {
-        throw new ModelValidationError(err.message);
+        throw new ModelValidationError(err.message)
     }
-};
+}
 
 /**
  * Removes trait.
@@ -36,14 +40,14 @@ export const addTrait = async (payload: PlayerTraitCreationAttributes): Promise<
  * @param id
  */
 export const removeTrait = async (id: string): Promise<void> => {
-    const trait = await PlayerTrait.findOne({ where: { id } });
+    const trait = await PlayerTrait.findOne({ where: { id } })
 
     if (trait) {
-        await trait.destroy();
+        await trait.destroy()
     } else {
-        throw new NotFoundError("Player trait not found.");
+        throw new NotFoundError('Player trait not found.')
     }
-};
+}
 
 /**
  *  Gets the model.
@@ -53,11 +57,11 @@ export const removeTrait = async (id: string): Promise<void> => {
 export const getTraitCreateFields = async () => {
     return [
         {
-            name: "name",
-            label: "Nazwa cechy",
+            name: 'name',
+            label: 'Nazwa cechy',
             isRequired: true,
-            placeholder: "Wpisz nazwę cechy",
-            type: "TEXT",
+            placeholder: 'Wpisz nazwę cechy',
+            type: 'TEXT',
         },
-    ];
-};
+    ]
+}

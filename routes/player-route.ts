@@ -1,23 +1,30 @@
 import express, { NextFunction, Request, Response } from 'express'
 import * as playerController from '../controller/player-controller'
 import { InvalidPayloadError } from '../error/invalid-payload'
-import { routePermission } from '../permissions';
-import { CREATE_PERMISSIONS, MODULE_PERMISSIONS, READ_PERMISSIONS, REMOVE_PERMISSIONS } from '../permissions/player';
+import { routePermission } from '../permissions'
+import {
+    CREATE_PERMISSIONS,
+    MODULE_PERMISSIONS,
+    READ_PERMISSIONS,
+    REMOVE_PERMISSIONS,
+} from '../permissions/player'
 
-const router = express.Router();
+const router = express.Router()
 
-router.use(
-    routePermission(MODULE_PERMISSIONS)
-)
+router.use(routePermission(MODULE_PERMISSIONS))
 
-router.get('/all', routePermission(READ_PERMISSIONS), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const players = await playerController.getAll()
-        return res.json(players)
-    } catch (err) {
-        return next(err)
+router.get(
+    '/all',
+    routePermission(READ_PERMISSIONS),
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const players = await playerController.getAll()
+            return res.json(players)
+        } catch (err) {
+            return next(err)
+        }
     }
-})
+)
 
 router.delete(
     '/:id',
@@ -33,14 +40,18 @@ router.delete(
     }
 )
 
-router.post('/', routePermission(CREATE_PERMISSIONS), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const player = await playerController.add(req.body)
-        res.json({ success: true, added: player })
-    } catch (err) {
-        return next(err)
+router.post(
+    '/',
+    routePermission(CREATE_PERMISSIONS),
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const player = await playerController.add(req.body)
+            res.json({ success: true, added: player })
+        } catch (err) {
+            return next(err)
+        }
     }
-})
+)
 
 router.get(
     '/create-fields',

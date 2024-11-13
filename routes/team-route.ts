@@ -2,13 +2,16 @@ import express, { NextFunction, Request, Response } from 'express'
 import * as teamController from '../controller/team-controller'
 import { InvalidPayloadError } from '../error/invalid-payload'
 import { routePermission } from '../permissions'
-import { CREATE_PERMISSIONS, MODULE_PERMISSIONS, READ_PERMISSIONS, REMOVE_PERMISSIONS } from '../permissions/team'
+import {
+    CREATE_PERMISSIONS,
+    MODULE_PERMISSIONS,
+    READ_PERMISSIONS,
+    REMOVE_PERMISSIONS,
+} from '../permissions/team'
 
 const router = express.Router()
 
-router.use(
-    routePermission(MODULE_PERMISSIONS)
-)
+router.use(routePermission(MODULE_PERMISSIONS))
 
 router.get(
     '/create-fields',
@@ -23,14 +26,18 @@ router.get(
     }
 )
 
-router.get('/all', routePermission(READ_PERMISSIONS), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const teams = await teamController.getAll()
-        return res.json(teams)
-    } catch (err) {
-        return next(err)
+router.get(
+    '/all',
+    routePermission(READ_PERMISSIONS),
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const teams = await teamController.getAll()
+            return res.json(teams)
+        } catch (err) {
+            return next(err)
+        }
     }
-})
+)
 
 router.delete(
     '/:id',
@@ -46,15 +53,24 @@ router.delete(
     }
 )
 
-router.post('/', routePermission(CREATE_PERMISSIONS), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { name, city, country, league } = req.body
-        const team = await teamController.add({ name, city, country, league })
-        res.json({ success: true, added: team })
-    } catch (err) {
-        return next(err)
+router.post(
+    '/',
+    routePermission(CREATE_PERMISSIONS),
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { name, city, country, league } = req.body
+            const team = await teamController.add({
+                name,
+                city,
+                country,
+                league,
+            })
+            res.json({ success: true, added: team })
+        } catch (err) {
+            return next(err)
+        }
     }
-})
+)
 
 router.get(
     '/search',

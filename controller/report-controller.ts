@@ -49,8 +49,8 @@ export const getReportCreateFields = async (): Promise<
             isRequired: true,
             placeholder: 'Wybierz region raportu',
             type: 'SEARCH',
-            searchType: 'region'
-        }
+            searchType: 'region',
+        },
     ]
 }
 
@@ -79,7 +79,7 @@ export const add = async (
     user: User
 ): Promise<Report> => {
     try {
-        const report = new Report({ ...payload, createdById: user.id,  })
+        const report = new Report({ ...payload, createdById: user.id })
 
         if (!payload.status) {
             report.status = getDefaultReportStatus()
@@ -87,10 +87,15 @@ export const add = async (
 
         const { id } = await report.save()
 
-        const reportTrait = new ReportTrait({ traitId: 'e0a6b3f5-1234-4f3b-912d-b44a63a1e2b8', reportId: report.id })
-        await reportTrait.save();
+        const reportTrait = new ReportTrait({
+            traitId: 'e0a6b3f5-1234-4f3b-912d-b44a63a1e2b8',
+            reportId: report.id,
+        })
+        await reportTrait.save()
 
-        const added = await Report.findByPk(id, { include: [{ model: Player, as: 'player' }] })
+        const added = await Report.findByPk(id, {
+            include: [{ model: Player, as: 'player' }],
+        })
 
         if (!added) {
             throw new NotFoundError('Could not find added report.')
@@ -109,21 +114,27 @@ export const add = async (
  * @returns
  */
 export const getAll = async (user: User): Promise<Report[]> => {
-    return await Report.findAll({ include: Player, where: { createdById: user.id } })
+    return await Report.findAll({
+        include: Player,
+        where: { createdById: user.id },
+    })
 }
 
 /**
  * Retrieves all detailed reports.
- * @returns 
+ * @returns
  */
 export const getAllDetailed = async (): Promise<Report[]> => {
-    return await Report.findAll({ 
+    return await Report.findAll({
         include: [
-            { model: Player, attributes: { exclude: ['createdAt', 'updatedAt'] } }, 
-            PlayerTrait
-        ], 
-        attributes: { exclude: ['createdAt', 'updatedAt'] } 
-    });
+            {
+                model: Player,
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
+            },
+            PlayerTrait,
+        ],
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+    })
 }
 
 const getDefaultReportStatus = (): 'IN_PROGRESS' | 'COMPLETED' => {

@@ -1,3 +1,3 @@
-import { RoleType } from "./iauth";
+import { RoleType } from './iauth'
 
 export type PermissionConfig = RoleType[]

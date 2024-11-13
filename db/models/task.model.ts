@@ -14,8 +14,8 @@ import Team from './team.model'
 
 interface TaskAttributes {
     id: string
-    status: string;
-    createdById: string;
+    status: string
+    createdById: string
 }
 
 export interface TaskCreationAttributes
@@ -65,7 +65,7 @@ export default class Task extends Model<
     assignedTo: User
 
     @ForeignKey(() => User)
-    createdById: string;
+    createdById: string
 
     @BelongsTo(() => User, { foreignKey: 'createdById' })
     createdBy: User

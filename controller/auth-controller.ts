@@ -64,18 +64,20 @@ const _getHashedPassword = async (password: string): Promise<string> => {
 
 /**
  * Returns the role of the current request (user)
- * 
- * @returns 
+ *
+ * @returns
  */
 export const getReqRole = (req: Request): RoleType => {
-        // @ts-expect-error getting req
-        const { role } = req
+    // @ts-expect-error getting req
+    const { role } = req
 
-        if(!role) {
-            throw new ForbiddenError('Could not find the role of the user for the request');
-        }
+    if (!role) {
+        throw new ForbiddenError(
+            'Could not find the role of the user for the request'
+        )
+    }
 
-        return role;
+    return role
 }
 
 export const getReqUser = async (req: Request): Promise<User> => {
@@ -172,7 +174,7 @@ export const login = async (
  */
 export const refreshToken = async (refreshToken: string): Promise<Tokens> => {
     const payload = await jwt.verify(refreshToken, _getSecret('refresh'))
-    
+
     // @ts-expect-error email exists on payload
     const email = payload.email
 

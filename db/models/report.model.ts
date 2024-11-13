@@ -54,7 +54,7 @@ export default class Report extends Model<Report> {
     region: Region
 
     @ForeignKey(() => User)
-    createdById: string;
+    createdById: string
 
     @BelongsTo(() => User, { foreignKey: 'createdById' })
     createdBy: User

@@ -1,1 +1,1 @@
-export * from './permissions-controller';
+export * from './permissions-controller'

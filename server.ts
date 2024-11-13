@@ -14,7 +14,7 @@ import { playerRouter } from './routes/player-route'
 import { userRouter } from './routes/user-route'
 import { authRouter } from './routes/auth-route'
 import { roleRouter } from './routes/role-route'
-import { moduleRouter } from './routes/module-route';
+import { moduleRouter } from './routes/module-route'
 import { authMiddleware } from './middleware/auth-middleware'
 import cookieParser from 'cookie-parser'
 

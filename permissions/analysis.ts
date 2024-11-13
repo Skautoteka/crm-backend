@@ -1,5 +1,5 @@
-import { RoleType } from "../interface/iauth";
-import { PermissionConfig } from "../interface/ipermissions";
+import { RoleType } from '../interface/iauth'
+import { PermissionConfig } from '../interface/ipermissions'
 
 /**
  * Roles that are allowed to view the module in general
@@ -7,7 +7,7 @@ import { PermissionConfig } from "../interface/ipermissions";
 export const MODULE_PERMISSIONS: PermissionConfig = [
     RoleType.Admin,
     RoleType.Analytics,
-    RoleType.SportsDirector
+    RoleType.SportsDirector,
 ]
 
 /**
@@ -16,8 +16,8 @@ export const MODULE_PERMISSIONS: PermissionConfig = [
 export const READ_PERMISSIONS: PermissionConfig = [
     RoleType.Admin,
     RoleType.Analytics,
-    RoleType.SportsDirector
-];
+    RoleType.SportsDirector,
+]
 
 /**
  * Roles that are allowed to edit records
@@ -25,8 +25,8 @@ export const READ_PERMISSIONS: PermissionConfig = [
 export const EDIT_PERMISSIONS: PermissionConfig = [
     RoleType.Admin,
     RoleType.Analytics,
-    RoleType.SportsDirector
-];
+    RoleType.SportsDirector,
+]
 
 /**
  * Roles that are allowed to remove records
@@ -34,8 +34,8 @@ export const EDIT_PERMISSIONS: PermissionConfig = [
 export const REMOVE_PERMISSIONS: PermissionConfig = [
     RoleType.Admin,
     RoleType.Analytics,
-    RoleType.SportsDirector
-];
+    RoleType.SportsDirector,
+]
 
 /**
  * Roles that are allowed to create records
@@ -43,5 +43,5 @@ export const REMOVE_PERMISSIONS: PermissionConfig = [
 export const CREATE_PERMISSIONS: PermissionConfig = [
     RoleType.Admin,
     RoleType.Analytics,
-    RoleType.SportsDirector
+    RoleType.SportsDirector,
 ]

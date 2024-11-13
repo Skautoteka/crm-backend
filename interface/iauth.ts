@@ -12,5 +12,5 @@ export enum RoleType {
     SportsDirector = 'SPORTS_DIRECTOR',
     RegionManager = 'REGION_MANAGER',
     Scout = 'SCOUT',
-    Analytics = 'ANALYTICS'
+    Analytics = 'ANALYTICS',
 }

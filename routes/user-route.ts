@@ -2,22 +2,29 @@ import express, { NextFunction, Request, Response } from 'express'
 import * as userController from '../controller/user-controller'
 import { InvalidPayloadError } from '../error/invalid-payload'
 import { routePermission } from '../permissions'
-import { CREATE_PERMISSIONS, MODULE_PERMISSIONS, READ_PERMISSIONS, REMOVE_PERMISSIONS } from '../permissions/user'
+import {
+    CREATE_PERMISSIONS,
+    MODULE_PERMISSIONS,
+    READ_PERMISSIONS,
+    REMOVE_PERMISSIONS,
+} from '../permissions/user'
 
 const router = express.Router()
 
-router.use(
-    routePermission(MODULE_PERMISSIONS)
-)
+router.use(routePermission(MODULE_PERMISSIONS))
 
-router.get('/all', routePermission(READ_PERMISSIONS), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const users = await userController.getAll()
-        return res.json(users)
-    } catch (err) {
-        return next(err)
+router.get(
+    '/all',
+    routePermission(READ_PERMISSIONS),
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const users = await userController.getAll()
+            return res.json(users)
+        } catch (err) {
+            return next(err)
+        }
     }
-})
+)
 
 router.get(
     '/create-fields',

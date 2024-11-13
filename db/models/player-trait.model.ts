@@ -1,4 +1,4 @@
-import { DataTypes, Optional } from 'sequelize';
+import { DataTypes, Optional } from 'sequelize'
 import {
     BelongsToMany,
     Column,
@@ -7,17 +7,17 @@ import {
     Model,
     PrimaryKey,
     Table,
-} from 'sequelize-typescript';
-import ReportTrait from './report-trait.model';
-import Report from './report.model';
+} from 'sequelize-typescript'
+import ReportTrait from './report-trait.model'
+import Report from './report.model'
 
 interface PlayerTraitAttributes {
-    id: string;
-    name: string;
+    id: string
+    name: string
 }
 
 export interface PlayerTraitCreationAttributes
-    extends Optional<PlayerTraitAttributes, 'id'> { }
+    extends Optional<PlayerTraitAttributes, 'id'> {}
 
 @Table({
     timestamps: true,
@@ -26,11 +26,11 @@ export default class PlayerTrait extends Model<PlayerTrait> {
     @PrimaryKey
     @Default(DataType.UUIDV4)
     @Column({ type: DataTypes.UUID })
-    id: string;
+    id: string
 
     @Column({ allowNull: false, type: DataTypes.TEXT })
-    name: string;
+    name: string
 
     @BelongsToMany(() => Report, () => ReportTrait)
-    traits: Report[];
+    traits: Report[]
 }
