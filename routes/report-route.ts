@@ -1,8 +1,14 @@
 import express, { NextFunction, Request, Response } from 'express'
 import * as reportController from '../controller/report-controller'
 import * as authController from '../controller/auth-controller';
+import { routePermission } from '../permissions';
+import { MODULE_PERMISSIONS } from '../permissions/report';
 
 const router = express.Router()
+
+router.use(
+    routePermission(MODULE_PERMISSIONS)
+)
 
 router.get(
     '/create-fields',
