@@ -1,4 +1,12 @@
 import { RoleType } from "../interface/iauth";
+import { PermissionConfig } from "../interface/ipermissions";
+
+import { MODULE_PERMISSIONS as ANALYSIS_PERMISSIONS } from "../permissions/analysis";
+import { MODULE_PERMISSIONS as PLAYER_PERMISSIONS } from "../permissions/player";
+import { MODULE_PERMISSIONS as REPORT_PERMISSIONS } from "../permissions/report";
+import { MODULE_PERMISSIONS as TASK_PERMISSIONS } from "../permissions/task";
+import { MODULE_PERMISSIONS as TEAM_PERMISSIONS } from "../permissions/team";
+import { MODULE_PERMISSIONS as USER_PERMISSIONS } from "../permissions/user";
 
 /**
  * Builds module routes config.
@@ -19,13 +27,36 @@ export const getModuleRoutes = (role: RoleType) => {
  * @returns 
  */
 const _buildRoute = (name: string, role: RoleType) => {
-    console.log(role)
+    const config = _getPermission(name);
+
+    if(!config.includes(role)) {
+        return null;
+    }
 
     const label = _getLabel(name);
     const icon = _getIcon(name);
     const route = _getRoute(name);
 
     return { label, icon, route }
+}
+
+const _getPermission = (name: string): PermissionConfig => {
+    switch (name) {
+        case 'task':
+            return TASK_PERMISSIONS;
+        case 'report':
+            return REPORT_PERMISSIONS
+        case 'player':
+            return PLAYER_PERMISSIONS;
+        case 'team':
+            return TEAM_PERMISSIONS;
+        case 'analysis':
+            return ANALYSIS_PERMISSIONS;
+        case 'user':
+            return USER_PERMISSIONS;
+        default:
+            throw new Error(`Could not get permissions for module ${name}`);
+    }
 }
 
 /**
