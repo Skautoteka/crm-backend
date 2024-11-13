@@ -1,10 +1,16 @@
 import express, { NextFunction, Request, Response } from 'express'
 import * as userController from '../controller/user-controller'
 import { InvalidPayloadError } from '../error/invalid-payload'
+import { routePermission } from '../permissions'
+import { CREATE_PERMISSIONS, MODULE_PERMISSIONS, READ_PERMISSIONS, REMOVE_PERMISSIONS } from '../permissions/user'
 
 const router = express.Router()
 
-router.get('/all', async (req: Request, res: Response, next: NextFunction) => {
+router.use(
+    routePermission(MODULE_PERMISSIONS)
+)
+
+router.get('/all', routePermission(READ_PERMISSIONS), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const users = await userController.getAll()
         return res.json(users)
@@ -15,6 +21,7 @@ router.get('/all', async (req: Request, res: Response, next: NextFunction) => {
 
 router.get(
     '/create-fields',
+    routePermission(CREATE_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const fields = await userController.getUserCreateFields()
@@ -27,6 +34,7 @@ router.get(
 
 router.get(
     '/search',
+    routePermission(READ_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { search, size } = req.query
@@ -52,6 +60,7 @@ router.get(
 
 router.delete(
     '/:id',
+    routePermission(REMOVE_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params
         try {
