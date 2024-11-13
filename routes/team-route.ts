@@ -1,11 +1,18 @@
 import express, { NextFunction, Request, Response } from 'express'
 import * as teamController from '../controller/team-controller'
 import { InvalidPayloadError } from '../error/invalid-payload'
+import { routePermission } from '../permissions'
+import { CREATE_PERMISSIONS, MODULE_PERMISSIONS, READ_PERMISSIONS, REMOVE_PERMISSIONS } from '../permissions/team'
 
 const router = express.Router()
 
+router.use(
+    routePermission(MODULE_PERMISSIONS)
+)
+
 router.get(
     '/create-fields',
+    routePermission(CREATE_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const fields = await teamController.getTeamCreateFields()
@@ -16,7 +23,7 @@ router.get(
     }
 )
 
-router.get('/all', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/all', routePermission(READ_PERMISSIONS), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const teams = await teamController.getAll()
         return res.json(teams)
@@ -27,6 +34,7 @@ router.get('/all', async (req: Request, res: Response, next: NextFunction) => {
 
 router.delete(
     '/:id',
+    routePermission(REMOVE_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params
         try {
@@ -38,7 +46,7 @@ router.delete(
     }
 )
 
-router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/', routePermission(CREATE_PERMISSIONS), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { name, city, country, league } = req.body
         const team = await teamController.add({ name, city, country, league })
@@ -50,6 +58,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 
 router.get(
     '/search',
+    routePermission(READ_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { search, size } = req.query
