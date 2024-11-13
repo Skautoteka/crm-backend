@@ -39,9 +39,7 @@ export const EDIT_PERMISSIONS: PermissionConfig = [
  */
 export const REMOVE_PERMISSIONS: PermissionConfig = [
     RoleType.Admin,
-    RoleType.Analytics,
     RoleType.RegionManager,
-    RoleType.Scout,
     RoleType.SportsDirector
 ];
 
@@ -50,8 +48,6 @@ export const REMOVE_PERMISSIONS: PermissionConfig = [
  */
 export const CREATE_PERMISSIONS: PermissionConfig = [
     RoleType.Admin,
-    RoleType.Analytics,
     RoleType.RegionManager,
-    RoleType.Scout,
     RoleType.SportsDirector
 ]
