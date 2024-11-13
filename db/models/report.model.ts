@@ -14,6 +14,7 @@ import Player from './player.model'
 import User from './user.model'
 import PlayerTrait from './player-trait.model'
 import ReportTrait from './report-trait.model'
+import Region from './region.model'
 
 interface ReportAttributes {
     id: string
@@ -45,6 +46,12 @@ export default class Report extends Model<Report> {
 
     @BelongsTo(() => Player, { foreignKey: 'playerId' })
     player: Player
+
+    @ForeignKey(() => Region)
+    regionId: string
+
+    @BelongsTo(() => Region, { foreignKey: 'regionId' })
+    region: Region
 
     @ForeignKey(() => User)
     createdById: string;

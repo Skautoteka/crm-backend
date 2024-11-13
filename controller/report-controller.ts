@@ -43,6 +43,14 @@ export const getReportCreateFields = async (): Promise<
                 { label: 'Ukonczony', value: 'COMPLETED' },
             ],
         },
+        {
+            name: 'regionId',
+            label: 'Region',
+            isRequired: true,
+            placeholder: 'Wybierz region raportu',
+            type: 'SEARCH',
+            searchType: 'region'
+        }
     ]
 }
 
