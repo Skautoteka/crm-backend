@@ -7,8 +7,6 @@ import { PermissionConfig } from "../interface/ipermissions";
 export const MODULE_PERMISSIONS: PermissionConfig = [
     RoleType.Admin,
     RoleType.Analytics,
-    RoleType.RegionManager,
-    RoleType.Scout,
     RoleType.SportsDirector
 ]
 
@@ -18,8 +16,6 @@ export const MODULE_PERMISSIONS: PermissionConfig = [
 export const READ_PERMISSIONS: PermissionConfig = [
     RoleType.Admin,
     RoleType.Analytics,
-    RoleType.RegionManager,
-    RoleType.Scout,
     RoleType.SportsDirector
 ];
 
@@ -29,8 +25,6 @@ export const READ_PERMISSIONS: PermissionConfig = [
 export const EDIT_PERMISSIONS: PermissionConfig = [
     RoleType.Admin,
     RoleType.Analytics,
-    RoleType.RegionManager,
-    RoleType.Scout,
     RoleType.SportsDirector
 ];
 
@@ -40,8 +34,6 @@ export const EDIT_PERMISSIONS: PermissionConfig = [
 export const REMOVE_PERMISSIONS: PermissionConfig = [
     RoleType.Admin,
     RoleType.Analytics,
-    RoleType.RegionManager,
-    RoleType.Scout,
     RoleType.SportsDirector
 ];
 
@@ -51,7 +43,5 @@ export const REMOVE_PERMISSIONS: PermissionConfig = [
 export const CREATE_PERMISSIONS: PermissionConfig = [
     RoleType.Admin,
     RoleType.Analytics,
-    RoleType.RegionManager,
-    RoleType.Scout,
     RoleType.SportsDirector
 ]
