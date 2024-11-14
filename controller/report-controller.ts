@@ -102,7 +102,7 @@ export const getAll = async (): Promise<Report[]> => {
  * @returns
  */
 export const getAllByTaskId = async (taskId: string): Promise<Report[]> => {
-    return await Report.findAll({ where: {taskId} })
+    return (await Report.findAll({ where: { taskId } })) ?? null
 }
 
 const getDefaultReportStatus = (): 'IN_PROGRESS' | 'COMPLETED' => {

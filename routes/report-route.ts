@@ -25,12 +25,11 @@ router.get('/all', async (req: Request, res: Response, next: NextFunction) => {
 })
 
 router.get(
-    '/all/:id',
+    '/allByTaskId/:id',
     async (req: Request, res: Response, next: NextFunction) => {
         const { id: taskId } = req.params
         try {
             const reports = await reportController.getAllByTaskId(taskId)
-            console.log('reports', reports)
             return res.json(reports)
         } catch (err) {
             return next(err)
