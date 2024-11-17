@@ -57,6 +57,16 @@ export const queryPlayer = async (
 }
 
 /**
+ * Returns all players based on team id.
+ *
+ * @returns
+ */
+export const getAllByTeamId = async (teamId: string): Promise<Player[]> => {
+    return (await Player.findAll({ where: { teamId } })) ?? null
+}
+
+
+/**
  * Removes the player from the database.
  *
  * @param id

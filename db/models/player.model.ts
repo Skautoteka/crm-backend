@@ -17,6 +17,7 @@ interface PlayerAttributes {
     lastName: string
     sex: string
     age: number
+    teamId: string
 }
 
 export interface PlayerCreationAttributes

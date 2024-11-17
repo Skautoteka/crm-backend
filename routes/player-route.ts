@@ -26,6 +26,21 @@ router.delete(
     }
 )
 
+
+router.get(
+    '/allByTeamId/:id',
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id: teamId } = req.params
+        try {
+            const reports = await playerController.getAllByTeamId(teamId)
+            return res.json(reports)
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
+
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const player = await playerController.add(req.body)
