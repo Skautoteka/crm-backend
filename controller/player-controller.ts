@@ -65,7 +65,6 @@ export const getAllByTeamId = async (teamId: string): Promise<Player[]> => {
     return (await Player.findAll({ where: { teamId } })) ?? null
 }
 
-
 /**
  * Removes the player from the database.
  *

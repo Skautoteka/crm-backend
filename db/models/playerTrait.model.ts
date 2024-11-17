@@ -1,4 +1,4 @@
-import { DataTypes, Optional } from 'sequelize';
+import { DataTypes, Optional } from 'sequelize'
 import {
     Column,
     DataType,
@@ -6,15 +6,15 @@ import {
     Model,
     PrimaryKey,
     Table,
-} from 'sequelize-typescript';
+} from 'sequelize-typescript'
 
 interface PlayerTraitAttributes {
-    id: string;
-    name: string;
+    id: string
+    name: string
 }
 
 export interface PlayerTraitCreationAttributes
-    extends Optional<PlayerTraitAttributes, 'id'> { }
+    extends Optional<PlayerTraitAttributes, 'id'> {}
 
 @Table({
     timestamps: true,
@@ -26,8 +26,8 @@ export default class PlayerTrait extends Model<
     @PrimaryKey
     @Default(DataType.UUIDV4)
     @Column({ type: DataTypes.UUID })
-    id: string;
+    id: string
 
     @Column({ allowNull: false, type: DataTypes.TEXT })
-    name: string;
+    name: string
 }

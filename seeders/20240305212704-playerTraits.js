@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -196,11 +196,10 @@ module.exports = {
                 createdAt: new Date(Date.now()),
                 updatedAt: new Date(Date.now()),
             },
-        ]);
+        ])
     },
 
     async down(queryInterface, Sequelize) {
-        return queryInterface.bulkDelete('PlayerTraits', null, {});
+        return queryInterface.bulkDelete('PlayerTraits', null, {})
     },
-};
-
+}

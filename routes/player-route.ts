@@ -26,7 +26,6 @@ router.delete(
     }
 )
 
-
 router.get(
     '/allByTeamId/:id',
     async (req: Request, res: Response, next: NextFunction) => {
@@ -39,7 +38,6 @@ router.get(
         }
     }
 )
-
 
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
