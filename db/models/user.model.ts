@@ -55,6 +55,13 @@ export default class User extends Model<
     @Column({ allowNull: false, type: DataTypes.TEXT })
     lastName: string
 
+    @Column({ type: DataTypes.TEXT })
+    get name(): string {
+        return (
+            this.getDataValue('firstName') + ' ' + this.getDataValue('lastName')
+        )
+    }
+
     @Column({ allowNull: false, unique: true, type: DataTypes.STRING(200) })
     email: string
 
@@ -72,7 +79,7 @@ export default class User extends Model<
     region: Region
 
     @ForeignKey(() => Role)
-    @Column({ type: DataTypes.UUID })
+    @Column({ type: DataTypes.STRING(50) })
     roleId: string
 
     @BelongsTo(() => Role)

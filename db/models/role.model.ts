@@ -2,8 +2,6 @@ import { DataTypes } from 'sequelize'
 import {
     BelongsToMany,
     Column,
-    DataType,
-    Default,
     HasMany,
     Model,
     PrimaryKey,
@@ -18,8 +16,7 @@ import RolePermission from './role-permission.model'
 })
 export default class Role extends Model {
     @PrimaryKey
-    @Default(DataType.UUIDV4)
-    @Column({ type: DataTypes.UUID })
+    @Column({ type: DataTypes.STRING(50) })
     id: string
 
     @Column({ type: DataTypes.TEXT })
