@@ -4,6 +4,7 @@ import * as authController from '../controller/auth-controller'
 import { routePermission } from '../permissions'
 import {
     CREATE_PERMISSIONS,
+    EDIT_PERMISSIONS,
     MODULE_PERMISSIONS,
     READ_PERMISSIONS,
     REMOVE_PERMISSIONS,
@@ -79,5 +80,16 @@ router.post(
         }
     }
 )
+
+router.get('/permissions', async (req: Request, res: Response) => {
+    const role = authController.getReqRole(req);
+
+    res.json({
+        read: READ_PERMISSIONS.includes(role),
+        edit: EDIT_PERMISSIONS.includes(role),
+        remove: REMOVE_PERMISSIONS.includes(role), 
+        create: CREATE_PERMISSIONS.includes(role),
+    })
+})
 
 export { router as reportRouter }

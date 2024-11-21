@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
-import * as playerController from '../controller/player-controller'
+import * as playerController from '../controller/player-controller';
+import * as authController from '../controller/auth-controller';
 import { InvalidPayloadError } from '../error/invalid-payload'
 import { routePermission } from '../permissions'
 import {
@@ -8,6 +9,7 @@ import {
     READ_PERMISSIONS,
     REMOVE_PERMISSIONS,
 } from '../permissions/player'
+import { EDIT_PERMISSIONS } from '../permissions/task';
 
 const router = express.Router()
 
@@ -91,5 +93,16 @@ router.get(
         }
     }
 )
+
+router.get('/permissions', async (req: Request, res: Response) => {
+    const role = authController.getReqRole(req);
+
+    res.json({
+        read: READ_PERMISSIONS.includes(role),
+        edit: EDIT_PERMISSIONS.includes(role),
+        remove: REMOVE_PERMISSIONS.includes(role), 
+        create: CREATE_PERMISSIONS.includes(role),
+    })
+})
 
 export { router as playerRouter }

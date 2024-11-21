@@ -6,9 +6,6 @@ import { PermissionConfig } from '../interface/ipermissions'
  */
 export const MODULE_PERMISSIONS: PermissionConfig = [
     RoleType.Admin,
-    RoleType.Analytics,
-    RoleType.RegionManager,
-    RoleType.Scout,
     RoleType.SportsDirector,
 ]
 
