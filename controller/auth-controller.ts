@@ -38,7 +38,6 @@ const _getSecret = (type: 'refresh' | 'access'): string => {
  * Returns an access token.
  */
 const _getAccessToken = (email: string, role: string): string => {
-    console.log('ROLE ', role)
     return jwt.sign({ email, role }, _getSecret('access'), { expiresIn: '10s' })
 }
 
@@ -46,7 +45,6 @@ const _getAccessToken = (email: string, role: string): string => {
  * Returns refresh token
  */
 const _getRefreshToken = (email: string, role: string): string => {
-    console.log('ROLE ', role)
     return jwt.sign({ email, role }, _getSecret('refresh'))
 }
 
