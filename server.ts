@@ -17,6 +17,7 @@ import { roleRouter } from './routes/role-route'
 import { moduleRouter } from './routes/module-route'
 import { authMiddleware } from './middleware/auth-middleware'
 import cookieParser from 'cookie-parser'
+import { analysisRouter } from './routes/analysis-route'
 
 dotenv.config()
 
@@ -33,6 +34,7 @@ app.use('/api/player', authMiddleware, playerRouter)
 app.use('/api/user', authMiddleware, userRouter)
 app.use('/api/role', authMiddleware, roleRouter)
 app.use('/api/module', authMiddleware, moduleRouter)
+app.use('/api/analysis', authMiddleware, analysisRouter);
 app.use('/api/auth', authRouter)
 
 const port = process.env.PORT
