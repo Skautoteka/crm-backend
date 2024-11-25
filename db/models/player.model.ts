@@ -10,6 +10,7 @@ import {
     Table,
 } from 'sequelize-typescript'
 import Team from './team.model'
+import Position from './position.model'
 
 interface PlayerAttributes {
     id: string
@@ -53,8 +54,12 @@ export default class Player extends Model<
     @Column({ allowNull: false, type: DataTypes.INTEGER })
     age: number
 
-    @Column({ allowNull: false, type: DataTypes.TEXT })
-    position: 'FORWARD' | 'DEFENSE' | 'WINGER'
+    @ForeignKey(() => Position)
+    @Column({ allowNull: false, type: DataTypes.UUID })
+    positionId: string
+
+    @BelongsTo(() => Position)
+    position: Position
 
     @ForeignKey(() => Team)
     @Column({ allowNull: true, type: DataTypes.UUID })
