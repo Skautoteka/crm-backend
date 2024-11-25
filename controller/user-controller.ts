@@ -2,6 +2,7 @@ import { ISingleInputConfig } from '../interface'
 import User from '../db/models/user.model'
 import Role from '../db/models/role.model'
 import Region from '../db/models/region.model'
+import { Op } from 'sequelize'
 
 export const getAll = async () => {
     const users = await User.findAll({
@@ -22,6 +23,27 @@ export const getAll = async () => {
         role: user.role?.name,
         region: user.region?.name,
     }))
+}
+
+/**
+ * Queries users based on the search query and the maximum
+ * size.
+ *
+ * @returns
+ */
+export const queryUsers = async (
+    search: string,
+    size: number = 1
+): Promise<User[]> => {
+    return await User.findAll({
+        where: {
+            [Op.or]: [
+                { firstName: { [Op.substring]: search } },
+                { lastName: { [Op.substring]: search } },
+            ],
+        },
+        limit: size,
+    })
 }
 
 /**

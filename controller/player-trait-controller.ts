@@ -1,6 +1,6 @@
 import PlayerTrait, {
     PlayerTraitCreationAttributes,
-} from '../db/models/playerTrait.model'
+} from '../db/models/player-trait.model'
 import { ModelValidationError } from '../error/model-validation'
 import { NotFoundError } from '../error/not-found'
 

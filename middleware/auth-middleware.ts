@@ -33,10 +33,12 @@ export const authMiddleware = async (
         }
 
         //@ts-expect-error email on jwt payload
-        const { email } = await jwt.verify(accessToken, accessTokenSecret)
+        const { email, role } = await jwt.verify(accessToken, accessTokenSecret)
 
         // @ts-expect-error set user
         req.email = email
+        // @ts-expect-error set user
+        req.role = role
         return next()
     } catch {
         return next(new ForbiddenError('Could not authenticate user'))

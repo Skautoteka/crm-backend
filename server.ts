@@ -14,6 +14,7 @@ import { playerRouter } from './routes/player-route'
 import { userRouter } from './routes/user-route'
 import { authRouter } from './routes/auth-route'
 import { roleRouter } from './routes/role-route'
+import { moduleRouter } from './routes/module-route'
 import { authMiddleware } from './middleware/auth-middleware'
 import cookieParser from 'cookie-parser'
 
@@ -31,11 +32,12 @@ app.use('/api/team', authMiddleware, teamRouter)
 app.use('/api/player', authMiddleware, playerRouter)
 app.use('/api/user', authMiddleware, userRouter)
 app.use('/api/role', authMiddleware, roleRouter)
+app.use('/api/module', authMiddleware, moduleRouter)
 app.use('/api/auth', authRouter)
 
 const port = process.env.PORT
 ;(async () => {
-    await sequelize.sync()
+    await sequelize.sync({ alter: true })
 
     app.listen(port, () => {
         console.log(`Listening on port: ${port}`)

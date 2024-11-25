@@ -6,7 +6,7 @@ import { DataTypes } from 'sequelize'
 @Table
 export default class RolePermission extends Model {
     @ForeignKey(() => Role)
-    @Column({ allowNull: true, type: DataTypes.UUID })
+    @Column({ allowNull: true, type: DataTypes.STRING(50) })
     roleId: string
 
     @ForeignKey(() => Permission)
