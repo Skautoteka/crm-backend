@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import Position, {
     PositionCreationAttributes,
 } from '../db/models/position.model'
@@ -5,9 +6,25 @@ import { ModelValidationError } from '../error/model-validation'
 import { NotFoundError } from '../error/not-found'
 
 /**
+ * Queries positions based on the search query and the maximum
+ * size.
+ *
+ * @returns
+ */
+export const queryPositions = async (
+    search: string,
+    size: number = 1
+): Promise<Position[]> => {
+    return await Position.findAll({
+        where: { name: { [Op.substring]: search } },
+        limit: size,
+    })
+}
+
+/**
  * Returns all positions.
  */
-export const getAllPositions = async (): Promise<Position[]> => {
+export const getAll = async (): Promise<Position[]> => {
     return await Position.findAll()
 }
 

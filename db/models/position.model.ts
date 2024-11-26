@@ -1,12 +1,5 @@
 import { DataTypes, Optional } from 'sequelize'
-import {
-    Column,
-    DataType,
-    Default,
-    Model,
-    PrimaryKey,
-    Table,
-} from 'sequelize-typescript'
+import { Column, Model, PrimaryKey, Table } from 'sequelize-typescript'
 
 interface PositionAttributes {
     id: string
@@ -24,8 +17,7 @@ export default class Position extends Model<
     PositionCreationAttributes
 > {
     @PrimaryKey
-    @Default(DataType.UUIDV4)
-    @Column({ type: DataTypes.UUID })
+    @Column({ allowNull: false, type: DataTypes.STRING(50) })
     id: string
 
     @Column({ allowNull: false, type: DataTypes.TEXT })
