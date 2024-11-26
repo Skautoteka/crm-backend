@@ -24,16 +24,6 @@ router.post(
                 throw new Error('Missing required fields')
             }
 
-            console.log('Registration attempt:', {
-                firstName,
-                lastName,
-                email,
-                password,
-                role,
-                region,
-                phoneNumber,
-            })
-
             const user = await authController.createUser(<UserAttributes>{
                 firstName,
                 lastName,

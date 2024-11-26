@@ -1,6 +1,7 @@
 import { DataTypes, Optional } from 'sequelize'
 import {
     BelongsTo,
+    BelongsToMany,
     Column,
     DataType,
     Default,
@@ -10,11 +11,18 @@ import {
     Table,
 } from 'sequelize-typescript'
 import Player from './player.model'
+import Task from './task.model'
+import User from './user.model'
+import PlayerTrait from './player-trait.model'
+import ReportTrait from './report-trait.model'
+import Region from './region.model'
 
 interface ReportAttributes {
     id: string
     name: string
     status: 'IN_PROGRESS' | 'COMPLETED'
+    taskId: string
+    createdById: string
 }
 
 export interface ReportCreationAttributes
@@ -23,10 +31,7 @@ export interface ReportCreationAttributes
 @Table({
     timestamps: true,
 })
-export default class Report extends Model<
-    ReportAttributes,
-    ReportCreationAttributes
-> {
+export default class Report extends Model<Report> {
     @PrimaryKey
     @Default(DataType.UUIDV4)
     @Column({ type: DataTypes.UUID })
@@ -43,4 +48,25 @@ export default class Report extends Model<
 
     @BelongsTo(() => Player, { foreignKey: 'playerId' })
     player: Player
+
+    @ForeignKey(() => Task)
+    @Column({ allowNull: true, type: DataTypes.UUID })
+    taskId: string
+
+    @BelongsTo(() => Task)
+    task: Task
+    @ForeignKey(() => Region)
+    regionId: string
+
+    @BelongsTo(() => Region, { foreignKey: 'regionId' })
+    region: Region
+
+    @ForeignKey(() => User)
+    createdById: string
+
+    @BelongsTo(() => User, { foreignKey: 'createdById' })
+    createdBy: User
+
+    @BelongsToMany(() => PlayerTrait, () => ReportTrait)
+    traits: PlayerTrait[]
 }
