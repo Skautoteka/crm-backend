@@ -42,18 +42,27 @@ router.delete(
     }
 )
 
-router.post(
-    '/',
-    routePermission(CREATE_PERMISSIONS),
+router.get(
+    '/allByTeamId/:id',
     async (req: Request, res: Response, next: NextFunction) => {
+        const { id: teamId } = req.params
         try {
-            const player = await playerController.add(req.body)
-            res.json({ success: true, added: player })
+            const reports = await playerController.getAllByTeamId(teamId)
+            return res.json(reports)
         } catch (err) {
             return next(err)
         }
     }
 )
+
+router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const player = await playerController.add(req.body)
+        res.json({ success: true, added: player })
+    } catch (err) {
+        return next(err)
+    }
+})
 
 router.get(
     '/create-fields',

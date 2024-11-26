@@ -11,6 +11,7 @@ import {
     Table,
 } from 'sequelize-typescript'
 import Player from './player.model'
+import Task from './task.model'
 import User from './user.model'
 import PlayerTrait from './player-trait.model'
 import ReportTrait from './report-trait.model'
@@ -20,6 +21,7 @@ interface ReportAttributes {
     id: string
     name: string
     status: 'IN_PROGRESS' | 'COMPLETED'
+    taskId: string
     createdById: string
 }
 
@@ -47,6 +49,12 @@ export default class Report extends Model<Report> {
     @BelongsTo(() => Player, { foreignKey: 'playerId' })
     player: Player
 
+    @ForeignKey(() => Task)
+    @Column({ allowNull: true, type: DataTypes.UUID })
+    taskId: string
+
+    @BelongsTo(() => Task)
+    task: Task
     @ForeignKey(() => Region)
     regionId: string
 

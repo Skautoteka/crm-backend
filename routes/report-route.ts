@@ -53,6 +53,19 @@ router.get(
     }
 )
 
+router.get(
+    '/allByTaskId/:id',
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id: taskId } = req.params
+        try {
+            const reports = await reportController.getAllByTaskId(taskId)
+            return res.json(reports)
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
 router.delete(
     '/:id',
     routePermission(REMOVE_PERMISSIONS),
