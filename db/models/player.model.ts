@@ -18,7 +18,8 @@ interface PlayerAttributes {
     lastName: string
     sex: string
     age: number
-    positionId: string
+    nationality: string
+    position: Position
     teamId: string
 }
 
@@ -52,6 +53,9 @@ export default class Player extends Model<
 
     @Column({ allowNull: false, type: DataTypes.TEXT })
     sex: string
+
+    @Column({ allowNull: true, type: DataTypes.TEXT })
+    nationality: string
 
     @Column({ allowNull: false, type: DataTypes.INTEGER })
     age: number

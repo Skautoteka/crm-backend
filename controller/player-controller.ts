@@ -4,12 +4,13 @@ import Team from '../db/models/team.model'
 import { ModelValidationError } from '../error/model-validation'
 import { NotFoundError } from '../error/not-found'
 import { ISingleInputConfig } from '../interface'
+import Position from '../db/models/position.model'
 
 /**
  * Returns all players.
  */
 export const getAll = async (): Promise<Player[]> => {
-    return await Player.findAll({ include: Team })
+    return await Player.findAll({ include: [Team, Position] })
 }
 
 /**
@@ -63,6 +64,15 @@ export const queryPlayer = async (
  */
 export const getAllByTeamId = async (teamId: string): Promise<Player[]> => {
     return (await Player.findAll({ where: { teamId } })) ?? null
+}
+
+/**
+ * Returns all players based on team id.
+ *
+ * @returns
+ */
+export const getById = async (id: string): Promise<Player | null> => {
+    return (await Player.findOne({ where: { id } })) ?? null
 }
 
 /**

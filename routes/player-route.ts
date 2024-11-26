@@ -55,6 +55,19 @@ router.get(
     }
 )
 
+router.get(
+    '/getById/:id',
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params
+        try {
+            const report = await playerController.getById(id)
+            return res.json(report)
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const player = await playerController.add(req.body)
