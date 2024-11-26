@@ -18,6 +18,7 @@ interface PlayerAttributes {
     lastName: string
     sex: string
     age: number
+    positionId: string
     teamId: string
 }
 
@@ -56,7 +57,7 @@ export default class Player extends Model<
     age: number
 
     @ForeignKey(() => Position)
-    @Column({ allowNull: false, type: DataTypes.UUID })
+    @Column({ type: DataTypes.STRING(50) })
     positionId: string
 
     @BelongsTo(() => Position)

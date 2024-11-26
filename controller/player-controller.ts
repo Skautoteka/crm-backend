@@ -115,12 +115,8 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
             label: 'Pozycja zawodnika',
             isRequired: true,
             placeholder: 'Wybierz pozycje',
-            type: 'SELECT',
-            options: [
-                { value: 'FORWARD', label: 'Napastnik' },
-                { value: 'DEFENSE', label: 'Obrońca' },
-                { value: 'WINGER', label: 'Skrzydłowy' },
-            ],
+            type: 'DB',
+            searchType: 'position',
         },
         {
             name: 'teamId',

@@ -34,8 +34,8 @@ export default class PositionTrait extends Model<
     id: string
 
     @ForeignKey(() => Position)
-    @Column({ type: DataTypes.UUID, allowNull: false })
-    positionid: string
+    @Column({ type: DataTypes.STRING(50), allowNull: false })
+    positionId: string
 
     @ForeignKey(() => PlayerTrait)
     @Column({ type: DataTypes.UUID, allowNull: false })
