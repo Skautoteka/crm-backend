@@ -61,7 +61,7 @@ export default class Player extends Model<
     age: number
 
     @ForeignKey(() => Position)
-    @Column({ type: DataTypes.STRING(50) })
+    @Column({ allowNull: false, type: DataTypes.STRING(50) })
     positionId: string
 
     @BelongsTo(() => Position)

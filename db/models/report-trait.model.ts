@@ -4,6 +4,7 @@ import {
     Table,
     Model,
     DataType,
+    BelongsTo,
 } from 'sequelize-typescript'
 import PlayerTrait from './player-trait.model'
 import Report from './report.model'
@@ -17,4 +18,10 @@ export default class ReportTrait extends Model<ReportTrait> {
     @ForeignKey(() => Report)
     @Column({ type: DataType.UUID })
     reportId: string
+
+    @BelongsTo(() => Report)
+    report: Report
+
+    @Column({ allowNull: false, type: DataType.INTEGER })
+    value: number
 }
