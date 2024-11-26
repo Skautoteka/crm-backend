@@ -17,7 +17,7 @@ export default class Position extends Model<
     PositionCreationAttributes
 > {
     @PrimaryKey
-    @Column({ allowNull: false, type: DataTypes.STRING(50) })
+    @Column({ type: DataTypes.STRING(50), allowNull: false, unique: true })
     id: string
 
     @Column({ allowNull: false, type: DataTypes.TEXT })
