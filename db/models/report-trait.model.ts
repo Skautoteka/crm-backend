@@ -12,8 +12,11 @@ import Report from './report.model'
 @Table
 export default class ReportTrait extends Model<ReportTrait> {
     @ForeignKey(() => PlayerTrait)
-    @Column({ type: DataType.UUID })
+    @Column({ type: DataType.STRING(50), allowNull: false, unique: true })
     traitId: string
+
+    @BelongsTo(() => PlayerTrait)
+    trait: PlayerTrait
 
     @ForeignKey(() => Report)
     @Column({ type: DataType.UUID })

@@ -11,6 +11,20 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
+                traitId: 'SPEED',
+                reportId: '276232af-8b64-414f-b574-d4bb5ff10358',
+                value: 2,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                traitId: 'INTERCEPTIONS',
+                reportId: '276232af-8b64-414f-b574-d4bb5ff10358',
+                value: 5,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
                 traitId: 'PHYSICAL_STRENGTH',
                 reportId: '89bca610-c842-42d6-892c-e9ecfea85760',
                 value: 7,
