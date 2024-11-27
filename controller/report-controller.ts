@@ -7,6 +7,9 @@ import { NotFoundError } from '../error/not-found'
 import User from '../db/models/user.model'
 import ReportTrait from '../db/models/report-trait.model'
 import PlayerTrait from '../db/models/player-trait.model'
+import ReportPosition from '../db/models/report-position.model'
+import ReportDescription from '../db/models/report-description.model'
+import Position from '../db/models/position.model'
 
 /**
  * Gets the model for the task model creation.
@@ -88,7 +91,7 @@ export const add = async (
         const { id } = await report.save()
 
         const reportTrait = new ReportTrait({
-            traitId: 'e0a6b3f5-1234-4f3b-912d-b44a63a1e2b8',
+            traitId: 'PHYSICAL_STRENGTH',
             reportId: report.id,
         })
         await reportTrait.save()
@@ -115,7 +118,7 @@ export const add = async (
  */
 export const getAll = async (user: User): Promise<Report[]> => {
     return await Report.findAll({
-        include: Player,
+        include: [Player, ReportTrait, ReportPosition, ReportDescription],
         where: { createdById: user.id },
     })
 }
@@ -140,11 +143,39 @@ export const getAllDetailed = async (): Promise<Report[]> => {
 /**
  * Returns all reports based on task id.
  *
- * @returns
+ * @param taskId - The task ID used to filter reports.
+ * @returns - List of reports based on the taskId.
  */
 export const getAllByTaskId = async (taskId: string): Promise<Report[]> => {
-    return (await Report.findAll({ where: { taskId } })) ?? null
+    const data =
+        (await Report.findAll({
+            include: [
+                {
+                    model: Player,
+                    include: [
+                        {
+                            model: Position,
+                            required: false,
+                        },
+                    ],
+                },
+                {
+                    model: ReportTrait,
+                    include: [
+                        {
+                            model: PlayerTrait,
+                            required: false,
+                        },
+                    ],
+                },
+                ReportDescription,
+            ],
+            where: { taskId },
+        })) ?? null
+    return data
 }
+
+
 
 const getDefaultReportStatus = (): 'IN_PROGRESS' | 'COMPLETED' => {
     return 'IN_PROGRESS'
