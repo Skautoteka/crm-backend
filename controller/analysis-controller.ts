@@ -8,12 +8,29 @@ import { ISingleInputConfig } from "../interface";
 export const getReportCreateFields = async (): Promise<ISingleInputConfig[]> => {
     return [
         {
-            name: 'hostTeamId',
-            label: 'Drużyna gości',
-            isRequired: true,
-            placeholder: 'Wyszukaj druzyne gosci',
-            type: 'SEARCH',
-            searchType: 'team',
+            name: 'filters',
+            label: 'Filtry',
+            isRequired: false,
+            placeholder: 'Wybierz nowy filtr',
+            type: 'MULTIVALUE',
+            valueTypes: [
+                {
+                    name: 'trait',
+                    label: 'Cecha zawodnika',
+                    isRequired: true,
+                    placeholder: 'Wyszukaj druzyne gosci',
+                    type: 'SEARCH',
+                    searchType: 'team',
+                },
+                {
+                    name: 'teamId',
+                    label: 'Drużyna',
+                    isRequired: true,
+                    placeholder: 'Wyszukaj druzyne gosci',
+                    type: 'SEARCH',
+                    searchType: 'team',
+                },
+            ]
         },
     ]
 }
@@ -26,12 +43,29 @@ export const getReportCreateFields = async (): Promise<ISingleInputConfig[]> => 
 export const getNoteCreateFields = async (): Promise<ISingleInputConfig[]> => {
     return [
         {
-            name: 'hostTeamId',
-            label: 'Drużyna gości',
-            isRequired: true,
-            placeholder: 'Wyszukaj druzyne gosci',
-            type: 'SEARCH',
-            searchType: 'team',
+            name: 'filters',
+            label: 'Filtry',
+            isRequired: false,
+            placeholder: 'Wybierz nowy filtr',
+            type: 'MULTIVALUE',
+            valueTypes: [
+                {
+                    name: 'trait',
+                    label: 'Cecha zawodnika',
+                    isRequired: true,
+                    placeholder: 'Wyszukaj druzyne gosci',
+                    type: 'SEARCH',
+                    searchType: 'team',
+                },
+                {
+                    name: 'teamId',
+                    label: 'Drużyna',
+                    isRequired: true,
+                    placeholder: 'Wyszukaj druzyne gosci',
+                    type: 'SEARCH',
+                    searchType: 'team',
+                },
+            ]
         },
     ]
 }

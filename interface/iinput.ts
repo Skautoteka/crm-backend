@@ -5,7 +5,12 @@ export interface ISingleInputConfig {
     isRequired: boolean
     type: InputType
     options?: ISelectOption[]
-    searchType?: string
+    searchType?: string;
+    valueTypes?: ISingleFilterConfig[]
+}
+
+export interface ISingleFilterConfig extends ISingleInputConfig {
+
 }
 
 export interface ISelectOption {
@@ -21,3 +26,4 @@ type InputType =
     | 'SELECT'
     | 'SEARCH'
     | 'DB'
+    | 'MULTIVALUE'
