@@ -7,6 +7,7 @@ import {
     BelongsTo,
 } from 'sequelize-typescript'
 import Report from './report.model'
+import Team from './team.model'
 
 interface ReportDescriptionAttributes {
     reportId: string
@@ -32,4 +33,23 @@ export default class ReportDescription extends Model<ReportDescriptionAttributes
 
     @Column({ allowNull: true, type: DataTypes.TEXT })
     technicalDescription: string
+
+    @ForeignKey(() => Team)
+    @Column({ allowNull: true, type: DataTypes.UUID })
+    opponentId: string
+
+    @BelongsTo(() => Team)
+    team: Team
+
+    @Column({ allowNull: true, type: DataTypes.INTEGER })
+    timePlayed: number
+
+    @Column({ allowNull: true, type: DataTypes.INTEGER })
+    goalesScored: number
+
+    @Column({ allowNull: true, type: DataTypes.INTEGER })
+    assists: number
+
+    @Column({ allowNull: true, type: DataTypes.TEXT })
+    summary: number
 }
