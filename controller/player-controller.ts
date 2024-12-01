@@ -1,4 +1,4 @@
-import { Op, or, literal } from 'sequelize'
+import { Op, or, literal, fn, col } from 'sequelize'
 import Player, { PlayerCreationAttributes } from '../db/models/player.model'
 import Team from '../db/models/team.model'
 import { ModelValidationError } from '../error/model-validation'
@@ -6,17 +6,26 @@ import { NotFoundError } from '../error/not-found'
 import { ISingleInputConfig } from '../interface'
 import Position from '../db/models/position.model'
 
-/**
- * Returns all players.
- */
 export const getAll = async (): Promise<Player[]> => {
+    const latestPlayers = await Player.findAll({
+        attributes: [
+            'masterPlayerId',
+            [fn('MAX', col('version')), 'latestVersion'],
+        ],
+        group: ['masterPlayerId'],
+    })
+
+    const versionPairs = latestPlayers.map((record) => ({
+        masterPlayerId: record.getDataValue('masterPlayerId'),
+        version: record.get('latestVersion') as number,
+    }))
+
     return await Player.findAll({
         where: {
-            version: literal(`(
-                SELECT MAX(version)
-                FROM players AS sub
-                WHERE sub.masterPlayerId = players.masterPlayerId OR sub.id = players.id
-            )`),
+            [Op.or]: versionPairs.map(({ masterPlayerId, version }) => ({
+                masterPlayerId,
+                version,
+            })),
         },
         include: [Team, Position],
     })
@@ -216,9 +225,9 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
         },
         {
             name: 'birthYear',
-            label: 'Wiek',
+            label: 'Rok urodzenia',
             isRequired: true,
-            placeholder: 'Wpisz wiek zawodnika',
+            placeholder: 'Wpisz rok urodzenia zawodnika',
             type: 'NUMBER',
         },
     ]
