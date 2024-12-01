@@ -44,6 +44,7 @@ router.delete(
 
 router.get(
     '/allByTeamId/:id',
+    routePermission(READ_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
         const { id: teamId } = req.params
         try {
@@ -57,6 +58,7 @@ router.get(
 
 router.get(
     '/getById/:id',
+    routePermission(READ_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params
         try {
@@ -68,14 +70,18 @@ router.get(
     }
 )
 
-router.post('/', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const player = await playerController.add(req.body)
-        res.json({ success: true, added: player })
-    } catch (err) {
-        return next(err)
+router.post(
+    '/',
+    routePermission(CREATE_PERMISSIONS),
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const player = await playerController.add(req.body)
+            res.json({ success: true, added: player })
+        } catch (err) {
+            return next(err)
+        }
     }
-})
+)
 
 router.get(
     '/create-fields',
