@@ -8,6 +8,7 @@ import {
 } from 'sequelize-typescript'
 import Report from './report.model'
 import Team from './team.model'
+import TeamFormation from './team-formation'
 
 interface ReportDescriptionAttributes {
     reportId: string
@@ -25,6 +26,12 @@ export default class ReportDescription extends Model<ReportDescriptionAttributes
     @BelongsTo(() => Report)
     report: Report
 
+    @Column({ allowNull: true, type: DataTypes.INTEGER })
+    evaluation: number
+
+    @Column({ allowNull: true, type: DataTypes.TEXT })
+    potential: string
+
     @Column({ allowNull: true, type: DataTypes.TEXT })
     physicalDescription: string
 
@@ -40,6 +47,13 @@ export default class ReportDescription extends Model<ReportDescriptionAttributes
 
     @BelongsTo(() => Team)
     team: Team
+
+    @ForeignKey(() => TeamFormation)
+    @Column({ allowNull: true, type: DataTypes.UUID })
+    formationId: string
+
+    @BelongsTo(() => TeamFormation)
+    formation: TeamFormation
 
     @Column({ allowNull: true, type: DataTypes.INTEGER })
     timePlayed: number
