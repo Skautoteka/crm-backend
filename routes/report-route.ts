@@ -33,7 +33,12 @@ router.get(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const user = await authController.getReqUser(req)
-            const reports = await reportController.getAll(user)
+            let reports = []
+            if (user.role.id === 'ADMIN') {
+                reports = await reportController.getAll()
+            } else {
+                reports = await reportController.getAll(user)
+            }
             return res.json(reports)
         } catch (err) {
             return next(err)

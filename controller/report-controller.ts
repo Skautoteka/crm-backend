@@ -10,6 +10,7 @@ import PlayerTrait from '../db/models/player-trait.model'
 import ReportPosition from '../db/models/report-position.model'
 import ReportDescription from '../db/models/report-description.model'
 import Position from '../db/models/position.model'
+import Team from '../db/models/team.model'
 
 /**
  * Gets the model for the task model creation.
@@ -116,11 +117,17 @@ export const add = async (
  *
  * @returns
  */
-export const getAll = async (user: User): Promise<Report[]> => {
-    return await Report.findAll({
-        include: [Player, ReportTrait, ReportPosition, ReportDescription],
-        where: { createdById: user.id },
-    })
+export const getAll = async (user: User | null = null): Promise<Report[]> => {
+    if (!user) {
+        return await Report.findAll({
+            include: [Player, ReportTrait, ReportPosition, ReportDescription],
+        })
+    } else {
+        return await Report.findAll({
+            include: [Player, ReportTrait, ReportPosition, ReportDescription],
+            where: { createdById: user?.id },
+        })
+    }
 }
 
 /**
@@ -155,6 +162,10 @@ export const getAllByTaskId = async (taskId: string): Promise<Report[]> => {
                     include: [
                         {
                             model: Position,
+                            required: false,
+                        },
+                        {
+                            model: Team,
                             required: false,
                         },
                     ],
