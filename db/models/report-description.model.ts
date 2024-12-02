@@ -59,7 +59,7 @@ export default class ReportDescription extends Model<ReportDescriptionAttributes
     timePlayed: number
 
     @Column({ allowNull: true, type: DataTypes.INTEGER })
-    goalesScored: number
+    goalsScored: number
 
     @Column({ allowNull: true, type: DataTypes.INTEGER })
     assists: number
