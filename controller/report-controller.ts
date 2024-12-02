@@ -13,7 +13,7 @@ import Position from '../db/models/position.model'
 import Team from '../db/models/team.model'
 
 /**
- * Gets the model for the task model creation.
+ * Gets the model for the report model creation.
  *
  * @returns
  */
@@ -40,7 +40,7 @@ export const getReportCreateFields = async (): Promise<
             name: 'status',
             label: 'Status raportu',
             isRequired: false,
-            placeholder: 'Wybier status raportu',
+            placeholder: 'Wybierz status raportu',
             type: 'SELECT',
             options: [
                 { label: 'W trakcie', value: 'IN_PROGRESS' },
@@ -57,6 +57,227 @@ export const getReportCreateFields = async (): Promise<
         },
     ]
 }
+
+/**
+ * Gets the model for the report.
+ *
+ * @param id - The ID of the report to fetch.
+ * @returns A list of input configurations for the report.
+ */
+export const getReportFields = async (id: string): Promise<ISingleInputConfig[]> => {
+    console.log('Fetching report fields with id:', id);
+
+    const currentYear = new Date().getFullYear();
+
+    try {
+        const report = await Report.findOne({
+            where: { id },
+            include: [Player, ReportTrait, ReportPosition, ReportDescription],
+        });
+
+        if (!report) {
+            console.error(`No report found for id: ${id}`);
+            throw new Error(`Report with id ${id} not found.`);
+        }
+
+        const baseFields: ISingleInputConfig[] = [
+            {
+                name: 'firstName',
+                label: 'Imię',
+                value: report?.player?.firstName || '',
+                isRequired: true,
+                placeholder: 'Wpisz imię',
+                type: 'TEXT',
+            },
+            {
+                name: 'lastName',
+                label: 'Nazwisko',
+                value: report?.player?.lastName || '',
+                isRequired: true,
+                placeholder: 'Wpisz nazwisko',
+                type: 'TEXT',
+            },
+            {
+                name: 'age',
+                label: 'Wiek',
+                value: report?.player?.birthYear
+                    ? currentYear - report.player.birthYear
+                    : '',
+                isRequired: true,
+                placeholder: 'Wpisz wiek',
+                type: 'NUMBER',
+            },
+            {
+                name: 'nationality',
+                label: 'Narodowość',
+                value: report?.player?.nationality || '',
+                isRequired: true,
+                placeholder: 'Wpisz narodowość',
+                type: 'TEXT',
+            },
+            {
+                name: 'position',
+                label: 'Pozycja',
+                value: report?.player?.position?.name || '',
+                isRequired: true,
+                placeholder: 'Wpisz pozycję',
+                type: 'TEXT',
+            },
+            {
+                name: 'alternativePosition',
+                label: 'Pozycja opcjonalna',
+                value: report?.player?.position?.name || '',
+                isRequired: true,
+                placeholder: 'Wpisz pozycję',
+                type: 'TEXT',
+            },
+            {
+                name: 'height',
+                label: 'Wzrost',
+                value: report?.player?.height || '',
+                isRequired: true,
+                placeholder: 'Wpisz wzrost',
+                type: 'NUMBER',
+            },
+            {
+                name: 'weight',
+                label: 'Waga',
+                value: report?.player?.weight || '',
+                isRequired: true,
+                placeholder: 'Wpisz wagę',
+                type: 'NUMBER',
+            },
+            {
+                name: 'physique',
+                label: 'Budowa ciała',
+                value: report?.player?.physique || '',
+                isRequired: true,
+                placeholder: 'Wpisz budowę ciała',
+                type: 'TEXT',
+            },
+            {
+                name: 'physicalDescription',
+                label: 'Opis postawy fizycznej',
+                value: report?.description?.physicalDescription || '',
+                isRequired: true,
+                placeholder: 'Wpisz postawę fizyczną',
+                type: 'TEXT',
+            },
+            {
+                name: 'mentalDescription',
+                label: 'Opis postawy mentalnej',
+                value: report?.description?.mentalDescription || '',
+                isRequired: true,
+                placeholder: 'Wpisz opis postawy mentalnej',
+                type: 'TEXT',
+            },
+            {
+                name: 'technicalDescription',
+                label: 'Opis postawy technicznej',
+                value: report?.description?.technicalDescription || '',
+                isRequired: true,
+                placeholder: 'Wpisz opis postawy technicznej',
+                type: 'TEXT',
+            },
+            {
+                name: 'evaluation',
+                label: 'Ocena',
+                value: report?.description?.evaluation || '',
+                isRequired: true,
+                placeholder: 'Wpisz ocenę',
+                type: 'TEXT',
+            },
+            {
+                name: 'potential',
+                label: 'Potencjał',
+                value: report?.description?.potential || '',
+                isRequired: true,
+                placeholder: 'Wpisz potencjał',
+                type: 'TEXT',
+            },
+            {
+                name: 'formation',
+                label: 'Formacja',
+                value: report?.description?.formation?.name || '',
+                isRequired: true,
+                placeholder: 'Wpisz formację',
+                type: 'TEXT',
+            },
+            {
+                name: 'team',
+                label: 'Aktualna drużyna',
+                value: report?.player?.team?.name || '',
+                isRequired: true,
+                placeholder: 'Wpisz aktualną drużynę',
+                type: 'TEXT',
+            },
+            {
+                name: 'opponent',
+                label: 'Przeciwnik w ocenianym meczu',
+                value: report?.description?.opponentId || '',
+                isRequired: true,
+                placeholder: 'Wpisz przeciwnika w ocenianym meczu',
+                type: 'TEXT',
+            },
+            {
+                name: 'league',
+                label: 'Liga',
+                value: report?.player?.team?.league || '',
+                isRequired: true,
+                placeholder: 'Wpisz ligę',
+                type: 'TEXT',
+            },
+            {
+                name: 'timePlayed',
+                label: 'Liczba rozegranych minut',
+                value: report?.description?.timePlayed || '',
+                isRequired: true,
+                placeholder: 'Wpisz liczbę rozegranych minut',
+                type: 'NUMBER',
+            },
+            {
+                name: 'goalsScored',
+                label: 'Liczba strzelonych bramek',
+                value: report?.description?.goalsScored || '',
+                isRequired: true,
+                placeholder: 'Wpisz liczbę strzelonych bramek',
+                type: 'NUMBER',
+            },
+            {
+                name: 'assist',
+                label: 'Liczba asyst',
+                value: report?.description?.assists || '',
+                isRequired: true,
+                placeholder: 'Wpisz liczbę asyst',
+                type: 'NUMBER',
+            },
+            {
+                name: 'summary',
+                label: 'Podsumowanie',
+                value: report?.description?.summary || '',
+                isRequired: true,
+                placeholder: 'Wpisz podsumowanie',
+                type: 'TEXT',
+            },
+        ];
+
+        const traitFields: ISingleInputConfig[] = (report?.traits || []).map((trait) => ({
+            name: `trait_${trait.trait.id}`,
+            label: trait.trait.name,
+            value: trait.value || '',
+            isRequired: false,
+            placeholder: 'Cecha',
+            type: 'NUMBER',
+        }));
+
+        return [...baseFields, ...traitFields];
+    } catch (error) {
+        console.error('Error fetching report fields:', error);
+        throw new Error('Unable to fetch report fields. Please try again later.');
+    }
+};
+
+
 
 /**
  * Removes a report from the database.
@@ -90,12 +311,6 @@ export const add = async (
         }
 
         const { id } = await report.save()
-
-        const reportTrait = new ReportTrait({
-            traitId: 'PHYSICAL_STRENGTH',
-            reportId: report.id,
-        })
-        await reportTrait.save()
 
         const added = await Report.findByPk(id, {
             include: [{ model: Player, as: 'player' }],
