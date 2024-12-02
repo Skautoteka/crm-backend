@@ -4,8 +4,9 @@ export interface ISingleInputConfig {
     label: string
     isRequired: boolean
     type: InputType
+    value?: unknown
     options?: ISelectOption[]
-    searchType?: string;
+    searchType?: string
     valueTypes?: ISingleFilterConfig[]
 }
 

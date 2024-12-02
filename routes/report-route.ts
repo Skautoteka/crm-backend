@@ -28,6 +28,20 @@ router.get(
 )
 
 router.get(
+    '/get-fields/:id',
+    routePermission(READ_PERMISSIONS),
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params
+        try {
+            const fields = await reportController.getReportFields(id)
+            return res.json(fields)
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
+router.get(
     '/all',
     routePermission(READ_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
