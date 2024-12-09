@@ -1,3 +1,4 @@
+import { Optional } from 'sequelize'
 import {
     Column,
     ForeignKey,
@@ -8,6 +9,15 @@ import {
 } from 'sequelize-typescript'
 import PlayerTrait from './player-trait.model'
 import Report from './report.model'
+
+interface ReportTraitAttributes {
+    traitId: string
+    reportId: string
+    value: number
+}
+
+export interface ReportTraitCreationAttributes
+    extends Optional<ReportTraitAttributes, 'traitId'> {}
 
 @Table
 export default class ReportTrait extends Model<ReportTrait> {
