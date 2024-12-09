@@ -94,11 +94,6 @@ export const queryPlayer = async (
                 { firstName: { [Op.like]: `%${search}%` } },
                 { lastName: { [Op.like]: `%${search}%` } },
             ],
-            version: literal(`(
-                SELECT MAX(version)
-                FROM players AS sub
-                WHERE sub.masterPlayerId = players.masterPlayerId OR sub.id = players.id
-            )`),
         },
         limit: size,
         include: [Team, Position],
