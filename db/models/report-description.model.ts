@@ -12,15 +12,23 @@ import TeamFormation from './team-formation'
 
 interface ReportDescriptionAttributes {
     reportId: string
+    evaluation: number
+    potential: string
     physicalDescription: string
     mentalDescription: string
     technicalDescription: string
+    opponentId: string
+    formationId: string
+    timePlayed: number
+    goalsScored: number
+    assists: number
+    summary: string
 }
 
 @Table
 export default class ReportDescription extends Model<ReportDescriptionAttributes> {
     @ForeignKey(() => Report)
-    @Column({ allowNull: false, type: DataTypes.UUID })
+    @Column({ allowNull: false, unique: true, type: DataTypes.UUID })
     reportId: string
 
     @BelongsTo(() => Report)
@@ -65,5 +73,5 @@ export default class ReportDescription extends Model<ReportDescriptionAttributes
     assists: number
 
     @Column({ allowNull: true, type: DataTypes.TEXT })
-    summary: number
+    summary: string
 }

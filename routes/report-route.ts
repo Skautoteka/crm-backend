@@ -32,6 +32,7 @@ router.get(
     routePermission(READ_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params
+
         try {
             const fields = await reportController.getReportFields(id)
             return res.json(fields)
@@ -100,13 +101,29 @@ router.delete(
 )
 
 router.post(
-    '/',
+    '/add',
     routePermission(CREATE_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const user = await authController.getReqUser(req)
-            const team = await reportController.add(req.body, user)
-            res.json({ success: true, added: team })
+            const report = await reportController.add(req.body, user)
+            res.json({ success: true, added: report })
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
+router.post(
+    '/update',
+    routePermission(EDIT_PERMISSIONS),
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            // const user = await authController.getReqUser(req)
+            const report = await reportController.updateReportWithDetails(
+                req.body
+            )
+            res.json({ success: true, updated: report })
         } catch (err) {
             return next(err)
         }
