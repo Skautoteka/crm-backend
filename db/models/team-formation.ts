@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes, Optional } from 'sequelize'
 import {
     Column,
     Table,
@@ -10,8 +10,11 @@ import {
 
 interface TeamFormationAttributes {
     id: string
-    formation: string
+    name: string
 }
+
+export interface TeamFormationCreationAttributes
+    extends Optional<TeamFormationAttributes, 'id'> {}
 
 @Table
 export default class TeamFormation extends Model<TeamFormationAttributes> {

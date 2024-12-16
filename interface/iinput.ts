@@ -6,6 +6,8 @@ export interface ISingleInputConfig {
     type: InputType
     isDisabled?: boolean
     value?: unknown
+    min?: number
+    max?: number
     options?: ISelectOption[]
     searchType?: string
     valueTypes?: ISingleFilterConfig[]
