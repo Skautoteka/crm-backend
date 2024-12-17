@@ -45,7 +45,7 @@ module.exports = {
                 name: 'Raport #5',
                 status: 'IN_PROGRESS',
                 playerId: '18228bad-4d09-4773-8aeb-73938a2456c1',
-                taskId: null,
+                taskId: '8f4d3d5f-71cf-4b7e-8f53-7e09c8d6c73f',
                 createdAt: new Date(Date.now()),
                 updatedAt: new Date(Date.now()),
             },

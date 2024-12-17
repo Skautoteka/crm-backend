@@ -20,6 +20,7 @@ import cookieParser from 'cookie-parser'
 import { analysisRouter } from './routes/analysis-route'
 import { positionRouter } from './routes/position-route'
 import { teamFormationsRouter } from './routes/team-formation-route'
+import { noteRouter } from './routes/note-route'
 
 dotenv.config()
 
@@ -39,6 +40,7 @@ app.use('/api/module', authMiddleware, moduleRouter)
 app.use('/api/analysis', authMiddleware, analysisRouter)
 app.use('/api/position', authMiddleware, positionRouter)
 app.use('/api/team-formations', authMiddleware, teamFormationsRouter)
+app.use('/api/note', authMiddleware, noteRouter)
 app.use('/api/auth', authRouter)
 
 const port = process.env.PORT
