@@ -1,11 +1,9 @@
 import { ISingleInputConfig } from '../interface'
 import { ModelValidationError } from '../error/model-validation'
-import Player from '../db/models/player.model'
 import { NotFoundError } from '../error/not-found'
 import User from '../db/models/user.model'
 import Team from '../db/models/team.model'
 import Note, { NoteCreationAttributes } from '../db/models/note.model'
-import Region from '../db/models/region.model'
 
 /**
  * Gets the model for the note model creation.
@@ -37,10 +35,18 @@ export const getNoteCreateFields = async (): Promise<ISingleInputConfig[]> => {
         {
             name: 'teamId',
             label: 'Zespół',
-            isRequired: true,
+            isRequired: false,
             placeholder: 'Wybierz zespół notatki',
             type: 'SEARCH',
             searchType: 'team',
+        },
+        {
+            name: 'playerNumber',
+            label: 'Numer zawodnika',
+            isRequired: false,
+            placeholder: 'Wpisz numer zawodnika',
+            type: 'NUMBER',
+            min: 0,
         },
         {
             name: 'content',
@@ -92,7 +98,7 @@ export const getNoteFields = async (
             },
             {
                 name: 'status',
-                label: 'Status raportu',
+                label: 'Status notatki',
                 isRequired: false,
                 placeholder: 'Wybierz status notatki',
                 value: note?.status,
@@ -105,11 +111,20 @@ export const getNoteFields = async (
             {
                 name: 'teamId',
                 label: 'Zespół',
-                isRequired: true,
-                placeholder: 'Wybierz zespół raportu',
-                value: note?.team?.id,
+                isRequired: false,
+                placeholder: 'Wybierz zespół',
+                value: note?.team,
                 type: 'SEARCH',
                 searchType: 'team',
+            },
+            {
+                name: 'playerNumber',
+                label: 'Numer zawodnika',
+                isRequired: false,
+                placeholder: 'Wpisz numer zawodnika',
+                value: note?.playerNumber,
+                type: 'NUMBER',
+                min: 0,
             },
             {
                 name: 'content',
