@@ -109,6 +109,7 @@ router.post(
         try {
             // const user = await authController.getReqUser(req)
             const note = await noteController.updateNote(req.body)
+            console.log('note', note)
             res.json({ success: true, updated: note })
         } catch (err) {
             return next(err)
