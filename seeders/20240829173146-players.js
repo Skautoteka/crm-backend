@@ -53,7 +53,6 @@ module.exports = {
                 updatedAt: new Date(Date.now()),
             },
         ])
-
     },
 
     async down(queryInterface, Sequelize) {

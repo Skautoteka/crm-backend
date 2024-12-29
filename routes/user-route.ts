@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
 import * as userController from '../controller/user-controller'
-import * as authController from '../controller/auth-controller';
+import * as authController from '../controller/auth-controller'
 import { InvalidPayloadError } from '../error/invalid-payload'
 import { routePermission } from '../permissions'
 import {
@@ -82,12 +82,12 @@ router.delete(
 )
 
 router.get('/permissions', async (req: Request, res: Response) => {
-    const role = authController.getReqRole(req);
+    const role = authController.getReqRole(req)
 
     res.json({
         read: READ_PERMISSIONS.includes(role),
         edit: EDIT_PERMISSIONS.includes(role),
-        remove: REMOVE_PERMISSIONS.includes(role), 
+        remove: REMOVE_PERMISSIONS.includes(role),
         create: CREATE_PERMISSIONS.includes(role),
     })
 })

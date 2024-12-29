@@ -502,7 +502,6 @@ export const updateReportWithDetails = async (
     }
 }
 
-
 const getDefaultReportStatus = (): 'IN_PROGRESS' | 'COMPLETED' => {
     return 'IN_PROGRESS'
 }
