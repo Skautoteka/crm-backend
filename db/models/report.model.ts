@@ -25,12 +25,16 @@ interface ReportAttributes {
     id: string
     name: string
     status: 'IN_PROGRESS' | 'COMPLETED'
+    playerId: string
     taskId: string
+    regionId: string
+    traits: ReportTrait[]
+    positions: ReportPosition[]
+    description: ReportDescription
     createdById: string
 }
 
-export interface ReportCreationAttributes
-    extends Optional<ReportAttributes, 'id' | 'status'> {}
+export interface ReportCreationAttributes extends Optional<ReportAttributes, 'id'> {}
 
 @Table({
     timestamps: true,

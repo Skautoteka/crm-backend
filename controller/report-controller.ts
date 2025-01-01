@@ -354,11 +354,25 @@ export const add = async (
     user: User
 ): Promise<Report> => {
     try {
-        const report = new Report({ ...payload, createdById: user.id })
+        const reportObject = {
+            name: payload.name as string,
+            status: '' as string,
+            playerId: payload.playerId as string,
+            taskId: payload.taskId,
+            regionId: payload.regionId,
+            traits: payload.traits,
+            positions: payload.positions,
+            description: payload.description,
+            createdById: user.id,
+        } as Report
 
         if (!payload.status) {
-            report.status = getDefaultReportStatus()
+            reportObject.status = getDefaultReportStatus()
         }
+
+        const report = new Report(reportObject)
+
+
 
         const { id } = await report.save()
 

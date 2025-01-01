@@ -176,8 +176,9 @@ export const add = async (
     user: User
 ): Promise<Note> => {
     try {
+        //@ts-expect-error descructuring it is not working correctly
         const note = new Note({ ...payload, createdById: user.id })
-        console.log('note', note)
+
         if (!payload.status) {
             note.status = getDefaultNoteStatus()
         }

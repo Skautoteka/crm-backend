@@ -18,11 +18,14 @@ interface NoteAttributes {
     name: string
     status: 'IN_PROGRESS' | 'COMPLETED'
     taskId: string
+    evaluation: number
+    content: string
+    playerNumber: number
+    teamId: string
     createdById: string
 }
 
-export interface NoteCreationAttributes
-    extends Optional<NoteAttributes, 'id' | 'status'> {}
+export interface NoteCreationAttributes extends Optional<NoteAttributes, 'id'> {}
 
 @Table({
     timestamps: true,

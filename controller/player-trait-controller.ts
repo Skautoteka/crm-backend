@@ -21,6 +21,7 @@ export const addTrait = async (
     payload: PlayerTraitCreationAttributes
 ): Promise<PlayerTrait> => {
     try {
+        //@ts-expect-error descructuring it is not working correctly
         const trait = await new PlayerTrait(payload).save()
         const addedTrait = await PlayerTrait.findByPk(trait.id)
 
