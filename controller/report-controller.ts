@@ -372,8 +372,6 @@ export const add = async (
 
         const report = new Report(reportObject)
 
-
-
         const { id } = await report.save()
 
         const added = await Report.findByPk(id, {

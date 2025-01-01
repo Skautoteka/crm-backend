@@ -34,7 +34,8 @@ interface ReportAttributes {
     createdById: string
 }
 
-export interface ReportCreationAttributes extends Optional<ReportAttributes, 'id'> {}
+export interface ReportCreationAttributes
+    extends Optional<ReportAttributes, 'id'> {}
 
 @Table({
     timestamps: true,

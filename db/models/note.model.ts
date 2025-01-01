@@ -25,7 +25,8 @@ interface NoteAttributes {
     createdById: string
 }
 
-export interface NoteCreationAttributes extends Optional<NoteAttributes, 'id'> {}
+export interface NoteCreationAttributes
+    extends Optional<NoteAttributes, 'id'> {}
 
 @Table({
     timestamps: true,
