@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
-import * as playerController from '../controller/player-controller';
-import * as authController from '../controller/auth-controller';
+import * as playerController from '../controller/player-controller'
+import * as authController from '../controller/auth-controller'
 import { InvalidPayloadError } from '../error/invalid-payload'
 import { routePermission } from '../permissions'
 import {
@@ -9,7 +9,7 @@ import {
     READ_PERMISSIONS,
     REMOVE_PERMISSIONS,
 } from '../permissions/player'
-import { EDIT_PERMISSIONS } from '../permissions/task';
+import { EDIT_PERMISSIONS } from '../permissions/task'
 
 const router = express.Router()
 
@@ -36,6 +36,34 @@ router.delete(
         try {
             await playerController.remove(id)
             return res.json({ success: true })
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
+router.get(
+    '/allByTeamId/:id',
+    routePermission(READ_PERMISSIONS),
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id: teamId } = req.params
+        try {
+            const reports = await playerController.getAllByTeamId(teamId)
+            return res.json(reports)
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
+router.get(
+    '/getById/:id',
+    routePermission(READ_PERMISSIONS),
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params
+        try {
+            const report = await playerController.getById(id)
+            return res.json(report)
         } catch (err) {
             return next(err)
         }
@@ -95,12 +123,12 @@ router.get(
 )
 
 router.get('/permissions', async (req: Request, res: Response) => {
-    const role = authController.getReqRole(req);
+    const role = authController.getReqRole(req)
 
     res.json({
         read: READ_PERMISSIONS.includes(role),
         edit: EDIT_PERMISSIONS.includes(role),
-        remove: REMOVE_PERMISSIONS.includes(role), 
+        remove: REMOVE_PERMISSIONS.includes(role),
         create: CREATE_PERMISSIONS.includes(role),
     })
 })

@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express'
-import * as reportController from '../controller/report-controller'
+import * as noteController from '../controller/note-controller'
 import * as authController from '../controller/auth-controller'
 import { routePermission } from '../permissions'
 import {
@@ -19,7 +19,7 @@ router.get(
     routePermission(CREATE_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const fields = await reportController.getReportCreateFields()
+            const fields = await noteController.getNoteCreateFields()
             return res.json(fields)
         } catch (err) {
             return next(err)
@@ -34,7 +34,7 @@ router.get(
         const { id } = req.params
 
         try {
-            const fields = await reportController.getReportFields(id)
+            const fields = await noteController.getNoteFields(id)
             return res.json(fields)
         } catch (err) {
             return next(err)
@@ -48,25 +48,13 @@ router.get(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const user = await authController.getReqUser(req)
-            let reports = []
+            let notes = []
             if (user.role.id === 'ADMIN') {
-                reports = await reportController.getAll()
+                notes = await noteController.getAll()
             } else {
-                reports = await reportController.getAll(user)
+                notes = await noteController.getAll(user)
             }
-            return res.json(reports)
-        } catch (err) {
-            return next(err)
-        }
-    }
-)
-
-router.get(
-    '/all-detailed',
-    async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const reports = await reportController.getAllDetailed()
-            return res.json(reports)
+            return res.json(notes)
         } catch (err) {
             return next(err)
         }
@@ -78,8 +66,8 @@ router.get(
     async (req: Request, res: Response, next: NextFunction) => {
         const { id: taskId } = req.params
         try {
-            const reports = await reportController.getAllByTaskId(taskId)
-            return res.json(reports)
+            const notes = await noteController.getAllByTaskId(taskId)
+            return res.json(notes)
         } catch (err) {
             return next(err)
         }
@@ -92,7 +80,7 @@ router.delete(
     async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params
         try {
-            await reportController.remove(id)
+            await noteController.remove(id)
             return res.json({ success: true })
         } catch (err) {
             return next(err)
@@ -106,8 +94,8 @@ router.post(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const user = await authController.getReqUser(req)
-            const report = await reportController.add(req.body, user)
-            res.json({ success: true, added: report })
+            const note = await noteController.add(req.body, user)
+            res.json({ success: true, added: note })
         } catch (err) {
             return next(err)
         }
@@ -120,10 +108,9 @@ router.post(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             // const user = await authController.getReqUser(req)
-            const report = await reportController.updateReportWithDetails(
-                req.body
-            )
-            res.json({ success: true, updated: report })
+            const note = await noteController.updateNote(req.body)
+            console.log('note', note)
+            res.json({ success: true, updated: note })
         } catch (err) {
             return next(err)
         }
@@ -141,4 +128,4 @@ router.get('/permissions', async (req: Request, res: Response) => {
     })
 })
 
-export { router as reportRouter }
+export { router as noteRouter }

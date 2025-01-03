@@ -1,15 +1,34 @@
-import { Op } from 'sequelize'
+import { Op, or, literal, fn, col } from 'sequelize'
 import Player, { PlayerCreationAttributes } from '../db/models/player.model'
 import Team from '../db/models/team.model'
 import { ModelValidationError } from '../error/model-validation'
 import { NotFoundError } from '../error/not-found'
 import { ISingleInputConfig } from '../interface'
+import Position from '../db/models/position.model'
 
-/**
- * Returns all players.
- */
 export const getAll = async (): Promise<Player[]> => {
-    return await Player.findAll({ include: Team })
+    const latestPlayers = await Player.findAll({
+        attributes: [
+            'masterPlayerId',
+            [fn('MAX', col('version')), 'latestVersion'],
+        ],
+        group: ['masterPlayerId'],
+    })
+
+    const versionPairs = latestPlayers.map((record) => ({
+        masterPlayerId: record.getDataValue('masterPlayerId'),
+        version: record.get('latestVersion') as number,
+    }))
+
+    return await Player.findAll({
+        where: {
+            [Op.or]: versionPairs.map(({ masterPlayerId, version }) => ({
+                masterPlayerId,
+                version,
+            })),
+        },
+        include: [Team, Position],
+    })
 }
 
 /**
@@ -22,17 +41,41 @@ export const add = async (
     payload: PlayerCreationAttributes
 ): Promise<Player> => {
     try {
-        const { id } = await new Player(payload).save()
-        const added = await Player.findByPk(id, { include: Team })
+        const player = await Player.create({ ...payload, version: 1 })
+        const added = await getPlayerLatest(player.id)
 
         if (!added) {
-            throw new NotFoundError('Could not find added player.')
+            throw new NotFoundError('Could not find the added player.')
         }
 
         return added
     } catch (err) {
         throw new ModelValidationError(err.message)
     }
+}
+
+/**
+ * Creates a new version of the player or adds a new player if none exists.
+ *
+ * @param payload Player creation attributes
+ * @param playerId Optional ID of the player to version
+ */
+export const addPlayerVersion = async (
+    payload: PlayerCreationAttributes,
+    playerId: string
+): Promise<Player> => {
+    const latestPlayer = await getPlayerLatest(playerId)
+
+    if (!latestPlayer) {
+        throw new Error(`Player with ID ${playerId} not found.`)
+    }
+
+    return Player.create({
+        ...latestPlayer.toJSON(),
+        ...payload,
+        masterPlayerId: latestPlayer.masterPlayerId || latestPlayer.id,
+        version: latestPlayer.version + 1,
+    })
 }
 
 /**
@@ -53,6 +96,57 @@ export const queryPlayer = async (
             ],
         },
         limit: size,
+        include: [Team, Position],
+    })
+}
+
+export const getPlayerLatest = async (
+    playerId: string
+): Promise<Player | null> => {
+    return Player.findOne({
+        where: or({ id: playerId }, { masterPlayerId: playerId }),
+        order: [['version', 'DESC']],
+        include: [Team, Position],
+    })
+}
+
+export const getPlayerHistory = async (playerId: string): Promise<Player[]> => {
+    return Player.findAll({
+        where: or({ id: playerId }, { masterPlayerId: playerId }),
+        order: [['version', 'ASC']],
+        include: [Team, Position],
+    })
+}
+
+/**
+ * Returns all players based on team id.
+ *
+ * @returns
+ */
+export const getAllByTeamId = async (teamId: string): Promise<Player[]> => {
+    return await Player.findAll({
+        where: {
+            teamId,
+            version: literal(`(
+                SELECT MAX(version)
+                FROM players AS sub
+                WHERE sub.masterPlayerId = players.masterPlayerId OR sub.id = players.id
+            )`),
+        },
+        include: [Team, Position],
+    })
+}
+
+/**
+ * Returns all players based on team id.
+ *
+ * @returns
+ */
+export const getById = async (id: string): Promise<Player | null> => {
+    return Player.findOne({
+        where: or({ id }, { masterPlayerId: id }),
+        order: [['version', 'DESC']],
+        include: [Team, Position],
     })
 }
 
@@ -62,11 +156,18 @@ export const queryPlayer = async (
  * @param id
  */
 export const remove = async (id: string): Promise<void> => {
-    const player = await Player.findOne({ where: { id } })
+    const latestPlayer = await getPlayerLatest(id)
 
-    if (player) {
-        return await player.destroy()
+    if (!latestPlayer) {
+        throw new NotFoundError('Player not found.')
     }
+
+    await Player.destroy({
+        where: or(
+            { id: latestPlayer.id },
+            { masterPlayerId: latestPlayer.masterPlayerId }
+        ),
+    })
 }
 
 /**
@@ -106,12 +207,8 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
             label: 'Pozycja zawodnika',
             isRequired: true,
             placeholder: 'Wybierz pozycje',
-            type: 'SELECT',
-            options: [
-                { value: 'FORWARD', label: 'Napastnik' },
-                { value: 'DEFENSE', label: 'Obrońca' },
-                { value: 'WINGER', label: 'Skrzydłowy' },
-            ],
+            type: 'DB',
+            searchType: 'position',
         },
         {
             name: 'teamId',
@@ -122,10 +219,10 @@ export const getTaskCreateFields = async (): Promise<ISingleInputConfig[]> => {
             searchType: 'team',
         },
         {
-            name: 'age',
-            label: 'Wiek',
+            name: 'birthYear',
+            label: 'Rok urodzenia',
             isRequired: true,
-            placeholder: 'Wpisz wiek zawodnika',
+            placeholder: 'Wpisz rok urodzenia zawodnika',
             type: 'NUMBER',
         },
     ]

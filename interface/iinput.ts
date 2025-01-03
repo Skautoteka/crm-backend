@@ -4,14 +4,16 @@ export interface ISingleInputConfig {
     label: string
     isRequired: boolean
     type: InputType
+    isDisabled?: boolean
+    value?: unknown
+    min?: number
+    max?: number
     options?: ISelectOption[]
-    searchType?: string;
+    searchType?: string
     valueTypes?: ISingleFilterConfig[]
 }
 
-export interface ISingleFilterConfig extends ISingleInputConfig {
-
-}
+export interface ISingleFilterConfig extends ISingleInputConfig {}
 
 export interface ISelectOption {
     value: string
@@ -27,3 +29,4 @@ type InputType =
     | 'SEARCH'
     | 'DB'
     | 'MULTIVALUE'
+    | 'TEXTAREA'

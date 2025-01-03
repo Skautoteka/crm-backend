@@ -1,11 +1,13 @@
-import { ISingleInputConfig } from "../interface";
+import { ISingleInputConfig } from '../interface'
 
 /**
  * Return create fields for report analysis
- * 
- * @returns 
+ *
+ * @returns
  */
-export const getReportCreateFields = async (): Promise<ISingleInputConfig[]> => {
+export const getReportCreateFields = async (): Promise<
+    ISingleInputConfig[]
+> => {
     return [
         {
             name: 'filters',
@@ -30,15 +32,15 @@ export const getReportCreateFields = async (): Promise<ISingleInputConfig[]> => 
                     type: 'SEARCH',
                     searchType: 'team',
                 },
-            ]
+            ],
         },
     ]
 }
 
 /**
  * Return create fields for note analysis
- * 
- * @returns 
+ *
+ * @returns
  */
 export const getNoteCreateFields = async (): Promise<ISingleInputConfig[]> => {
     return [
@@ -65,7 +67,7 @@ export const getNoteCreateFields = async (): Promise<ISingleInputConfig[]> => {
                     type: 'SEARCH',
                     searchType: 'team',
                 },
-            ]
+            ],
         },
     ]
 }

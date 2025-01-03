@@ -70,15 +70,14 @@ router.post(
 )
 
 router.get('/permissions', async (req: Request, res: Response) => {
-    const role = authController.getReqRole(req);
+    const role = authController.getReqRole(req)
 
     res.json({
         read: READ_PERMISSIONS.includes(role),
         edit: EDIT_PERMISSIONS.includes(role),
-        remove: REMOVE_PERMISSIONS.includes(role), 
+        remove: REMOVE_PERMISSIONS.includes(role),
         create: CREATE_PERMISSIONS.includes(role),
     })
 })
-
 
 export { router as taskRouter }

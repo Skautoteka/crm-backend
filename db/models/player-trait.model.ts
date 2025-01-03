@@ -2,8 +2,6 @@ import { DataTypes, Optional } from 'sequelize'
 import {
     BelongsToMany,
     Column,
-    DataType,
-    Default,
     Model,
     PrimaryKey,
     Table,
@@ -24,8 +22,7 @@ export interface PlayerTraitCreationAttributes
 })
 export default class PlayerTrait extends Model<PlayerTrait> {
     @PrimaryKey
-    @Default(DataType.UUIDV4)
-    @Column({ type: DataTypes.UUID })
+    @Column({ type: DataTypes.STRING(50), allowNull: false, unique: true })
     id: string
 
     @Column({ allowNull: false, type: DataTypes.TEXT })
