@@ -45,7 +45,7 @@ app.use('/api/auth', authRouter)
 
 const port = process.env.PORT
 ;(async () => {
-    await sequelize.sync({ alter: true })
+    await sequelize.sync({ force: true })
 
     app.listen(port, () => {
         console.log(`Listening on port: ${port}`)

@@ -252,6 +252,7 @@ export const updateNote = async (updateData: Note): Promise<Note> => {
             content: updateData.content,
             playerNumber: updateData.playerNumber,
             teamId: updateData.teamId,
+            taskId: note.taskId,
         } as Note)
 
         await note.reload({

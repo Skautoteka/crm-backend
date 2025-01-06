@@ -355,9 +355,9 @@ export const add = async (
 ): Promise<Report> => {
     try {
         const reportObject = {
-            name: payload.name as string,
-            status: '' as string,
-            playerId: payload.playerId as string,
+            name: payload.name,
+            status: payload.status || getDefaultReportStatus(),
+            playerId: payload.playerId,
             taskId: payload.taskId,
             regionId: payload.regionId,
             traits: payload.traits,
@@ -365,10 +365,6 @@ export const add = async (
             description: payload.description,
             createdById: user.id,
         } as Report
-
-        if (!payload.status) {
-            reportObject.status = getDefaultReportStatus()
-        }
 
         const report = new Report(reportObject)
 
