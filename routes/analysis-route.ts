@@ -19,10 +19,23 @@ router.get('/get-note-filters', async (req: Request, res: Response) => {
 router.post('/analyze-report', async (req: Request, res: Response) => {
     try {
         const { filters, playerId, regionId } = req.body
-        const analysis = await analysisController.sendAnalysis(
+        const analysis = await analysisController.sendReportAnalysis(
             filters,
             playerId,
             regionId
+        )
+        res.json(analysis)
+    } catch (err) {
+        throw new NotFoundError('Could not find analysis. Something went wrong')
+    }
+})
+
+router.post('/analyze-note', async (req: Request, res: Response) => {
+    try {
+        const { filters, teamId } = req.body
+        const analysis = await analysisController.sendNoteAnalysis(
+            filters,
+            teamId
         )
         res.json(analysis)
     } catch (err) {

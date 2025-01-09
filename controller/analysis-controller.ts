@@ -15,7 +15,7 @@ export const getReportFilters = async () => {
  * Retrieves all available filters for notes
  */
 export const getNoteFilters = async () => {
-    return []
+    return [{ name: 'ASSESSMENT', label: 'Ocena' }]
 }
 
 /**
@@ -23,10 +23,23 @@ export const getNoteFilters = async () => {
  *
  * @param filters
  */
-export const sendAnalysis = async (
+export const sendReportAnalysis = async (
     filters: Record<string, any>,
     playerId: string,
     regionId: string
 ) => {
     console.log(filters, regionId, playerId)
+}
+
+/**
+ * Sends analysis request from note to crm-analysis and returns the response
+ *
+ * @param filters
+ * @param teamId
+ */
+export const sendNoteAnalysis = async (
+    filters: Record<string, any>,
+    teamId: string | null
+) => {
+    console.log(filters, teamId)
 }
