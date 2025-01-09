@@ -1,73 +1,16 @@
-import { ISingleInputConfig } from '../interface'
+import ReportTrait from '../db/models/report-trait.model'
 
 /**
- * Return create fields for report analysis
- *
- * @returns
+ * Retrieves all available filters for reports
  */
-export const getReportCreateFields = async (): Promise<
-    ISingleInputConfig[]
-> => {
-    return [
-        {
-            name: 'filters',
-            label: 'Filtry',
-            isRequired: false,
-            placeholder: 'Wybierz nowy filtr',
-            type: 'MULTIVALUE',
-            valueTypes: [
-                {
-                    name: 'trait',
-                    label: 'Cecha zawodnika',
-                    isRequired: true,
-                    placeholder: 'Wyszukaj druzyne gosci',
-                    type: 'SEARCH',
-                    searchType: 'team',
-                },
-                {
-                    name: 'teamId',
-                    label: 'Drużyna',
-                    isRequired: true,
-                    placeholder: 'Wyszukaj druzyne gosci',
-                    type: 'SEARCH',
-                    searchType: 'team',
-                },
-            ],
-        },
-    ]
+export const getReportFilters = async () => {
+    const traits = await ReportTrait.findAll()
+    return traits.map((trait) => ({ name: trait }))
 }
 
 /**
- * Return create fields for note analysis
- *
- * @returns
+ * Retrieves all available filters for notes
  */
-export const getNoteCreateFields = async (): Promise<ISingleInputConfig[]> => {
-    return [
-        {
-            name: 'filters',
-            label: 'Filtry',
-            isRequired: false,
-            placeholder: 'Wybierz nowy filtr',
-            type: 'MULTIVALUE',
-            valueTypes: [
-                {
-                    name: 'trait',
-                    label: 'Cecha zawodnika',
-                    isRequired: true,
-                    placeholder: 'Wyszukaj druzyne gosci',
-                    type: 'SEARCH',
-                    searchType: 'team',
-                },
-                {
-                    name: 'teamId',
-                    label: 'Drużyna',
-                    isRequired: true,
-                    placeholder: 'Wyszukaj druzyne gosci',
-                    type: 'SEARCH',
-                    searchType: 'team',
-                },
-            ],
-        },
-    ]
+export const getNoteFilters = async () => {
+    return []
 }
