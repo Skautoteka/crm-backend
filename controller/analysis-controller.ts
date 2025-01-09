@@ -17,3 +17,16 @@ export const getReportFilters = async () => {
 export const getNoteFilters = async () => {
     return []
 }
+
+/**
+ * Sends analysis request to crm-analysis microservice and returns the response
+ *
+ * @param filters
+ */
+export const sendAnalysis = async (
+    filters: Record<string, any>,
+    playerId: string,
+    regionId: string
+) => {
+    console.log(filters, regionId, playerId)
+}
