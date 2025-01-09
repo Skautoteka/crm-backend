@@ -5,7 +5,10 @@ import ReportTrait from '../db/models/report-trait.model'
  */
 export const getReportFilters = async () => {
     const traits = await ReportTrait.findAll()
-    return traits.map((trait) => ({ name: trait }))
+    return traits.map((trait) => ({
+        name: trait.traitId,
+        label: trait.traitLabel,
+    }))
 }
 
 /**

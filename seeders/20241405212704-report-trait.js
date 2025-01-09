@@ -5,6 +5,7 @@ module.exports = {
         await queryInterface.bulkInsert('ReportTraits', [
             {
                 traitId: 'REFLEX',
+                traitLabel: 'Refleks',
                 reportId: '276232af-8b64-414f-b574-d4bb5ff10358',
                 value: 9,
                 createdAt: new Date(),
@@ -12,6 +13,7 @@ module.exports = {
             },
             {
                 traitId: 'SPEED',
+                traitLabel: 'Szybkość',
                 reportId: '276232af-8b64-414f-b574-d4bb5ff10358',
                 value: 2,
                 createdAt: new Date(),
@@ -19,6 +21,7 @@ module.exports = {
             },
             {
                 traitId: 'INTERCEPTIONS',
+                traitLabel: 'Parady',
                 reportId: '276232af-8b64-414f-b574-d4bb5ff10358',
                 value: 5,
                 createdAt: new Date(),
@@ -26,6 +29,7 @@ module.exports = {
             },
             {
                 traitId: 'FINISHING',
+                traitLabel: 'Wykończenie',
                 reportId: '276232af-8b64-414f-b574-d4bb5ff10358',
                 value: 9,
                 createdAt: new Date(),
@@ -33,6 +37,7 @@ module.exports = {
             },
             {
                 traitId: 'STAMINA',
+                traitLabel: 'Kondycja',
                 reportId: '276232af-8b64-414f-b574-d4bb5ff10358',
                 value: 2,
                 createdAt: new Date(),
@@ -40,6 +45,7 @@ module.exports = {
             },
             {
                 traitId: 'HEADING',
+                traitLabel: 'Strzał głową',
                 reportId: '276232af-8b64-414f-b574-d4bb5ff10358',
                 value: 5,
                 createdAt: new Date(),
@@ -47,6 +53,7 @@ module.exports = {
             },
             {
                 traitId: 'PHYSICAL_STRENGTH',
+                traitLabel: 'Siła fizyczna',
                 reportId: '89bca610-c842-42d6-892c-e9ecfea85760',
                 value: 7,
                 createdAt: new Date(),
