@@ -62,6 +62,18 @@ router.get(
 )
 
 router.get(
+    '/all-detailed',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const notes = await noteController.getAll()
+            return res.json(notes)
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
+router.get(
     '/allByTaskId/:id',
     async (req: Request, res: Response, next: NextFunction) => {
         const { id: taskId } = req.params
