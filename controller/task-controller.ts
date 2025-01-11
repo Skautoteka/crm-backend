@@ -106,12 +106,14 @@ export const add = async (
  * Returns all tasks.
  */
 export const getAll = async (): Promise<Task[]> => {
-    return await Task.findAll({
+    const tasks = await Task.findAll({
         include: [
             { model: Team, as: 'hostTeam' },
             { model: Team, as: 'guestTeam' },
         ],
     })
+
+    return tasks.filter((task) => task.hostTeam && task.guestTeam)
 }
 
 /**
