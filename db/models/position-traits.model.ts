@@ -10,12 +10,12 @@ import {
     BelongsTo,
 } from 'sequelize-typescript'
 import Position from './position.model'
-import PlayerTrait from './player.model'
+import PlayerTrait from './player-trait.model'
 
 interface PositionTraitAttributes {
     id: string
     positionid: string
-    playertraitid: string
+    playerTraitId: string
 }
 
 export interface PositionTraitCreationAttributes
@@ -34,16 +34,16 @@ export default class PositionTrait extends Model<
     id: string
 
     @ForeignKey(() => Position)
-    @Column({ allowNull: false, type: DataTypes.STRING(50) })
+    @Column({ type: DataTypes.STRING(50), allowNull: false })
     positionId: string
 
     @BelongsTo(() => Position)
     position: Position
 
     @ForeignKey(() => PlayerTrait)
-    @Column({ type: DataTypes.UUID, allowNull: false })
-    playertraitid: string
+    @Column({ type: DataTypes.STRING(50), allowNull: false })
+    playerTraitId: string
 
     @BelongsTo(() => PlayerTrait)
-    player_trait: PlayerTrait
+    playertrait: PlayerTrait
 }
