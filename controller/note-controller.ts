@@ -208,7 +208,6 @@ export const add = async (
  */
 export const getAll = async (user: User | null = null): Promise<Note[]> => {
     if (!user) {
-        console.log('teeraz!')
         return await Note.findAll({
             include: [Team],
         })

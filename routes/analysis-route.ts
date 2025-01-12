@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
 import * as analysisController from '../controller/analysis-controller'
+import * as playerTraitController from '../controller/player-trait-controller'
 
 const router = express.Router()
 
@@ -30,7 +31,19 @@ router.post(
                 playerId,
                 regionId
             )
-            res.json(analysis)
+            res.json({ entries: analysis, type: 'report' })
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
+router.get(
+    '/get-labels',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const labels = await playerTraitController.getTraitLabels()
+            res.json(labels)
         } catch (err) {
             return next(err)
         }
@@ -51,7 +64,7 @@ router.post(
                 }),
                 teamId
             )
-            res.json(analysis)
+            res.json({ entries: analysis, type: 'note' })
         } catch (err) {
             return next(err)
         }

@@ -40,6 +40,31 @@ router.get(
     }
 )
 
+router.get(
+    '/all-unassigned',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            return await taskController.getAllUnassigned()
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
+router.post(
+    '/assign',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { userId, taskId } = req.body
+            await taskController.assignTask(userId, taskId)
+
+            res.json({ status: 'success' })
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
 router.delete(
     '/:id',
     routePermission(REMOVE_PERMISSIONS),

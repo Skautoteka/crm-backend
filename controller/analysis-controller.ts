@@ -137,7 +137,6 @@ const _findRelated = async (
         ]
     }
 
-    console.log(result)
     return result
 }
 

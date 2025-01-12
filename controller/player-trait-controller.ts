@@ -1,6 +1,7 @@
 import PlayerTrait, {
     PlayerTraitCreationAttributes,
 } from '../db/models/player-trait.model'
+import ReportTrait from '../db/models/report-trait.model'
 import { ModelValidationError } from '../error/model-validation'
 import { NotFoundError } from '../error/not-found'
 
@@ -9,6 +10,18 @@ import { NotFoundError } from '../error/not-found'
  */
 export const getAllTraits = async (): Promise<PlayerTrait[]> => {
     return await PlayerTrait.findAll()
+}
+
+/**
+ * Returns all trait labels
+ *
+ * @returns
+ */
+export const getTraitLabels = async (): Promise<
+    { key: string; label: string }[]
+> => {
+    const all = await ReportTrait.findAll()
+    return all.map((entry) => ({ key: entry.traitId, label: entry.traitLabel }))
 }
 
 /**
