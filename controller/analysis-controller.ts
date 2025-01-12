@@ -21,7 +21,7 @@ export const getReportFilters = async () => {
  * Retrieves all available filters for notes
  */
 export const getNoteFilters = async () => {
-    return [{ name: 'ASSESSMENT', label: 'Ocena' }]
+    return [{ name: 'evaluation', label: 'Ocena' }]
 }
 
 /**
