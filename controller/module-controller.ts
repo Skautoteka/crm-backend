@@ -7,6 +7,7 @@ import { MODULE_PERMISSIONS as REPORT_PERMISSIONS } from '../permissions/report'
 import { MODULE_PERMISSIONS as TASK_PERMISSIONS } from '../permissions/task'
 import { MODULE_PERMISSIONS as TEAM_PERMISSIONS } from '../permissions/team'
 import { MODULE_PERMISSIONS as USER_PERMISSIONS } from '../permissions/user'
+import { MODULE_PERMISSIONS as NOTE_PERMISSIONS } from '../permissions/note'
 
 /**
  * Builds module routes config.
@@ -46,6 +47,8 @@ const _getPermission = (name: string): PermissionConfig => {
             return TASK_PERMISSIONS
         case 'report':
             return REPORT_PERMISSIONS
+        case 'note':
+            return NOTE_PERMISSIONS
         case 'player':
             return PLAYER_PERMISSIONS
         case 'team':
@@ -71,6 +74,8 @@ const _getRoute = (name: string) => {
             return 'tasks'
         case 'report':
             return 'reports'
+        case 'note':
+            return 'notes'
         case 'player':
             return 'players'
         case 'team':
@@ -93,6 +98,8 @@ const _getIcon = (name: string) => {
         case 'task':
             return 'move-task'
         case 'report':
+            return 'notes'
+        case 'notes':
             return 'file-document'
         case 'player':
             return 'user'
@@ -117,6 +124,8 @@ const _getLabel = (name: string) => {
             return 'Zadania'
         case 'report':
             return 'Raporty'
+        case 'note':
+            return 'Notatki'
         case 'player':
             return 'Zawodnicy'
         case 'team':

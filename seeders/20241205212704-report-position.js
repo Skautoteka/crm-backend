@@ -5,21 +5,21 @@ module.exports = {
         await queryInterface.bulkInsert('ReportPositions', [
             {
                 reportId: '276232af-8b64-414f-b574-d4bb5ff10358',
-                positionId: 'DEFENSE',
+                positionId: 'WING_BACK',
                 isOptional: false,
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
             {
                 reportId: '276232af-8b64-414f-b574-d4bb5ff10358',
-                positionId: 'WINGER',
+                positionId: 'WINGMAN_FORWARD',
                 isOptional: true,
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
             {
                 reportId: '89bca610-c842-42d6-892c-e9ecfea85760',
-                positionId: 'FORWARD',
+                positionId: 'CENTRAL_FORWARD',
                 isOptional: true,
                 createdAt: new Date(),
                 updatedAt: new Date(),

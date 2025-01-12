@@ -1,4 +1,3 @@
-import { Optional } from 'sequelize'
 import {
     Column,
     ForeignKey,
@@ -13,16 +12,15 @@ import Report from './report.model'
 interface ReportTraitAttributes {
     traitId: string
     reportId: string
-    value: number
+    value: number | null
 }
 
-export interface ReportTraitCreationAttributes
-    extends Optional<ReportTraitAttributes, 'traitId'> {}
+export interface ReportTraitCreationAttributes extends ReportTraitAttributes {}
 
 @Table
 export default class ReportTrait extends Model<ReportTrait> {
     @ForeignKey(() => PlayerTrait)
-    @Column({ type: DataType.STRING(50), allowNull: false, unique: true })
+    @Column({ type: DataType.STRING(50), allowNull: false })
     traitId: string
 
     @Column({ allowNull: false, type: DataType.STRING(255) })
@@ -32,12 +30,12 @@ export default class ReportTrait extends Model<ReportTrait> {
     trait: PlayerTrait
 
     @ForeignKey(() => Report)
-    @Column({ type: DataType.UUID })
+    @Column({ type: DataType.UUID, allowNull: false })
     reportId: string
 
     @BelongsTo(() => Report)
     report: Report
 
-    @Column({ allowNull: false, type: DataType.INTEGER })
+    @Column({ type: DataType.INTEGER, allowNull: true })
     value: number
 }
