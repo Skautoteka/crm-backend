@@ -20,13 +20,18 @@ router.post('/analyze-report', async (req: Request, res: Response) => {
     try {
         const { filters, playerId, regionId } = req.body
         const analysis = await analysisController.sendReportAnalysis(
-            filters,
+            Object.entries(filters).map((entry) => {
+                const [key, obj] = entry
+                const { predicate, value } = obj as any
+
+                return { key, predicate, value }
+            }),
             playerId,
             regionId
         )
         res.json(analysis)
     } catch (err) {
-        throw new NotFoundError('Could not find analysis. Something went wrong')
+        throw new NotFoundError(err.message)
     }
 })
 
@@ -34,7 +39,12 @@ router.post('/analyze-note', async (req: Request, res: Response) => {
     try {
         const { filters, teamId } = req.body
         const analysis = await analysisController.sendNoteAnalysis(
-            filters,
+            Object.entries(filters).map((entry) => {
+                const [key, obj] = entry
+                const { predicate, value } = obj as any
+
+                return { key, predicate, value }
+            }),
             teamId
         )
         res.json(analysis)

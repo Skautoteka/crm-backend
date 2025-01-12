@@ -1,4 +1,6 @@
 import ReportTrait from '../db/models/report-trait.model'
+import fetch from 'node-fetch'
+import { IFilters } from '../interface/ianalysis'
 
 /**
  * Retrieves all available filters for reports
@@ -24,11 +26,34 @@ export const getNoteFilters = async () => {
  * @param filters
  */
 export const sendReportAnalysis = async (
-    filters: Record<string, any>,
-    playerId: string,
-    regionId: string
+    filters: IFilters[],
+    playerId: string | null,
+    regionId: string | null
 ) => {
-    console.log(filters, regionId, playerId)
+    if (playerId) {
+        filters = [
+            ...filters,
+            { key: 'playerId', value: playerId, predicate: 'eq' },
+        ]
+    }
+
+    if (regionId) {
+        filters = [
+            ...filters,
+            { key: 'regionId', value: regionId, predicate: 'eq' },
+        ]
+    }
+
+    const response = await fetch('http://localhost:8000/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            type: 'report',
+            filters: filters.filter((f) => f.value !== null),
+        }),
+    })
+
+    return await response.json()
 }
 
 /**
@@ -38,8 +63,24 @@ export const sendReportAnalysis = async (
  * @param teamId
  */
 export const sendNoteAnalysis = async (
-    filters: Record<string, any>,
+    filters: IFilters[],
     teamId: string | null
 ) => {
-    console.log(filters, teamId)
+    if (teamId) {
+        filters = [
+            ...filters,
+            { key: 'teamId', value: teamId, predicate: 'eq' },
+        ]
+    }
+
+    const response = await fetch('http://localhost:8000/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            type: 'note',
+            filters: filters.filter((f) => f.value !== null),
+        }),
+    })
+
+    return await response.json()
 }

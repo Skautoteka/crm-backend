@@ -76,9 +76,6 @@ export default class Report extends Model<Report> {
     @BelongsTo(() => User, { foreignKey: 'createdById' })
     createdBy: User
 
-    // @BelongsToMany(() => PlayerTrait, () => ReportTrait)
-    // traits: PlayerTrait[]
-
     @HasMany(() => ReportTrait)
     traits: ReportTrait[]
 

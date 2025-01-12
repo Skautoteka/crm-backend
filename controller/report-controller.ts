@@ -414,7 +414,7 @@ export const getAllDetailed = async (): Promise<Report[]> => {
                 model: Player,
                 attributes: { exclude: ['createdAt', 'updatedAt'] },
             },
-            PlayerTrait,
+            ReportTrait,
         ],
         attributes: { exclude: ['createdAt', 'updatedAt'] },
     })

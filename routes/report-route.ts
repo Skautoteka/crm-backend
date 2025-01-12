@@ -12,7 +12,7 @@ import {
 
 const router = express.Router()
 
-router.use(routePermission(MODULE_PERMISSIONS))
+//router.use(routePermission(MODULE_PERMISSIONS))
 
 router.get(
     '/create-fields',
