@@ -12,6 +12,18 @@ export const getAllTraits = async (): Promise<PlayerTrait[]> => {
 }
 
 /**
+ * Returns all trait labels
+ *
+ * @returns
+ */
+export const getTraitLabels = async (): Promise<
+    { key: string; label: string }[]
+> => {
+    const all = await PlayerTrait.findAll()
+    return all.map((entry) => ({ key: entry.id, label: entry.name }))
+}
+
+/**
  * Adds a new trait.
  *
  * @param payload

@@ -16,6 +16,7 @@ interface TaskAttributes {
     id: string
     status: string
     createdById: string
+    assignedToId: string | null
 }
 
 export interface TaskCreationAttributes

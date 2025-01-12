@@ -405,7 +405,6 @@ export const add = async (
 
         return added
     } catch (err) {
-        console.log(err)
         throw new ModelValidationError(err.message)
     }
 }
@@ -439,10 +438,23 @@ export const getAllDetailed = async (): Promise<Report[]> => {
                 model: Player,
                 attributes: { exclude: ['createdAt', 'updatedAt'] },
             },
-            PlayerTrait,
+            ReportTrait,
         ],
         attributes: { exclude: ['createdAt', 'updatedAt'] },
     })
+}
+
+/**
+ * Retrieves all tasks that are unassigned.
+ *
+ * @returns
+ */
+export const getAllUnassigned = async (): Promise<Report[]> => {
+    const tasks = await Report.findAll({
+        where: { taskId: null },
+        include: [Player],
+    })
+    return tasks
 }
 
 /**

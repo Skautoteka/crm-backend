@@ -62,6 +62,19 @@ router.get(
 )
 
 router.get(
+    '/unassigned',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const tasks = await reportController.getAllUnassigned()
+
+            res.json(tasks)
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
+router.get(
     '/all-detailed',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -119,7 +132,6 @@ router.post(
     routePermission(EDIT_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            // const user = await authController.getReqUser(req)
             const report = await reportController.updateReportWithDetails(
                 req.body
             )

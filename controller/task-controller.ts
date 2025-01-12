@@ -1,6 +1,8 @@
+import Report from '../db/models/report.model'
 import Task, { TaskCreationAttributes } from '../db/models/task.model'
 import Team from '../db/models/team.model'
 import User from '../db/models/user.model'
+import { InvalidPayloadError } from '../error/invalid-payload'
 import { ModelValidationError } from '../error/model-validation'
 import { NotFoundError } from '../error/not-found'
 import { ISingleInputConfig } from '../interface'
@@ -103,15 +105,49 @@ export const add = async (
 }
 
 /**
+ * Assigns report to a task
+ *
+ * @param reportId
+ * @param taskId
+ */
+export const assignReport = async (
+    reportId: string,
+    taskId: string
+): Promise<void> => {
+    const task = await Task.findByPk(taskId)
+    const report = await Report.findByPk(reportId)
+
+    if (!task) {
+        throw new NotFoundError('Could not find task by taskId ' + taskId)
+    }
+
+    if (!report) {
+        throw new NotFoundError('Could not find report by reportId ' + reportId)
+    }
+
+    if (task.assignedToId !== null) {
+        throw new InvalidPayloadError(
+            'Could not assign task, as it is already assigned to ' +
+                task.assignedToId
+        )
+    }
+
+    report.update({ taskId: task.id })
+    await report.save()
+}
+
+/**
  * Returns all tasks.
  */
 export const getAll = async (): Promise<Task[]> => {
-    return await Task.findAll({
+    const tasks = await Task.findAll({
         include: [
             { model: Team, as: 'hostTeam' },
             { model: Team, as: 'guestTeam' },
         ],
     })
+
+    return tasks.filter((task) => task.hostTeam && task.guestTeam)
 }
 
 /**

@@ -17,8 +17,8 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
-                id: 'CENTRAL_DEFENDER',
-                name: 'Środkowy Obrońca',
+                id: 'WINGER',
+                name: 'Skrzydłowy',
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
@@ -29,8 +29,20 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
+                id: 'FORWARD',
+                name: 'Cofniety napastnik',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
                 id: 'DEFENSIVE_MIDFIELDER',
                 name: 'Defensywny Pomocnik',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                id: 'CENTRE-BACK',
+                name: 'Srodkowy obrońca',
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
@@ -41,8 +53,20 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
+                id: 'LEFT-BACK',
+                name: 'Lewy obrońca',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
                 id: 'OFFENSIVE_MIDFIELDER',
                 name: 'Ofensywny Pomocnik',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                id: 'RIGHT-BACK',
+                name: 'Prawy obrońca',
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
@@ -53,8 +77,20 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
+                id: 'DEFENSIVE-MIDFIELD',
+                name: 'Defensywny pomocnik',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
                 id: 'CENTRAL_FORWARD',
                 name: 'Środkowy Napastnik',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                id: 'ATTACKING-MIDFIELD',
+                name: 'Ofensywny pomocnik',
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
@@ -65,11 +101,66 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
+                id: 'LEFT-WINGER',
+                name: 'Lewy skrzydłowy',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
                 id: 'FALSE_NINE',
                 name: 'Fałszywa Dziewiątka',
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
+            {
+                id: 'RIGHT-WINGER',
+                name: 'Prawy skrzydłowy',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                id: 'LEFT-FORWARD',
+                name: 'Lewy napastnik',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                id: 'RIGHT-FORWARD',
+                name: 'Prawy napastnik',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                id: 'CENTRE-FORWARD',
+                name: 'Środkowy napastnik',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                id: 'MIDFIELDER',
+                name: 'Pomocnik',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                id: 'LEFT-MIDFIELDER',
+                name: 'Lewy pomocnik',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                id: 'RIGHT-MIDFIELDER',
+                name: 'Prawy pomocnik',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                id: 'STRIKER',
+                name: 'Napastnik',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+        ])
         ])
     },
 
