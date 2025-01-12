@@ -13,6 +13,7 @@ import ReportPosition from '../db/models/report-position.model'
 import ReportDescription from '../db/models/report-description.model'
 import Position from '../db/models/position.model'
 import Team from '../db/models/team.model'
+import PositionTrait from '../db/models/position-traits.model'
 
 /**
  * Gets the model for the report model creation.
@@ -354,6 +355,12 @@ export const add = async (
     user: User
 ): Promise<Report> => {
     try {
+        const reportPlayer = await Player.findByPk(payload.playerId)
+
+        if (!reportPlayer) {
+            throw new NotFoundError('Player not found.')
+        }
+
         const reportObject = {
             name: payload.name,
             status: payload.status || getDefaultReportStatus(),
@@ -370,8 +377,26 @@ export const add = async (
 
         const { id } = await report.save()
 
+        const playerPositionTraits = await PositionTrait.findAll({
+            where: { positionId: reportPlayer.positionId },
+        })
+
+        if (playerPositionTraits.length > 0) {
+            const reportTraits = playerPositionTraits.map((positionTrait) => ({
+                traitId: positionTrait.playerTraitId,
+                reportId: id,
+                value: null,
+            }))
+
+            // @ts-expect-error ...
+            await ReportTrait.bulkCreate(reportTraits)
+        }
+
         const added = await Report.findByPk(id, {
-            include: [{ model: Player, as: 'player' }],
+            include: [
+                { model: Player, as: 'player' },
+                { model: ReportTrait, as: 'traits' },
+            ],
         })
 
         if (!added) {

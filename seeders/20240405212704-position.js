@@ -17,7 +17,7 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
-                id: 'CENTERAL_DEFENDER',
+                id: 'CENTRAL_DEFENDER',
                 name: 'Środkowy Obrońca',
                 createdAt: new Date(),
                 updatedAt: new Date(),

@@ -14,7 +14,7 @@ import PlayerTrait from './player-trait.model'
 
 interface PositionTraitAttributes {
     id: string
-    positionid: string
+    positionId: string
     playerTraitId: string
 }
 
