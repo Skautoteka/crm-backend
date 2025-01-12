@@ -12,7 +12,7 @@ import {
 
 const router = express.Router()
 
-//router.use(routePermission(MODULE_PERMISSIONS))
+router.use(routePermission(MODULE_PERMISSIONS))
 
 router.get(
     '/create-fields',
@@ -55,6 +55,33 @@ router.get(
                 reports = await reportController.getAll(user)
             }
             return res.json(reports)
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
+router.get(
+    '/unassigned',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const tasks = await reportController.getAllUnassigned()
+
+            res.json(tasks)
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
+router.post(
+    '/assign',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { reportId, taskId } = req.body
+            await reportController.assignToTask(reportId, taskId)
+
+            res.json({ status: 'success' })
         } catch (err) {
             return next(err)
         }

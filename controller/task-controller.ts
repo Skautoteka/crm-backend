@@ -1,7 +1,6 @@
 import Task, { TaskCreationAttributes } from '../db/models/task.model'
 import Team from '../db/models/team.model'
 import User from '../db/models/user.model'
-import { InvalidPayloadError } from '../error/invalid-payload'
 import { ModelValidationError } from '../error/model-validation'
 import { NotFoundError } from '../error/not-found'
 import { ISingleInputConfig } from '../interface'
@@ -115,49 +114,6 @@ export const getAll = async (): Promise<Task[]> => {
     })
 
     return tasks.filter((task) => task.hostTeam && task.guestTeam)
-}
-
-/**
- * Retrieves all tasks that are unassigned.
- *
- * @returns
- */
-export const getAllUnassigned = async (): Promise<Task[]> => {
-    const tasks = await Task.findAll({ where: { assignedToId: null } })
-
-    return tasks
-}
-
-/**
- * Assigns user id to task id
- *
- * @param userId
- * @param taskId
- */
-export const assignTask = async (
-    userId: string,
-    taskId: string
-): Promise<void> => {
-    const task = await Task.findByPk(taskId)
-    const user = await User.findByPk(userId)
-
-    if (!task) {
-        throw new NotFoundError('Could not find task by taskId ' + taskId)
-    }
-
-    if (!user) {
-        throw new NotFoundError('Could not find user by userId ' + userId)
-    }
-
-    if (task.assignedToId !== null) {
-        throw new InvalidPayloadError(
-            'Could not assign task, as it is already assigned to ' +
-                task.assignedToId
-        )
-    }
-
-    task.update({ assignedToId: user.id })
-    await task.save()
 }
 
 /**

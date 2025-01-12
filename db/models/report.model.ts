@@ -60,7 +60,7 @@ export default class Report extends Model<Report> {
 
     @ForeignKey(() => Task)
     @Column({ allowNull: true, type: DataTypes.UUID })
-    taskId: string
+    taskId: string | null
 
     @BelongsTo(() => Task)
     task: Task
