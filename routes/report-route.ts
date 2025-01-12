@@ -74,20 +74,6 @@ router.get(
     }
 )
 
-router.post(
-    '/assign',
-    async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const { reportId, taskId } = req.body
-            await reportController.assignToTask(reportId, taskId)
-
-            res.json({ status: 'success' })
-        } catch (err) {
-            return next(err)
-        }
-    }
-)
-
 router.get(
     '/all-detailed',
     async (req: Request, res: Response, next: NextFunction) => {
@@ -146,7 +132,6 @@ router.post(
     routePermission(EDIT_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            // const user = await authController.getReqUser(req)
             const report = await reportController.updateReportWithDetails(
                 req.body
             )

@@ -13,8 +13,6 @@ import ReportPosition from '../db/models/report-position.model'
 import ReportDescription from '../db/models/report-description.model'
 import Position from '../db/models/position.model'
 import Team from '../db/models/team.model'
-import { InvalidPayloadError } from '../error/invalid-payload'
-import Task from '../db/models/task.model'
 
 /**
  * Gets the model for the report model creation.
@@ -382,7 +380,6 @@ export const add = async (
 
         return added
     } catch (err) {
-        console.log(err)
         throw new ModelValidationError(err.message)
     }
 }
@@ -428,40 +425,11 @@ export const getAllDetailed = async (): Promise<Report[]> => {
  * @returns
  */
 export const getAllUnassigned = async (): Promise<Report[]> => {
-    const tasks = await Report.findAll({ where: { taskId: null } })
+    const tasks = await Report.findAll({
+        where: { taskId: null },
+        include: [Player],
+    })
     return tasks
-}
-
-/**
- * Assigns report to a task
- *
- * @param reportId
- * @param taskId
- */
-export const assignToTask = async (
-    reportId: string,
-    taskId: string
-): Promise<void> => {
-    const task = await Task.findByPk(taskId)
-    const report = await Report.findByPk(reportId)
-
-    if (!task) {
-        throw new NotFoundError('Could not find task by taskId ' + taskId)
-    }
-
-    if (!report) {
-        throw new NotFoundError('Could not find report by reportId ' + reportId)
-    }
-
-    if (task.assignedToId !== null) {
-        throw new InvalidPayloadError(
-            'Could not assign task, as it is already assigned to ' +
-                task.assignedToId
-        )
-    }
-
-    report.update({ taskId: task.id })
-    await report.save()
 }
 
 /**

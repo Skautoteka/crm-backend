@@ -55,6 +55,20 @@ router.delete(
 )
 
 router.post(
+    '/assign-report',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { reportId, taskId } = req.body
+            await taskController.assignReport(reportId, taskId)
+
+            res.json({ status: 'success' })
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
+router.post(
     '/',
     routePermission(CREATE_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
