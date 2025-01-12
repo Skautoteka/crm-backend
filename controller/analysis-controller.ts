@@ -1,6 +1,10 @@
 import ReportTrait from '../db/models/report-trait.model'
 import fetch from 'node-fetch'
 import { IFilters } from '../interface/ianalysis'
+import { InvalidPayloadError } from '../error/invalid-payload'
+import Player from '../db/models/player.model'
+import Note from '../db/models/note.model'
+import Report from '../db/models/report.model'
 
 /**
  * Retrieves all available filters for reports
@@ -30,6 +34,8 @@ export const sendReportAnalysis = async (
     playerId: string | null,
     regionId: string | null
 ) => {
+    filters = filters.map((f) => ({ ...f, key: f.key.toLowerCase() }))
+
     if (playerId) {
         filters = [
             ...filters,
@@ -49,11 +55,21 @@ export const sendReportAnalysis = async (
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             type: 'report',
-            filters: filters.filter((f) => f.value !== null),
+            filters: filters
+                .filter((f) => f.value !== null)
+                .map((f) => ({
+                    ...f,
+                    value: f.value.toString(),
+                })),
         }),
     })
 
-    return await response.json()
+    if (response.status !== 200) {
+        throw new InvalidPayloadError(response.statusText)
+    }
+
+    const json = (await response.json()) as any
+    return await _findRelated(json, 'report')
 }
 
 /**
@@ -66,6 +82,8 @@ export const sendNoteAnalysis = async (
     filters: IFilters[],
     teamId: string | null
 ) => {
+    filters = filters.map((f) => ({ ...f, key: f.key.toLowerCase() }))
+
     if (teamId) {
         filters = [
             ...filters,
@@ -78,9 +96,68 @@ export const sendNoteAnalysis = async (
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             type: 'note',
-            filters: filters.filter((f) => f.value !== null),
+            filters: filters
+                .filter((f) => f.value !== null)
+                .map((f) => ({
+                    ...f,
+                    value: f.value.toString(),
+                })),
         }),
     })
 
-    return await response.json()
+    if (response.status !== 200) {
+        throw new InvalidPayloadError(response.statusText)
+    }
+
+    const json = (await response.json()) as any
+    return await _findRelated(json, 'note')
+}
+
+const _findRelated = async (
+    response: Record<string, any>[],
+    type: 'note' | 'report'
+): any => {
+    let result: any[] = []
+
+    for (let i = 0; i < response.length; i++) {
+        const record = response[i]
+
+        const playerId = record.playerId
+        const relatedIds = record.related
+
+        const player = await Player.findByPk(playerId)
+
+        result = [
+            ...result,
+            {
+                ...record,
+                player,
+                related: await _findRelatedRecords(relatedIds, type),
+            },
+        ]
+    }
+
+    console.log(result)
+    return result
+}
+
+const _findRelatedRecords = async (
+    relatedIds: string[],
+    type: 'note' | 'report'
+) => {
+    let result: any[] = []
+
+    for (let i = 0; i < relatedIds.length; i++) {
+        const id = relatedIds[i]
+
+        if (type === 'note') {
+            const record = await Note.findByPk(id)
+            result = [...result, record]
+        } else {
+            const record = await Report.findByPk(id)
+            result = [...result, record]
+        }
+    }
+
+    return result
 }

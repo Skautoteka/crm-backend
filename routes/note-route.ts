@@ -47,6 +47,15 @@ router.get(
     routePermission(READ_PERMISSIONS),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
+            if (
+                (req.hostname === 'localhost' ||
+                    req.hostname === '127.0.0.1') &&
+                //@ts-expect-error anyway
+                req.headers.host.split(':')[1] !== '4200'
+            ) {
+                return res.json(await noteController.getAll())
+            }
+
             const user = await authController.getReqUser(req)
             let notes = []
             if (user.role.id === 'ADMIN') {
@@ -109,7 +118,6 @@ router.post(
         try {
             // const user = await authController.getReqUser(req)
             const note = await noteController.updateNote(req.body)
-            console.log('note', note)
             res.json({ success: true, updated: note })
         } catch (err) {
             return next(err)
