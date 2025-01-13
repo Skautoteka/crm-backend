@@ -11,6 +11,12 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
+                id: 'CENTRAL_DEFENDER',
+                name: 'Srodkowy obronca',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
                 id: 'SIDE_DEFENDER',
                 name: 'Boczny Obrońca',
                 createdAt: new Date(),
@@ -160,7 +166,6 @@ module.exports = {
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
-        ])
         ])
     },
 
