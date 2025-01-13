@@ -116,7 +116,7 @@ export const sendNoteAnalysis = async (
 const _findRelated = async (
     response: Record<string, any>[],
     type: 'note' | 'report'
-): any => {
+): Promise<any> => {
     let result: any[] = []
 
     for (let i = 0; i < response.length; i++) {

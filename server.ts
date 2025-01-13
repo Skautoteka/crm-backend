@@ -45,6 +45,13 @@ app.use('/api/auth', authRouter)
 
 const port = process.env.PORT
 ;(async () => {
+    console.log({
+        database: process.env.DB,
+        dialect: process.env.DB_DIALECT,
+        username: process.env.DB_USER,
+        password: process.env.DB_PW,
+    })
+
     await sequelize.sync({ alter: true })
 
     app.listen(port, () => {

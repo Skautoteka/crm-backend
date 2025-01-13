@@ -21,5 +21,6 @@ export const sequelize = new Sequelize({
     dialect: process.env.DB_DIALECT,
     username: process.env.DB_USER,
     password: process.env.DB_PW,
+    host: process.env.DB_HOST,
     models: [__dirname + '/models'],
 })
