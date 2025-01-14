@@ -12,7 +12,9 @@ import { UnauthorizedError } from '../error/unauthorized'
 export const routePermission = (config: PermissionConfig) => {
     return (req: Request, res: Response, next: NextFunction) => {
         if (
-            (req.hostname === 'localhost' || req.hostname === '127.0.0.1') &&
+            (req.hostname === 'localhost' ||
+                req.hostname === '127.0.0.1' ||
+                req.hostname === 'crm-backend') &&
             //@ts-expect-error anyway
             req.headers.host.split(':')[1] !== '4200'
         ) {

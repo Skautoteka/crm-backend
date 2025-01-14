@@ -49,7 +49,8 @@ router.get(
         try {
             if (
                 (req.hostname === 'localhost' ||
-                    req.hostname === '127.0.0.1') &&
+                    req.hostname === '127.0.0.1' ||
+                    req.hostname === 'crm-backend') &&
                 //@ts-expect-error anyway
                 req.headers.host.split(':')[1] !== '4200'
             ) {
