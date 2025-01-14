@@ -6,6 +6,8 @@ import Player from '../db/models/player.model'
 import Note from '../db/models/note.model'
 import Report from '../db/models/report.model'
 
+import dotenv from 'dotenv'
+
 /**
  * Retrieves all available filters for reports
  */
@@ -50,7 +52,8 @@ export const sendReportAnalysis = async (
         ]
     }
 
-    const response = await fetch('http://localhost:8000/analyze', {
+    const host = process.env.ANALYSIS_HOSTNAME || 'localhost'
+    const response = await fetch(`http://${host}:8000/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
