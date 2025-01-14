@@ -94,7 +94,8 @@ export const sendNoteAnalysis = async (
         ]
     }
 
-    const response = await fetch('http://localhost:8000/analyze', {
+    const host = process.env.ANALYSIS_HOSTNAME || 'localhost'
+    const response = await fetch(`http://${host}:8000/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
