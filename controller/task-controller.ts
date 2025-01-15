@@ -125,7 +125,7 @@ export const assignReport = async (
         throw new NotFoundError('Could not find report by reportId ' + reportId)
     }
 
-    if (task.assignedToId !== null) {
+    if (report.taskId !== null) {
         throw new InvalidPayloadError(
             'Could not assign task, as it is already assigned to ' +
                 task.assignedToId

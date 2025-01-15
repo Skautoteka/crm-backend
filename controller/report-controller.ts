@@ -385,7 +385,6 @@ export const add = async (
             await ReportTrait.bulkCreate(reportTraits)
         }
 
-        console.log('JESSZCZE TUTEEJ')
         const added = await Report.findByPk(id, {
             include: [
                 { model: Player, as: 'player' },
