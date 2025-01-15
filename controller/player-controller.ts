@@ -37,11 +37,21 @@ export const getAll = async (): Promise<Player[]> => {
  * @param param0
  * @returns
  */
-export const add = async (
-    payload: PlayerCreationAttributes
-): Promise<Player> => {
+export const add = async (payload: any): Promise<Player> => {
     try {
-        const player = await Player.create({ ...payload, version: 1 })
+        const position = await Position.findByPk(payload.position)
+
+        if (!position) {
+            throw new NotFoundError(
+                'Could not find position by id: ' + payload.position
+            )
+        }
+
+        const player = await Player.create({
+            ...payload,
+            version: 1,
+            positionId: position.id,
+        })
         const added = await getPlayerLatest(player.id)
 
         if (!added) {
