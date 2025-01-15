@@ -86,6 +86,18 @@ router.get(
     }
 )
 
+router.post(
+    '/unassign',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            await reportController.unassignReport(req.body.id)
+            res.json({ success: true })
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
 router.get(
     '/allByTaskId/:id',
     async (req: Request, res: Response, next: NextFunction) => {

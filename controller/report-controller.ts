@@ -427,6 +427,17 @@ export const getAll = async (user: User | null = null): Promise<Report[]> => {
     }
 }
 
+export const unassignReport = async (id: string): Promise<void> => {
+    const report = await Report.findByPk(id)
+
+    if (!report) {
+        throw new NotFoundError('Could not unassign report by id ' + id)
+    }
+
+    report.update({ taskId: null })
+    await report.save()
+}
+
 /**
  * Retrieves all detailed reports.
  * @returns
