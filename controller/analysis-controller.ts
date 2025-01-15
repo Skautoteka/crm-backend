@@ -1,21 +1,20 @@
-import ReportTrait from '../db/models/report-trait.model'
 import fetch from 'node-fetch'
 import { IFilters } from '../interface/ianalysis'
 import { InvalidPayloadError } from '../error/invalid-payload'
 import Player from '../db/models/player.model'
 import Note from '../db/models/note.model'
 import Report from '../db/models/report.model'
-
-import dotenv from 'dotenv'
+import PlayerTrait from '../db/models/player-trait.model'
 
 /**
  * Retrieves all available filters for reports
  */
 export const getReportFilters = async () => {
-    const traits = await ReportTrait.findAll()
+    const traits = await PlayerTrait.findAll()
+
     return traits.map((trait) => ({
-        name: trait.traitId,
-        label: trait.traitLabel,
+        name: trait.id,
+        label: trait.name,
     }))
 }
 

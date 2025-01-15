@@ -23,9 +23,6 @@ export default class ReportTrait extends Model<ReportTrait> {
     @Column({ type: DataType.STRING(50), allowNull: false })
     traitId: string
 
-    @Column({ allowNull: false, type: DataType.STRING(255) })
-    traitLabel: string
-
     @BelongsTo(() => PlayerTrait)
     trait: PlayerTrait
 

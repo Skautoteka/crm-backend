@@ -37,8 +37,17 @@ export default class Note extends Model<Note> {
     @Column({ type: DataTypes.UUID })
     id: string
 
-    @Column({ allowNull: false, type: DataTypes.TEXT })
-    name: string
+    @Column({ type: DataTypes.TEXT })
+    get name(): string {
+        const number = this.getDataValue('playerNumber')
+        const teamName = this.getDataValue('team')?.name
+
+        if (!number && !teamName) {
+            return 'Brak informacji'
+        }
+
+        return `#${number || ' Brak numeru'} - ${teamName || 'Brak zespołu'}`
+    }
 
     @Column({ allowNull: false, type: DataType.TEXT })
     status: 'IN_PROGRESS' | 'COMPLETED'

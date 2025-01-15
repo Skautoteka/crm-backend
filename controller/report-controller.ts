@@ -25,13 +25,6 @@ export const getReportCreateFields = async (): Promise<
 > => {
     return [
         {
-            name: 'name',
-            label: 'Nazwa',
-            isRequired: true,
-            placeholder: 'Wpisz nazwę raportu',
-            type: 'TEXT',
-        },
-        {
             name: 'playerId',
             label: 'Zawodnik do raportu',
             isRequired: true,
@@ -355,6 +348,7 @@ export const add = async (
     user: User
 ): Promise<Report> => {
     try {
+        console.log(payload)
         const reportPlayer = await Player.findByPk(payload.playerId)
 
         if (!reportPlayer) {
@@ -362,7 +356,6 @@ export const add = async (
         }
 
         const reportObject = {
-            name: payload.name,
             status: payload.status || getDefaultReportStatus(),
             playerId: payload.playerId,
             taskId: payload.taskId,
@@ -392,6 +385,7 @@ export const add = async (
             await ReportTrait.bulkCreate(reportTraits)
         }
 
+        console.log('JESSZCZE TUTEEJ')
         const added = await Report.findByPk(id, {
             include: [
                 { model: Player, as: 'player' },

@@ -46,8 +46,20 @@ export default class Report extends Model<Report> {
     @Column({ type: DataTypes.UUID })
     id: string
 
-    @Column({ allowNull: false, type: DataTypes.TEXT })
-    name: string
+    @Column({ type: DataTypes.TEXT })
+    get name(): string {
+        const player = this.getDataValue('player')
+
+        if (!player) {
+            return 'Bez nazwy'
+        }
+
+        if (player.team) {
+            return `${player.name} - ${player?.team?.name || ''}`
+        }
+
+        return `${player.name}`
+    }
 
     @Column({ allowNull: false, type: DataType.TEXT })
     status: 'IN_PROGRESS' | 'COMPLETED'

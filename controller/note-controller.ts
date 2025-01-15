@@ -13,14 +13,6 @@ import Note, { NoteCreationAttributes } from '../db/models/note.model'
 export const getNoteCreateFields = async (): Promise<ISingleInputConfig[]> => {
     return [
         {
-            name: 'name',
-            label: 'Nazwa',
-            isRequired: true,
-            placeholder: 'Wpisz nazwę notatki',
-            value: `Notatka ${(await Note.count()) + 1}`,
-            type: 'TEXT',
-        },
-        {
             name: 'status',
             label: 'Status notatki',
             isRequired: true,
@@ -49,13 +41,6 @@ export const getNoteCreateFields = async (): Promise<ISingleInputConfig[]> => {
             min: 0,
         },
         {
-            name: 'content',
-            label: 'Treść',
-            isRequired: false,
-            placeholder: 'Wpisz treść notatki',
-            type: 'TEXTAREA',
-        },
-        {
             name: 'evaluation',
             label: 'Ocena',
             isRequired: false,
@@ -63,6 +48,13 @@ export const getNoteCreateFields = async (): Promise<ISingleInputConfig[]> => {
             type: 'NUMBER',
             min: 1,
             max: 10,
+        },
+        {
+            name: 'content',
+            label: 'Treść',
+            isRequired: false,
+            placeholder: 'Wpisz treść notatki',
+            type: 'TEXTAREA',
         },
     ]
 }
@@ -88,14 +80,6 @@ export const getNoteFields = async (
         }
 
         return [
-            {
-                name: 'name',
-                label: 'Nazwa',
-                isRequired: true,
-                placeholder: 'Wpisz nazwę notatki',
-                value: note?.name,
-                type: 'TEXT',
-            },
             {
                 name: 'status',
                 label: 'Status notatki',
@@ -127,14 +111,6 @@ export const getNoteFields = async (
                 min: 0,
             },
             {
-                name: 'content',
-                label: 'Treść',
-                isRequired: false,
-                placeholder: 'Wpisz treść notatki',
-                value: note?.content,
-                type: 'TEXTAREA',
-            },
-            {
                 name: 'evaluation',
                 label: 'Ocena',
                 isRequired: false,
@@ -143,6 +119,14 @@ export const getNoteFields = async (
                 type: 'NUMBER',
                 min: 1,
                 max: 10,
+            },
+            {
+                name: 'content',
+                label: 'Treść',
+                isRequired: false,
+                placeholder: 'Wpisz treść notatki',
+                value: note?.content,
+                type: 'TEXTAREA',
             },
         ]
     } catch (error) {
