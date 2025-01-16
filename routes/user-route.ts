@@ -42,7 +42,7 @@ router.post(
                 }
 
                 res.setHeader('Content-Type', 'application/json')
-                res.sendStatus(200)
+                res.json({ success: true })
             })
         } catch (err) {
             return next(err)
@@ -126,5 +126,7 @@ router.get('/permissions', async (req: Request, res: Response) => {
         create: CREATE_PERMISSIONS.includes(role),
     })
 })
+
+router.use('/images', express.static(path.join(__dirname, '../uploads')))
 
 export { router as userRouter }
