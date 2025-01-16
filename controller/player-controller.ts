@@ -134,17 +134,12 @@ export const getPlayerHistory = async (playerId: string): Promise<Player[]> => {
  * @returns
  */
 export const getAllByTeamId = async (teamId: string): Promise<Player[]> => {
-    return await Player.findAll({
-        where: {
-            teamId,
-            version: literal(`(
-                SELECT MAX(version)
-                FROM players AS sub
-                WHERE sub.masterPlayerId = players.masterPlayerId OR sub.id = players.id
-            )`),
-        },
-        include: [Team, Position],
+    const players = await Player.findAll({
+        where: { masterPlayerId: null },
+        include: [Team],
     })
+
+    return players.filter((players) => players.teamId === teamId)
 }
 
 /**
