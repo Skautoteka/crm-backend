@@ -10,10 +10,45 @@ import {
     READ_PERMISSIONS,
     REMOVE_PERMISSIONS,
 } from '../permissions/user'
+import { NotFoundError } from '../error/not-found'
+import { UploadedFile } from 'express-fileupload'
+import path from 'path'
 
 const router = express.Router()
 
 router.use(routePermission(MODULE_PERMISSIONS))
+
+router.post(
+    '/image/:id',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const image = req.files?.image as UploadedFile
+            const id = req.params['id'] + '.jpeg'
+
+            if (!image) {
+                throw new NotFoundError('Could not save not existing image')
+            }
+
+            if (image.mimetype !== 'image/jpeg') {
+                throw new InvalidPayloadError(
+                    'Cannot upload files other than jpeg'
+                )
+            }
+
+            const uploadPath = path.join(__dirname, '../uploads', id)
+            image.mv(uploadPath, (err) => {
+                if (err) {
+                    throw new InvalidPayloadError('Could not save image')
+                }
+
+                res.setHeader('Content-Type', 'application/json')
+                res.sendStatus(200)
+            })
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
 
 router.get(
     '/all',

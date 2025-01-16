@@ -21,6 +21,9 @@ import { analysisRouter } from './routes/analysis-route'
 import { positionRouter } from './routes/position-route'
 import { teamFormationsRouter } from './routes/team-formation-route'
 import { noteRouter } from './routes/note-route'
+import fileupload from 'express-fileupload'
+import path from 'path'
+import fs from 'fs'
 
 dotenv.config()
 
@@ -28,6 +31,7 @@ const app = express()
 app.use(json({ limit: '5mb' }))
 app.use(cors())
 app.use(cookieParser())
+app.use(fileupload())
 
 app.use('/api/task', authMiddleware, taskRouter)
 app.use('/api/report', authMiddleware, reportRouter)
@@ -42,6 +46,11 @@ app.use('/api/position', authMiddleware, positionRouter)
 app.use('/api/team-formations', authMiddleware, teamFormationsRouter)
 app.use('/api/note', authMiddleware, noteRouter)
 app.use('/api/auth', authRouter)
+
+const uploadDir = path.join(__dirname, 'uploads')
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir)
+}
 
 const port = process.env.PORT
 ;(async () => {
