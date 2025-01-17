@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\controller",
+    "\\db",
+    "\\db\\models",
+    "\\integrations",
+    "\\integrations\\get",
+    "\\seeders"
+  ],
+  "PreviewInSolutionExplorer": false
+}

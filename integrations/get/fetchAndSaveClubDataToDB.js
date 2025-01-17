@@ -28,13 +28,13 @@ async function fetchAndSaveClubDataToDB() {
                         clubProfile.addressLine1 || '',
                         clubProfile.addressLine2 || '',
                         clubProfile.addressLine3 || ''
-                    ].filter(Boolean).join(', '), 
+                    ].filter(Boolean).join(', '),
                     stadiumName: clubProfile.stadiumName || null,
                     league: clubProfile.league ?.name || null
                 };
             } catch (error) {
                 console.error(`Blad podczas pobierania danych dla klubu o ID ${club.id}:`, error.message);
-                return null; 
+                return null;
             }
         });
 

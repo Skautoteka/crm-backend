@@ -5,7 +5,7 @@ const path = require("path");
 const scripts = [
     "fetchPolishClubs.js",
     "fetchAndSaveClubDataToDB.js",
-    "fetchAllPlayers.js"
+    "fetchPlayers.js"
 ];
 
 // Funkcja do uruchamiania skrypt�w
@@ -36,10 +36,10 @@ async function runScriptsSequentially() {
         const scriptPath = path.join(scriptDirectory, script);
 
         try {
-            await runScript(scriptPath); 
+            await runScript(scriptPath);
         } catch (error) {
             console.error(`Nie udalo sie uruchomic ${script}. Przerywam dzialanie.`);
-            return; 
+            return;
         }
     }
 

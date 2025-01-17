@@ -17,10 +17,10 @@ async function fetchPolishClubs() {
             console.log(`Pobieranie danych dla ligi: ${id}`);
             try {
                 const response = await axios.get(`${BASE_URL}/competitions/${id}/clubs`);
-                allClubs[id] = response.data; 
+                allClubs[id] = response.data;
             } catch (error) {
                 console.error(`Blad przy pobieraniu danych dla ligi ${id}:`, error.message);
-                allClubs[id] = { error: error.message }; 
+                allClubs[id] = { error: error.message };
             }
         }
 
