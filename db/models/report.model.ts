@@ -54,10 +54,6 @@ export default class Report extends Model<Report> {
             return 'Bez nazwy'
         }
 
-        if (player.team) {
-            return `${player.name} - ${player?.team?.name || ''}`
-        }
-
         return `${player.name}`
     }
 

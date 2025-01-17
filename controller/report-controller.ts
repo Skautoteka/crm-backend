@@ -15,6 +15,8 @@ import Position from '../db/models/position.model'
 import Team from '../db/models/team.model'
 import PositionTrait from '../db/models/position-traits.model'
 
+import PDFKit from 'pdfkit'
+
 /**
  * Gets the model for the report model creation.
  *
@@ -553,4 +555,187 @@ export const updateReportWithDetails = async (
 
 const getDefaultReportStatus = (): 'IN_PROGRESS' | 'COMPLETED' => {
     return 'IN_PROGRESS'
+}
+
+/**
+ * Generates pdf for report
+ */
+export const generatePDF = async (
+    id: string,
+    onChunk: (chunk: any) => boolean,
+    onEnd: () => any
+) => {
+    const report = await Report.findByPk(id, {
+        include: [{ model: Player, include: [Position, Team] }, ReportTrait],
+    })
+
+    if (!report) {
+        throw new NotFoundError('Could not find report by id' + id)
+    }
+
+    const doc = new PDFKit()
+
+    doc.on('data', onChunk)
+    doc.on('end', onEnd)
+
+    doc.image('./assets/logo.png', 50, 50, { scale: 0.5 })
+
+    doc.font('assets/IBMPlexSans-Bold.ttf')
+        .fontSize(18)
+        .text('Skautoteka.info', 95, 48)
+
+    doc.fillColor('#4e4e4e')
+        .font('assets/IBMPlexSans-Regular.ttf')
+        .fontSize(10)
+        .text(
+            'Raport wygenerowany dnia ' +
+                new Date().toLocaleDateString('pl-PL'),
+            95,
+            70
+        )
+
+    const headerY = _createHeader(
+        doc,
+        'Informacje ogólne',
+        'Przeglądaj podstawowe informacje',
+        120,
+        50
+    )
+
+    const y = _createRow(doc, headerY + 10, 50, [
+        { label: 'Imię i nazwisko', value: report.player.name },
+        { label: 'Rok urodzenia', value: report.player.birthYear.toString() },
+        {
+            label: 'Płeć',
+            value: report.player.sex === 'MALE' ? 'Mężczyzna' : 'Kobieta',
+        },
+    ])
+
+    const y2 = _createRow(doc, y, 50, [
+        { label: 'Kraj', value: report.player.nationality },
+        { label: 'Pozycja', value: report.player.position?.name },
+        { label: 'Zespół', value: report.player.team.name },
+    ])
+
+    const y3 = _createRow(doc, y2, 50, [
+        {
+            label: 'Wzrost (cm)',
+            value: report.player.height.toString() || 'Brak informacji',
+        },
+        { label: 'Masa ciała (kg)', value: report.player.weight.toString() },
+        { label: 'Postawa', value: report.player.physique },
+    ])
+
+    const y4 = _createHeader(
+        doc,
+        'Oceny raportów',
+        'Różne aspekty ocenione od 1 do 10',
+        y3 + 20,
+        50
+    )
+
+    const traits = report.traits
+
+    if (!traits.length) {
+        doc.fillColor('#183932')
+            .font('assets/IBMPlexSans-Regular.ttf')
+            .fontSize(12)
+            .text('Brak informacji o ocenach z raportu', 50, 440, {
+                align: 'center',
+            })
+    }
+
+    let currY = y4 + 10
+
+    for (let i = 0; i < traits.length; i = i + 3) {
+        const trait1 = await PlayerTrait.findByPk(traits[i].id || '')
+        const trait2 = await PlayerTrait.findByPk(traits[i + 1].id || '')
+        const trait3 = await PlayerTrait.findByPk(traits[i + 2].id || '')
+
+        currY = _createRow(doc, currY, 50, [
+            {
+                label: trait1?.name || '',
+                value: traits[i].value?.toString() || '',
+            },
+            {
+                label: trait2?.name || '',
+                value: traits[i + 1].value?.toString() || '',
+            },
+            {
+                label: trait3?.name || '',
+                value: traits[i + 2].value?.toString() || '',
+            },
+        ])
+    }
+
+    doc.fillColor('#4e4e4e')
+        .font('assets/IBMPlexSans-Regular.ttf')
+        .fontSize(10)
+        .text('Podpis i pieczątka scouta', 50, 700 - 20)
+
+    doc.lineWidth(0.5).rect(50, 700, 200, 50).stroke()
+
+    doc.end()
+}
+
+const _createHeader = (
+    doc: PDFKit.PDFDocument,
+    value: string,
+    subValue: string,
+    y: number,
+    x: number
+): number => {
+    y = _validateY(doc, y)
+
+    doc.fillColor('#183932')
+        .font('assets/IBMPlexSans-SemiBold.ttf')
+        .fontSize(12)
+        .text(value, x, y)
+
+    doc.fillColor('#4e4e4e')
+        .font('assets/IBMPlexSans-Regular.ttf')
+        .fontSize(10)
+        .text(subValue, x, y + 20)
+
+    return y + 50
+}
+
+const _validateY = (doc: PDFKit.PDFDocument, y: number): number => {
+    if (y > doc.page.height) {
+        doc.addPage()
+        y = 50
+    }
+
+    return y
+}
+
+const _createRow = (
+    doc: PDFKit.PDFDocument,
+    y: number,
+    height: number,
+    rowArr: {
+        label: string
+        value: string
+    }[]
+): number => {
+    y = _validateY(doc, y)
+    let x = 50
+
+    for (let i = 0; i < rowArr.length; i++) {
+        const item = rowArr[i]
+
+        doc.fillColor('#2f4d47')
+            .font('assets/IBMPlexSans-Medium.ttf')
+            .fontSize(10)
+            .text(item.label, x, y)
+
+        doc.fillColor('#1b1b1b')
+            .font('assets/IBMPlexSans-Regular.ttf')
+            .fontSize(10)
+            .text(item.value, x, y + 16, { width: 130, height })
+
+        x += 190
+    }
+
+    return y + height
 }

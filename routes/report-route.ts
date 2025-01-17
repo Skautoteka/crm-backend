@@ -165,4 +165,25 @@ router.get('/permissions', async (req: Request, res: Response) => {
     })
 })
 
+router.get(
+    '/pdf/:id',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const stream = res.writeHead(200, {
+                'Content-Type': 'application/pdf',
+                'Content-Disposition': 'attachment;filename=report.pdf',
+            })
+
+            await reportController.generatePDF(
+                req.params['id'],
+                (chunk) => stream.write(chunk),
+                () => stream.end()
+            )
+        } catch (err) {
+            console.log(err)
+            return next(err)
+        }
+    }
+)
+
 export { router as reportRouter }

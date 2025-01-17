@@ -29,6 +29,7 @@
         "mysql2": "^3.9.8",
         "node-fetch": "2.6.6",
         "nodemon": "^3.1.0",
+        "pdfkit": "^0.16.0",
         "sequelize": "^6.37.3",
         "sequelize-typescript": "^2.1.6"
     },
@@ -42,6 +43,7 @@
         "@types/express-fileupload": "^1.5.1",
         "@types/jsonwebtoken": "^9.0.7",
         "@types/node-fetch": "^2.6.12",
+        "@types/pdfkit": "^0.13.8",
         "eslint": "^8.0.0",
         "eslint-config-prettier": "^9.1.0",
         "globals": "^15.6.0",
