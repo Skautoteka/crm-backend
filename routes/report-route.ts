@@ -174,6 +174,10 @@ router.get(
                 'Content-Disposition': 'attachment;filename=report.pdf',
             })
 
+            stream.on('error', (err) => {
+                next(err)
+            })
+
             await reportController.generatePDF(
                 req.params['id'],
                 (chunk) => stream.write(chunk),
