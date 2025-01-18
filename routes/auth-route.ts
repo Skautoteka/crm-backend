@@ -51,8 +51,12 @@ router.post(
             const { email, password } = req.body
             const tokens = await authController.login(email, password)
 
-            res.cookie('sktka-access-token', tokens.accessToken)
-            res.cookie('sktka-refresh-token', tokens.refreshToken)
+            res.cookie('sktka-access-token', tokens.accessToken, {
+                httpOnly: true,
+            })
+            res.cookie('sktka-refresh-token', tokens.refreshToken, {
+                httpOnly: true,
+            })
 
             res.json({ success: true })
         } catch (err) {
@@ -86,8 +90,8 @@ router.get(
 
             const { accessToken, refreshToken } =
                 await authController.refreshToken(token)
-            res.cookie('sktka-access-token', accessToken)
-            res.cookie('sktka-refresh-token', refreshToken)
+            res.cookie('sktka-access-token', accessToken, { httpOnly: true })
+            res.cookie('sktka-refresh-token', refreshToken, { httpOnly: true })
 
             res.json({ success: true })
         } catch (err) {
