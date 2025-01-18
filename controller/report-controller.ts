@@ -634,39 +634,12 @@ export const generatePDF = async (
         50
     )
 
-    const traits = report.traits
-
-    if (!traits.length) {
-        doc.fillColor('#183932')
-            .font('assets/IBMPlexSans-Regular.ttf')
-            .fontSize(12)
-            .text('Brak informacji o ocenach z raportu', 50, 440, {
-                align: 'center',
-            })
-    }
-
-    let currY = y4 + 10
-
-    for (let i = 0; i < traits.length; i = i + 3) {
-        const trait1 = await PlayerTrait.findByPk(traits[i].id || '')
-        const trait2 = await PlayerTrait.findByPk(traits[i + 1].id || '')
-        const trait3 = await PlayerTrait.findByPk(traits[i + 2].id || '')
-
-        currY = _createRow(doc, currY, 50, [
-            {
-                label: trait1?.name || '',
-                value: traits[i].value?.toString() || '',
-            },
-            {
-                label: trait2?.name || '',
-                value: traits[i + 1].value?.toString() || '',
-            },
-            {
-                label: trait3?.name || '',
-                value: traits[i + 2].value?.toString() || '',
-            },
-        ])
-    }
+    doc.fillColor('#183932')
+        .font('assets/IBMPlexSans-Regular.ttf')
+        .fontSize(12)
+        .text('Brak informacji o ocenach z raportu', 50, 440, {
+            align: 'center',
+        })
 
     doc.fillColor('#4e4e4e')
         .font('assets/IBMPlexSans-Regular.ttf')
