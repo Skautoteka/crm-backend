@@ -42,4 +42,11 @@ export default class Team extends Model<
 
     @Column({ allowNull: true, type: DataTypes.TEXT })
     country: string
+
+    @Column({ type: DataTypes.TEXT })
+    get searchQuery(): string | null {
+        const name = this.getDataValue('name')
+
+        return `${name.toLowerCase()}`
+    }
 }

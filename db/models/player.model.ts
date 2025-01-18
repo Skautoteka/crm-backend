@@ -93,4 +93,9 @@ export default class Player extends Model<
 
     @BelongsTo(() => Team)
     team: Team
+
+    @Column({ type: DataTypes.TEXT })
+    get searchQuery(): string | null {
+        return `${this.getDataValue('firstName')} ${this.getDataValue('lastName')}`.toLowerCase()
+    }
 }

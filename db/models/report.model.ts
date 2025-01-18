@@ -92,4 +92,15 @@ export default class Report extends Model<Report> {
 
     @HasOne(() => ReportDescription)
     description: ReportDescription
+
+    @Column({ type: DataTypes.TEXT })
+    get searchQuery(): string | null {
+        const player = this.getDataValue('player')
+
+        if (!player) {
+            return null
+        }
+
+        return `${player.name.toLowerCase()}`
+    }
 }

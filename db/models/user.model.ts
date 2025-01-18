@@ -87,4 +87,13 @@ export default class User extends Model<
 
     @HasMany(() => Task)
     tasks: Task[]
+
+    @Column({ type: DataTypes.TEXT })
+    get searchQuery(): string | null {
+        return (
+            this.getDataValue('firstName') +
+            ' ' +
+            this.getDataValue('lastName')
+        ).toLowerCase()
+    }
 }
