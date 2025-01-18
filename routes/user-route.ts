@@ -50,6 +50,25 @@ router.post(
     }
 )
 
+router.post(
+    '/change-password',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { current, newPassword, confirmPassword } = req.body
+            await userController.changePassword(
+                req,
+                current,
+                newPassword,
+                confirmPassword
+            )
+
+            res.json({ success: true })
+        } catch (err) {
+            return next(err)
+        }
+    }
+)
+
 router.get(
     '/all',
     routePermission(READ_PERMISSIONS),

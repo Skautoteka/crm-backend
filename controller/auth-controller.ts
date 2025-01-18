@@ -92,6 +92,28 @@ export const getReqUser = async (req: Request): Promise<User> => {
 }
 
 /**
+ * Changes password for a user
+ *
+ * @param current
+ * @param newPassword
+ * @param confirmPassword
+ */
+export const changePassword = async (
+    user: User,
+    current: string,
+    newPassword: string
+): Promise<void> => {
+    const compareResult = await bcrypt.compare(current, user.password)
+
+    if (!compareResult) {
+        throw new ForbiddenError('Password is invalid')
+    }
+
+    user.password = await _getHashedPassword(newPassword)
+    user.save()
+}
+
+/**
  * Creates the user to the database.
  *
  * @param firstName

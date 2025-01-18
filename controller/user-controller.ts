@@ -3,6 +3,10 @@ import User from '../db/models/user.model'
 import Role from '../db/models/role.model'
 import Region from '../db/models/region.model'
 import { Op } from 'sequelize'
+import * as authController from './auth-controller'
+import { Request } from 'express'
+import { UnauthorizedError } from '../error/unauthorized'
+import { InvalidPayloadError } from '../error/invalid-payload'
 
 export const getAll = async () => {
     const users = await User.findAll({
@@ -44,6 +48,32 @@ export const queryUsers = async (
         },
         limit: size,
     })
+}
+
+/**
+ * Changes user password
+ *
+ * @param current
+ * @param newPassword
+ * @param confirmPassword
+ */
+export const changePassword = async (
+    req: Request,
+    current: string,
+    newPassword: string,
+    confirmPassword: string
+): Promise<void> => {
+    const user = await authController.getReqUser(req)
+
+    if (newPassword !== confirmPassword) {
+        throw new InvalidPayloadError('Passwords are not equal')
+    }
+
+    if (!user) {
+        throw new UnauthorizedError('Cannnot change password. Unauthorized')
+    }
+
+    await authController.changePassword(user, current, newPassword)
 }
 
 /**
